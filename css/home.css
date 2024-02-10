@@ -1,0 +1,36 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #7A6A9D;
+    color: white;
+    padding: 2px;
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+}
+header, nav {
+    margin: 0;
+}
+header h1 {
+    margin-left: 30px;
+}
+ul {
+    list-style-type: none;
+    display: flex;
+}
+ul li {
+    margin-right: 30px; 
+}
+ul li a {
+    color: white;
+    font-size: larger;
+    text-decoration: none;
+    margin: 10px;
+}
+ul li a:hover {
+    text-decoration: underline;
+}
+body {
+    margin: 0;
+    padding: 0;
+}
