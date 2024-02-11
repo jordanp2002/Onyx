@@ -56,4 +56,8 @@ h3{
     border: 1px solid black;
     width: 20%;
     height: 50px;
+    border-radius: 5px;
+}
+.SignUp .button:hover{
+    background-color: grey;
 }

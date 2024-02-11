@@ -35,10 +35,11 @@ body {
     padding: 0;
 }
 .dropdown {
+    max-width: 150px;
     display: none;
     position: absolute;
     background-color: #7A6A9D;
-    
+    border-radius: 5px;
     z-index: 1;
 }
 .dropdown li {
@@ -56,17 +57,32 @@ h3{
 .submit-button{
     background-color: #00A91C;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 5px;
 } 
 .delete-button{
     background-color: #B51D09;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-
+    margin-bottom: 10px;
+    border-radius: 5px;
 }
 #postContent{
-    width: 30%;
+    width: 80%;
     height: 250px;
 }
 .titlePost{
+    margin-top: 20px;
     text-align: center;
-
+}
+#postTitle{
+    width: 80%;
+    height: 50px;
+}
+.PostCreation{
+    text-align: center;
+    border : 1px solid;
+    border-color: #7A6A9D;
+    margin-left: 30%;
+    margin-right: 30%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 5px;
 }

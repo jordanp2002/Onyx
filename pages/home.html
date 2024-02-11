@@ -6,8 +6,7 @@
     <title>Home</title>
     <link rel="stylesheet" href="../css/home.css">
 </head>
-
-<div class="container">
+<div class="headernav">
     <header>
         <h1>Twitter</h1>
     </header>
@@ -15,23 +14,33 @@
         <ul>
             <li><a href="/searchpage">Search</a></li>
             <li>
-                <a href="/community">Community</a>
+                <div class = "parent-item">
+                    <a href="/community">Communities</a>
+                    <ul class="dropdown">
+                        <li class="item"><a href="#">Manage Communities </a></li>
+                        <li class="item"><a href="#">Create Community</a></li>
+                    </ul>
+                </div>
             </li>
             <li>
-                <a href="/account">Account</a>
-                <ul class="dropdown">
-                    <li><a href="#">Manage Account</a></li>
-                    <li><a href="#">Friends</a></li>
-                    <li><a href="#">Communities</a></li>
-                    <li><a href="#">Saved Posts</a></li>
-                </ul>
+                <div class = "parent-item">
+                    <a href="/account">Account</a>
+                    <ul class="dropdown">
+                        <li class="item"><a href="#">Manage Account</a></li>
+                        <li class="item"><a href="#">Friends</a></li>
+                        <li class="item"><a href="#">Communities</a></li>
+                        <li class="item"><a href="#">Saved Posts</a></li>
+                    </ul>
+                </div>
             </li>
             <li><a href="/logout">Logout</a></li>
         </ul>
     </nav>
 </div>
+
 <body>
     <div class="Feed">
+
         <h2>Feed</h2>
         <div class="post">
             <h3>Example Post 3</h3>

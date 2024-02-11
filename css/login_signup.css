@@ -21,7 +21,7 @@ h2 {
 }
 .login_signup input[type="email"],
 .login_signup input[type="password"] {
-        width: 100%;
+        width: 92%;
         padding: 10px;
         margin: 10px 0;
         border: 1px solid #CCC;
@@ -34,6 +34,8 @@ h2 {
         color: white;
         border: none;
         cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
 }
 .login_signup button:hover {
         background-color: #695d8a;
