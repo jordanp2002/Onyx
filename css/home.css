@@ -51,7 +51,6 @@ body {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 .dropdown li {
-    
     padding: 10px;
     display: block; 
     border-bottom: 1px solid white;
@@ -65,26 +64,55 @@ ul li:hover .dropdown {
 .item a{
     display: block;
 }
-.Feed{
-    text-align: center;
-    border : 1px solid;
-    border-color: #7A6A9D;
-    margin-left: 30%;
-    margin-right: 30%;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+.layout-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 10px; 
 }
-.Feed figure{
+
+.Feed {
+    display: grid;
+    grid-template-rows: 1fr; 
+    text-align: center;
+    border: 1px solid hsl(259, 21%, 52%);
+    margin: 0 20% 0 20%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.Feed figure {
     border: 1px solid black;
-    display : inline-block;
     border-radius: 5px;
     width: 80%;
+    justify-self: center; 
 }
-.Feed hr{
+
+.Feed hr {
     border: 1px solid black;
     width: 90%;
+    justify-self: center; 
 }
-.Feed .button{
-    box-shadow : 0 4px 8px 0 rgba(0,0,0,0.2);
+
+.Feed .button {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     background-color: white;
     border-radius: 5px;
+    justify-self: center;
+}
+
+.CreatePost {
+    text-align: center;
+    border: 1px solid hsl(259, 21%, 52%);
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    margin-left: 20%;
+    margin-bottom: 600px;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+.CreatePost .button {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    background-color: white;
+    border-radius: 5px;
+    justify-self: center;
 }

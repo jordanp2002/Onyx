@@ -49,6 +49,7 @@ h3{
     margin-left: 50px;
     padding-top: 50px;
     font-size: 20px;
+    
 }
 .SignUp .button{
     color: black;
@@ -60,4 +61,31 @@ h3{
 }
 .SignUp .button:hover{
     background-color: grey;
+
+}
+.Login{
+    text-align: left;
+    color: white;
+    width: 100%;
+    margin-left: 50px;
+    font-size: 20px;
+}
+.Login .button{
+    color: black;
+    text-decoration: none;
+    border: 1px solid black;
+    width: 20%;
+    height: 50px;
+    border-radius: 5px;
+}
+.Login .button:hover{
+    background-color: grey;
+}
+.Buttons{
+    display: block;
+    text-decoration: none;
+}
+.Buttons a{
+    text-decoration: none;
+    color: black;
 }
