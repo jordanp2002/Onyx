@@ -47,20 +47,26 @@ body {
 ul li:hover .dropdown {
     display: block; 
 }
-.Feed{
+.post{
     text-align: center;
 }
-.Feed figure{
-    border: 1px solid black;
-    display : inline-block;
-    border-radius: 5px;
-    width: 40%;
+h3{
+    text-align: center;
 }
-.Feed hr{
-    border: 1px solid black;
-    width: 40%;
+.submit-button{
+    background-color: #00A91C;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+} 
+.delete-button{
+    background-color: #B51D09;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+
 }
-.Feed .button{
-    box-shadow : 0 4px 8px 0 rgba(0,0,0,0.2);
-    background-color: white;
+#postContent{
+    width: 30%;
+    height: 250px;
+}
+.titlePost{
+    text-align: center;
+
 }
