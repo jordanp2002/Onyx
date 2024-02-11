@@ -116,3 +116,10 @@ ul li:hover .dropdown {
     border-radius: 5px;
     justify-self: center;
 }
+.admin-container{
+    text-align: center;
+}
+h2{
+    text-align: center;
+    font-size: 40px;
+}
