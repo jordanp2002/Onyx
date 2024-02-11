@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Post</title>
+    <link rel="stylesheet" href="/css/createpost.css">
+</head>
+<div class="container">
+    <header>
+        <h1>Twitter</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/searchpage">Search</a></li>
+            <li>
+                <a href="/community">Community</a>
+            </li>
+            <li>
+                <a href="/account">Account</a>
+                <ul class="dropdown">
+                    <li><a href="#">Manage Account</a></li>
+                    <li><a href="#">Friends</a></li>
+                    <li><a href="#">Communities</a></li>
+                    <li><a href="#">Saved Posts</a></li>
+                </ul>
+            </li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+</div>
+<body>
+    <h3>Post Creation</h3>
+    <form class ="titlePost">
+        <label for="postTitle" type="hidden"></label>
+        <textarea id="postTitle" name="postContent" rows="2" cols="34" maxlength="50" minlength="2" placeholder="Title here"></textarea>
+        <br>
+    </form>
+    <form class = "post">
+        <label for="postContent" type="hidden"></label>
+        <textarea id="postContent" name="postContent" rows="4" cols="50" maxlength="500" minlength="10" placeholder="Text here max 500 characters"></textarea>
+        <br>
+        <button class ="submit-button"type="submit">Submit</button>
+        <button class ="delete-button"type="button">Delete</button>
+    </form>
+</body>
+</html>
