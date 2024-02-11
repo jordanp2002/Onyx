@@ -66,7 +66,7 @@ ul li:hover .dropdown {
 }
 .layout-container {
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr 4fr;
     gap: 10px; 
 }
 
@@ -75,19 +75,19 @@ ul li:hover .dropdown {
     grid-template-rows: 1fr; 
     text-align: center;
     border: 1px solid hsl(259, 21%, 52%);
-    margin: 0 20% 0 20%;
+    justify-self: center;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     margin-top: 20px;
     border-radius: 5px;
+    width: 70%;
 }
 
 .Feed figure {
     border: 1px solid black;
     border-radius: 5px;
-    width: 80%;
+    width: 90%;
     justify-self: center; 
 }
-
 .Feed hr {
     border: 1px solid black;
     width: 90%;
@@ -100,15 +100,14 @@ ul li:hover .dropdown {
     border-radius: 5px;
     justify-self: center;
 }
-
 .CreatePost {
     text-align: center;
     border: 1px solid hsl(259, 21%, 52%);
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     margin-left: 20%;
-    margin-bottom: 600px;
     margin-top: 20px;
     border-radius: 5px;
+    margin-bottom: 400px;
 }
 .CreatePost .button {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -119,6 +118,7 @@ ul li:hover .dropdown {
 .admin-container{
     text-align: center;
 }
+.CreatePost
 h2{
     text-align: center;
     font-size: 40px;

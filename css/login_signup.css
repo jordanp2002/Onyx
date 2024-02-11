@@ -20,7 +20,9 @@ h2 {
     margin-top: 20px;
 }
 .login_signup input[type="email"],
-.login_signup input[type="password"] {
+.login_signup input[type="password"],
+.login_signup input[type="text"],
+.login_signup input[type="file"]{
         width: 92%;
         padding: 10px;
         margin: 10px 0;
