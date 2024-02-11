@@ -1,0 +1,27 @@
+.profile {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.profile_pic {
+    flex: 1;
+    padding: 20px;
+}
+.profile_pic p {
+    text-align: center;
+    padding-right: 70px;
+    font-weight: bold;
+}
+
+.profile_info {
+    flex: 2;
+    padding-top: 5%;
+    padding-right: 600px;
+}
+
+.profile_info h2 {
+    font-weight: lighter;    
+}
+
