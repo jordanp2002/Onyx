@@ -1,4 +1,4 @@
-# RedditCloneProject
+# Reddit/TwitterCloneProject
 
 Tasks To Complete:
 
