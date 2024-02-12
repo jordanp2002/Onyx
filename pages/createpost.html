@@ -10,20 +10,28 @@
     </header>
     <nav>
         <ul>
-            <li><a href="/searchpage">Search</a></li>
+            <li><a href="../pages/searchpage.html">Search</a></li>
             <li>
-                <a href="/community">Community</a>
+                <div class = "parent-item">
+                    <a href="/community">Communities</a>
+                    <ul class="dropdown">
+                        <li class="item"><a href="#">Manage Communities </a></li>
+                        <li class="item"><a href="#">Create Community</a></li>
+                    </ul>
+                </div>
             </li>
             <li>
-                <a href="/account">Account</a>
-                <ul class="dropdown">
-                    <li><a href="#">Manage Account</a></li>
-                    <li><a href="#">Friends</a></li>
-                    <li><a href="#">Communities</a></li>
-                    <li><a href="#">Saved Posts</a></li>
-                </ul>
+                <div class = "parent-item">
+                    <a href="../pages/account_page.html">Account</a>
+                    <ul class="dropdown">
+                        <li class="item"><a href="../pages/account_settings.html">Manage Account</a></li>
+                        <li class="item"><a href="../pages/manage_friends.html">Friends</a></li>
+                        <li class="item"><a href="#">Communities</a></li>
+                        <li class="item"><a href="../pages/saved_posts.html">Saved Posts</a></li>
+                    </ul>
+                </div>
             </li>
-            <li><a href="/logout">Logout</a></li>
+            <li><a href="../pages/logout">Logout</a></li>
         </ul>
     </nav>
 </div>
