@@ -9,7 +9,7 @@
 <header>
     <nav>
         <ul>
-            <li><a href="../pages/login">login</a></li>
+            <li><a href="../pages/login.html">login</a></li>
             <li><a href="/support">support</a></li>
         </ul>
     </nav>
