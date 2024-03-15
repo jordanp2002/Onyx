@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Create Post</title>
-    <link rel="stylesheet" href="/css/createpost.css">
+    <link rel="stylesheet" href="../css/createpost.css">
 </head>
 <div class="headernav">
     <header>
