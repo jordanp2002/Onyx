@@ -68,7 +68,7 @@ session_start();
                 if (!$connection) {
                     die("Connection failed: " . mysqli_connect_error());
                 }
-                $IdQuery = "SELECT account_id FROM account WHERE username ='$username'";
+                $IdQuery = "SELECT id FROM Account WHERE username ='$username'";
                 $id = mysqli_query($connection, $IdQuery);
                 $query = "SELECT * FROM thread JOIN community_membership ON thread.com_id = community_membership.com_id WHERE community_membership.account_id= '$id'  AND thread.com_id = community_membership.com_id";
                 $result = mysqli_query($connection, $query);
@@ -78,7 +78,6 @@ session_start();
                         echo "<div class='post'>";
                         echo "<h3>" . $row['title'] . "</h3>";
                         echo "<figure>";
-                        echo "<p>" test "</p>";
                         echo "<figcaption>Author: " . $row['author'] . "</figcaption>";
                         echo "</figure>";
                         echo "<p>Date Posted: <time datetime=" . $row['date'] . "></time></p>";
