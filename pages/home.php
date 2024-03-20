@@ -6,6 +6,9 @@
     <title>Home</title>
     <link rel="stylesheet" href="../css/home.css">
 </head>
+<?php
+session_start();
+?>
 <div class="headernav">
     <header>
         <h1>Twitter</h1>
@@ -33,14 +36,18 @@
                     </ul>
                 </div>
             </li>
-            <li><a href="../pages/logout">Logout</a></li>
+            <li><a href="../pages/logout.php">Logout</a></li>
         </ul>
     </nav>
 </div>
-
 <body>
     <div class = "layout-container">
         <div class ="CreatePost">
+        <?php
+            if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
+                echo "<p>Logged in as: " . htmlspecialchars($_SESSION['username']) . "</p>";
+            }
+            ?>
             <h2>Create Post</h2>
             <a href = "../pages/createpost.html">
                 <button class="button" id = "create-post-button">Create Post</button>
