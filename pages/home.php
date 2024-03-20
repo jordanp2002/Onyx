@@ -81,7 +81,7 @@ session_start();
                         echo "<div class='post'>";
                         echo "<h3>" . $row['title'] . "</h3>";
                         echo "<figure>";
-                        echo "<p>" . $row['content'] "</p>";
+                        echo "<p>" . $row['content'] . "</p>";
                         echo "<figcaption>" . $row['account_id'] . " </figcaption>";
                         echo "</figure>";
                         echo "<button class='button' id = 'like-button'>Like</button>";
