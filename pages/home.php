@@ -69,7 +69,7 @@ session_start();
                     die("Connection failed: " . mysqli_connect_error());
                 }
                 $username = $_SESSION['username'];
-                $IdQuery = "SELECT id FROM Account WHERE username ='$username'";
+                $IdQuery = "SELECT id FROM Account WHERE email ='$username'";
                 $id = mysqli_query($connection, $IdQuery);
                 $query = "SELECT * FROM thread JOIN community_membership ON thread.com_id = community_membership.com_id WHERE community_membership.account_id= '$id'  AND thread.com_id = community_membership.com_id";
                 $result = mysqli_query($connection, $query);
@@ -82,7 +82,6 @@ session_start();
                         echo "<p> Testing </p>";
                         echo "<figcaption>Author: </figcaption>";
                         echo "</figure>";
-                        echo "<p>Date Posted: <time datetime="2024-02-10"></time></p>";
                         echo "<button class='button' id = 'like-button'>Like</button>";
                         echo "<button class='button' id ='dislike-button'>Dislike</button>";
                         echo "<button class='button'>Comment</button>";
