@@ -7,7 +7,7 @@ if (!$connection) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
+    $username = $_POST['email'];
     $password = $_POST['password'];
 
     $query = "SELECT * FROM Account WHERE username = '$username' AND pword = '$password'";
