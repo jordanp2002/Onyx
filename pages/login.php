@@ -9,7 +9,7 @@
 <body>
     <div class="login_signup">
         <h2>Login</h2>
-        <p>* indicates a required field.</p>
+        <p>* indicates a required test.</p>
         <form class ="login_signup-form" action= "loginhandle.php" method ="POST">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required><br><br>
