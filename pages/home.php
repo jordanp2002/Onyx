@@ -90,6 +90,9 @@ session_start();
                         echo "<button class='button' id='save-button'>Save</button>";
                         echo "</div>";
                     }
+                }else{
+                    echo "No posts found";
+                
                 }
             }
             ?>
