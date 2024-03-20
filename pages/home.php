@@ -68,6 +68,7 @@ session_start();
                 if (!$connection) {
                     die("Connection failed: " . mysqli_connect_error());
                 }
+                $username = $_SESSION['username'];
                 $IdQuery = "SELECT id FROM Account WHERE username ='$username'";
                 $id = mysqli_query($connection, $IdQuery);
                 $query = "SELECT * FROM thread JOIN community_membership ON thread.com_id = community_membership.com_id WHERE community_membership.account_id= '$id'  AND thread.com_id = community_membership.com_id";
@@ -78,6 +79,7 @@ session_start();
                         echo "<div class='post'>";
                         echo "<h3>" . $row['title'] . "</h3>";
                         echo "<figure>";
+                        echo "<p>" . $row['content'] . "</p>";
                         echo "<figcaption>Author: " . $row['author'] . "</figcaption>";
                         echo "</figure>";
                         echo "<p>Date Posted: <time datetime=" . $row['date'] . "></time></p>";
