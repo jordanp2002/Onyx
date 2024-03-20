@@ -92,7 +92,6 @@ session_start();
                     }
                 }else{
                     echo "No posts found";
-                
                 }
             }
             ?>
