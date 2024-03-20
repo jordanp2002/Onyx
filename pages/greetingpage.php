@@ -9,7 +9,7 @@
 <header>
     <nav>
         <ul>
-            <li><a href="../pages/login.html">login</a></li>
+            <li><a href="../pages/login.php">login</a></li>
             <li><a href="/support">support</a></li>
         </ul>
     </nav>
@@ -20,13 +20,13 @@
     <div class = "Buttons">
         <div class = "SignUp">
             <p>Sign up!</p>
-            <a href = "../pages/signup.html" >
+            <a href = "../pages/signup.php" >
                 <button class="button" id = "signup-button" >Sign up</button>
             </a>
         </div>
         <div class = "Login">
             <p>Login!</p>
-            <a href = "../pages/login.html">
+            <a href = "../pages/login.php">
                 <button class="button" id = "login-button">Login</button>
             </a>
         </div>

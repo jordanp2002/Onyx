@@ -10,15 +10,15 @@
     <div class="login_signup">
         <h2>Sign-up</h2>
         <p>* indicates a required field.</p>
-        <form class ="login_signup-form">
+        <form class ="login_signup-form" action = "signuphandle.php" method = "POST" >
             <label for="image"> Upload Image*</label>
-            <input type="file" id="image" name="image" required><br><br>
+            <input type="file" id="image" name="image"><br><br>
 
             <label for="name"> Enter First name*</label>
-            <input type="text" id="name" name="name" required><br><br>
+            <input type="text" id="name" name="name"><br><br>
 
             <label for="lastname"> Enter last name*</label>
-            <input type="text" id="lastname" name="lastname" required><br><br>
+            <input type="text" id="lastname" name="lastname"><br><br>
 
             <label for="email"> Enter Email*</label>
             <input type="email" id="email" name="email" required><br><br>
@@ -29,9 +29,8 @@
             <label for="password">Re Enter Password*</label>
             <input type="password" id="password" name="password" required><br><br>
             
-            <button type="submit">Login</button>
+            <button type="submit">Signup</button>
         </form>
-        <p class="sign-up-link">Don't have an account? <a href="#">Create One.</a></p>
     </div>
 </body>
 </html>
