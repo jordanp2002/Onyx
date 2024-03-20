@@ -15,7 +15,7 @@ session_start();
     </header>
     <nav>
         <ul>
-            <li><a href="../pages/searchpage">Search</a></li>
+            <li><a href="../pages/searchpage.php">Search</a></li>
             <li>
                 <div class = "parent-item">
                     <a href="/community">Communities</a>
@@ -27,12 +27,12 @@ session_start();
             </li>
             <li>
                 <div class = "parent-item">
-                    <a href="../pages/account_page">Account</a>
+                    <a href="../pages/account_page.php">Account</a>
                     <ul class="dropdown">
-                        <li class="item"><a href="../pages/account_settings">Manage Account</a></li>
-                        <li class="item"><a href="../pagesmanage_friends">Friends</a></li>
+                        <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
+                        <li class="item"><a href="../pagesmanage_friends.php">Friends</a></li>
                         <li class="item"><a href="#">Communities</a></li>
-                        <li class="item"><a href="../pages/saved_posts">Saved Posts</a></li>
+                        <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
                     </ul>
                 </div>
             </li>
@@ -49,7 +49,7 @@ session_start();
             }
             ?>
             <h2>Create Post</h2>
-            <a href = "../pages/createpost.html">
+            <a href = "../pages/createpost.php">
                 <button class="button" id = "create-post-button">Create Post</button>
             </a>
             <h2>Filter</h2>
@@ -61,6 +61,37 @@ session_start();
                 </select>
         </div>
         <div class="Feed">
+            <?php
+            if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
+                $connection = mysqli_connect('localhost', '76966621', 'Password123', 'db_76966621');
+
+                if (!$connection) {
+                    die("Connection failed: " . mysqli_connect_error());
+                }
+                $IdQuery = "SELECT account_id FROM account WHERE username ='$username'";
+                $id = mysqli_query($connection, $IdQuery);
+                $query = "SELECT * FROM thread JOIN community_membership ON thread.com_id = community_membership.com_id WHERE community_membership.account_id= '$id'  AND thread.com_id = community_membership.com_id";
+                $result = mysqli_query($connection, $query);
+
+                if(mysqli_num_rows($result) > 0) {
+                    while($row = mysqli_fetch_assoc($result)) {
+                        echo "<div class='post'>";
+                        echo "<h3>" . $row['title'] . "</h3>";
+                        echo "<figure>";
+                        echo "<p>" test "</p>";
+                        echo "<figcaption>Author: " . $row['author'] . "</figcaption>";
+                        echo "</figure>";
+                        echo "<p>Date Posted: <time datetime=" . $row['date'] . "></time></p>";
+                        echo "<button class='button' id = 'like-button'>Like</button>";
+                        echo "<button class='button' id ='dislike-button'>Dislike</button>";
+                        echo "<button class='button'>Comment</button>";
+                        echo "<button class='button' id='repost-button'>Repost</button>";
+                        echo "<button class='button' id='save-button'>Save</button>";
+                        echo "</div>";
+                    }
+                }
+            }
+            ?>
             <h2>Feed</h2>
             <div class="post">
                 <h3>Example Post 3</h3>

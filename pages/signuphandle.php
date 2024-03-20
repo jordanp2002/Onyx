@@ -13,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     session_start();
     $query = "INSERT INTO Account (username, pword) VALUES (?, ?)";
     $stmt = mysqli_prepare($connection, $query);
-    
     if ($stmt) {
         mysqli_stmt_bind_param($stmt, "ss", $username, $password);
         $result = mysqli_stmt_execute($stmt);
