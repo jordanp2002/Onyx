@@ -69,7 +69,6 @@ session_start();
                     die("Connection failed: " . mysqli_connect_error());
                 }
                 $username = $_SESSION['username'];
-                $username = $_SESSION['username']; 
                 $query = "SELECT t.id AS thread_id, t.title,t.content, t.com_id, t.account_id, t.thread_like, t.thread_dislike
                 FROM Account a
                 JOIN community_membership cm ON a.id = cm.account_id
@@ -82,8 +81,8 @@ session_start();
                         echo "<div class='post'>";
                         echo "<h3>" . $row['title'] . "</h3>";
                         echo "<figure>";
-                        echo "<p> Testing </p>";
-                        echo "<figcaption>Author: </figcaption>";
+                        echo "<p>" . $row['content'] "</p>";
+                        echo "<figcaption>" . $row['account_id'] . " </figcaption>";
                         echo "</figure>";
                         echo "<button class='button' id = 'like-button'>Like</button>";
                         echo "<button class='button' id ='dislike-button'>Dislike</button>";
@@ -91,54 +90,13 @@ session_start();
                         echo "<button class='button' id='repost-button'>Repost</button>";
                         echo "<button class='button' id='save-button'>Save</button>";
                         echo "</div>";
+                        echo "<hr>";
                     }
                 }else{
                     echo "No posts found";
                 }
             }
             ?>
-            <h2>Feed</h2>
-            <div class="post">
-                <h3>Example Post 3</h3>
-                <figure>
-                    <p>Hello this is an example post for our twitter/reddit clone</p>
-                    <figcaption>Author: Jordan</figcaption>
-                </figure>
-                <p>Date Posted: <time datetime="2024-02-10"></time></p>
-                <button class="button" id = "like-button">Like</button>
-                <button class="button" id ="dislike-button">Dislike</button>
-                <button class="button">Comment</button>
-                <button class="button" id="repost-button">Repost</button>
-                <button class="button" id="save-button">Save</button>
-            </div>
-            <hr> 
-            <div class="post">
-                <h3>Example Post 2</h3>
-                <figure>
-                    <p>Hello this is an example post for our twitter/reddit clone</p>
-                    <figcaption>Author: Jordan</figcaption>
-                </figure>
-                <p>Date Posted: <time datetime="2024-02-10"></time></p>
-                <button class="button" id = "like-button-1">Like</button>
-                <button class="button" id ="dislike-button-1">Dislike</button>
-                <button class="button">Comment</button>
-                <button class="button" id="repost-button-1">Repost</button>
-                <button class="button" id="save-button-1">Save</button>
-            </div>
-            <hr> 
-            <div class="post">
-                <h3>Post Title</h3>
-                <figure>
-                    <p>Hello this is an example post for our twitter/reddit clone</p>
-                    <figcaption>Author: Jordan</figcaption>
-                </figure>
-                <p>Date Posted: <time datetime="2024-02-10"></time></p>
-                <button class="button" id ="like-button-2">Like</button>
-                <button class="button" id ="dislike-button-2">Dislike</button>
-                <button class="button">Comment</button>
-                <button class="button" id="repost-button-2">Repost</button>
-                <button class="button" id="save-button-2">Save</button>
-            </div>
         </div>
     </div>
 </body>
