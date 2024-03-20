@@ -69,8 +69,8 @@ session_start();
                     die("Connection failed: " . mysqli_connect_error());
                 }
                 $username = $_SESSION['username'];
-                $username = $_SESSION['username']; // Replace this with your actual session variable
-                $query = "SELECT t.id AS thread_id, t.title, t.com_id, t.account_id, t.thread_like, t.thread_dislike
+                $username = $_SESSION['username']; 
+                $query = "SELECT t.id AS thread_id, t.title,t.content, t.com_id, t.account_id, t.thread_like, t.thread_dislike
                 FROM Account a
                 JOIN community_membership cm ON a.id = cm.account_id
                 JOIN thread t ON cm.com_id = t.com_id
