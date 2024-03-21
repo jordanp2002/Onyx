@@ -29,6 +29,9 @@
         }
     </style>
 </head>
+<?php
+    session_start();
+?>
 <body>
     <div class="headernav">
         <header>
@@ -62,9 +65,43 @@
         </nav>
     </div>
 <div class="search-bar">
-    <input type="text" placeholder="Search...">
-    <button>Search</button>
+    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="GET"> 
+        <input type="text" id = "searchTerm" name="searchTerm" placeholder="Search...">
+        <button type="submit">Search</button>
+    </form>
 </div>
+<?php
+$connection = mysqli_connect('localhost', '76966621', 'Password123', 'db_76966621');
+if (!$connection) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET['searchTerm'])) {
+    $searchTerm = $_GET['searchTerm'];
+    $searchTerm = "%" . $searchTerm . "%";
+
+    $query = "SELECT title, content,username  FROM thread JOIN Account on thread.account_id = Account.id WHERE title LIKE ?";
+    $stmt = mysqli_prepare($connection, $query);
+    mysqli_stmt_bind_param($stmt, "s", $searchTerm);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo '<div class="tweet">';
+            echo '<img src="profile1.jpg" alt="Profile Picture">';
+            echo '<div>';
+            echo  '<div class="username">' . $row['title'] . ' By ' . $row['username'] .'</div>';
+            echo '<p>'. $row['content'].'</p>';
+            echo '</div>';
+            echo '</div>';
+        }
+    }else{
+        echo "no entries found";
+    }
+
+    mysqli_free_result($result);
+    mysqli_close($connection);
+}
+?>
 <h2>Trending Now on Twitter</h2>
 <div class="tweet">
     <img src="profile1.jpg" alt="Profile Picture">
