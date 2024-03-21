@@ -38,7 +38,7 @@
 <body>
     <h3>Post Creation</h3>
     <div class="PostCreation">
-        <form class ="titlePost" action = "../pages/PostPage.php" method = "POST">
+        <form class ="titlePost" action = "../pages/postcreationhandle.php" method = "POST">
             <label for="postTitle" type="hidden"></label>
             <textarea id="postTitle" name="postTitle" rows="2" cols="50" maxlength="50" minlength="2" placeholder="Title here"></textarea>
             <label for="postContent" type="hidden"></label>

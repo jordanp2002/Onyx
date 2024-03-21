@@ -79,45 +79,25 @@ session_start();
             </ul>
         </nav>
     </div>
-<h2>User78347643’s Post</h2>
-<div class="post">
-    <div class="post-header">Gears of Government President’s Award winners</div>
-    <div class="post-content">
-        <p>Today, the Administration announces the winners of the Gears of Government President’s Award. This program recognizes the contributions of individuals and teams across the federal workforce who make a profound difference in the lives of the American people.</p>
-        <p>By Sondra Ainsworth and Constance Lu</p>
-        <p>September 30, 2020</p>
-    </div>
-    <div class="post-buttons">
-        <button class="button like">Like</button>
-        <button class="button dislike">Dislike</button>
-        <button class="button repost">Repost</button>
-        <button class="button comment">Comment</button>
-        <button class="button save">Save</button>
-    </div>
-</div>
+    <div class="post">
 <?php
+$user = $_SESSION['username'];
+$connection = mysqli_connect("localhost", "76966621", "Password123", "db_76966621");
+if (!$connection) {
+    die("Connection failed: " . mysqli_connect_error());
+}
 if (isset($_GET['thread_id'])) {
     $threadId = $_GET['thread_id'];
-
     $selectQuery = "SELECT title, content FROM thread WHERE id = ?";
     if ($stmt = $connection->prepare($selectQuery)) {
         $stmt->bind_param("i", $threadId);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($row = $result->fetch_assoc()) {
-            echo '<div class="post">';
-            echo '<div class="post-header">' . htmlspecialchars($row['title']) . '</div>';
+            echo '<div class="post-header">' . $row['title'] . '</div>';
             echo '<div class="post-content">';
-            echo '<p>' . nl2br(htmlspecialchars($row['content'])) . '</p>';
-            echo '</div>';
-            echo '<div class="post-buttons">';
-            echo '<button class="button like">Like</button>';
-            echo '<button class="button dislike">Dislike</button>';
-            echo '<button class="button repost">Repost</button>';
-            echo '<button class="button comment">Comment</button>';
-            echo '<button class="button save">Save</button>';
-            echo '</div>';
-            echo '</div>';
+            echo '<p>' . $row['content'] . '</p>';
+            
         } else {
             echo "Thread not found.";
         }
@@ -128,15 +108,97 @@ if (isset($_GET['thread_id'])) {
     echo "No thread ID provided.";
 }
 ?>
-<div class="comment-section">
-    <div class="comment">
-        <div>User8253643:</div>
-        <p>This is a very cool post! Thanks for sharing!</p>
-        <div class="comment-buttons">
-            <button class="button like">Like</button>
-            <button class="button dislike">Dislike</button>
+    </div>
+    <div class="post-buttons">
+        <button class="button like">Like</button>
+        <button class="button dislike">Dislike</button>
+        <button class="button repost">Repost</button>
+        <button class="button comment" onclick="openCommentForm()">Comment</button>
+
+        <div id="commentFormPopup" class="popup">
+            <div class="popup-content">
+                <span class="close" onclick="closeCommentForm()">&times;</span>
+                <form id="commentForm">
+                    <label for="comment">Comment:</label>
+                    <input type="hidden" id ="thread_id" name="thread_id" value="<?php echo $threadId; ?>">
+                    <textarea id="comment" name="comment" rows="4" cols="50"></textarea>
+                    <button type="button" onclick="submitComment()">Submit Comment</button>
+                </form>
+            </div>`
         </div>
+
+        <button class="button save">Save</button>
     </div>
 </div>
+<div id = "comment-section">
+<?php
+if (isset($_GET['thread_id'])) {
+    $threadId = $_GET['thread_id'];
+    $selectQuery = "SELECT username,content FROM post JOIN Account on post.account_id = Account.id WHERE thread_id = ?";
+    if ($stmt = $connection->prepare($selectQuery)) {
+        $stmt->bind_param("i", $threadId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows === 0) {
+            echo "Thread not found.";
+        } else {
+            while ($row = $result->fetch_assoc()) {
+                echo '<p>' . $row['username'] . ' - ' . $row['content']. '</p>';
+                echo  '<button class="button like">Like</button>';
+                echo   '<button class="button dislike">Dislike</button>';
+            }
+        }
+    } else {
+        echo "Error: " . $connection->error;
+    }
+} else {
+    echo "No thread ID provided.";
+}
+
+?>
+</div>
 </body>
+<script>
+function openCommentForm() {
+  document.getElementById("commentFormPopup").style.display = "block";
+}
+
+function closeCommentForm() {
+  document.getElementById("commentFormPopup").style.display = "none";
+}
+
+function submitComment() {
+  var comment = document.getElementById("comment").value;
+  var threadId = document.getElementById("thread_id").value;
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "submitcomment.php", true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+  xhr.onload = function() {
+      alert(this.responseText);
+      displayComment(this.responseText);
+      closeCommentForm();
+  };
+  xhr.send("comment=" + encodeURIComponent(comment) + "&thread_id=" + encodeURIComponent(threadId));
+}
+
+function displayComment(comment) {
+  var commentsSection = document.getElementById("comment-section");
+  if (!commentsSection) {
+    console.error("Comment section not found");
+    return;
+  }
+  var newComment = document.createElement("p");
+  var likeButton = document.createElement("button");
+likeButton.innerHTML = "Like";
+likeButton.className = "button like";
+var dislikeButton = document.createElement("button");
+dislikeButton.innerHTML = "Dislike";
+dislikeButton.className = "button dislike"; 
+  newComment.innerHTML = comment; 
+  commentsSection.appendChild(newComment);
+  commentsSection.appendChild(likeButton);
+    commentsSection.appendChild(dislikeButton);
+}
+</script>
 </html>
