@@ -75,12 +75,12 @@
                 </li>
                 <li>
                     <div class = "parent-item">
-                        <a href="../pages/account_page.html">Account</a>
+                        <a href="../pages/account_page.php">Account</a>
                         <ul class="dropdown">
-                            <li class="item"><a href="../pages/account_settings.html">Manage Account</a></li>
-                            <li class="item"><a href="../pages/manage_friends.html">Friends</a></li>
+                            <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
+                            <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
                             <li class="item"><a href="#">Communities</a></li>
-                            <li class="item"><a href="../pages/saved_posts.html">Saved Posts</a></li>
+                            <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
                         </ul>
                     </div>
                 </li>

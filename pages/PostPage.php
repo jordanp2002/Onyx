@@ -44,6 +44,9 @@
         }
     </style>
 </head>
+<?php
+session_start();
+?>
 <body>
     <div class="headernav">
         <header>
@@ -51,7 +54,7 @@
         </header>
         <nav>
             <ul>
-                <li><a href="../pages/searchpage.html">Search</a></li>
+                <li><a href="../pages/searchpage.php">Search</a></li>
                 <li>
                     <div class = "parent-item">
                         <a href="/community">Communities</a>
@@ -63,16 +66,16 @@
                 </li>
                 <li>
                     <div class = "parent-item">
-                        <a href="../pages/account_page.html">Account</a>
+                        <a href="../pages/account_page.php">Account</a>
                         <ul class="dropdown">
-                            <li class="item"><a href="../pages/account_settings.html">Manage Account</a></li>
-                            <li class="item"><a href="../pages/manage_friends.html">Friends</a></li>
+                            <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
+                            <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
                             <li class="item"><a href="#">Communities</a></li>
-                            <li class="item"><a href="../pages/saved_posts.html">Saved Posts</a></li>
+                            <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
                         </ul>
                     </div>
                 </li>
-                <li><a href="../pages/logout">Logout</a></li>
+                <li><a href="../pages/logout.php">Logout</a></li>
             </ul>
         </nav>
     </div>
@@ -92,6 +95,39 @@
         <button class="button save">Save</button>
     </div>
 </div>
+<?php
+if (isset($_GET['thread_id'])) {
+    $threadId = $_GET['thread_id'];
+
+    $selectQuery = "SELECT title, content FROM thread WHERE id = ?";
+    if ($stmt = $connection->prepare($selectQuery)) {
+        $stmt->bind_param("i", $threadId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($row = $result->fetch_assoc()) {
+            echo '<div class="post">';
+            echo '<div class="post-header">' . htmlspecialchars($row['title']) . '</div>';
+            echo '<div class="post-content">';
+            echo '<p>' . nl2br(htmlspecialchars($row['content'])) . '</p>';
+            echo '</div>';
+            echo '<div class="post-buttons">';
+            echo '<button class="button like">Like</button>';
+            echo '<button class="button dislike">Dislike</button>';
+            echo '<button class="button repost">Repost</button>';
+            echo '<button class="button comment">Comment</button>';
+            echo '<button class="button save">Save</button>';
+            echo '</div>';
+            echo '</div>';
+        } else {
+            echo "Thread not found.";
+        }
+    } else {
+        echo "Error: " . $connection->error;
+    }
+} else {
+    echo "No thread ID provided.";
+}
+?>
 <div class="comment-section">
     <div class="comment">
         <div>User8253643:</div>
