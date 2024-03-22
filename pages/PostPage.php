@@ -134,7 +134,7 @@ if (isset($_GET['thread_id'])) {
 <?php
 if (isset($_GET['thread_id'])) {
     $threadId = $_GET['thread_id'];
-    $selectQuery = "SELECT username,content FROM post JOIN Account on post.account_id = Account.id WHERE thread_id = ?";
+    $selectQuery = "SELECT username, content FROM post JOIN Account on post.account_id = Account.id WHERE thread_id = ?";
     if ($stmt = $connection->prepare($selectQuery)) {
         $stmt->bind_param("i", $threadId);
         $stmt->execute();
