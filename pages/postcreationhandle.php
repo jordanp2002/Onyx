@@ -15,32 +15,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $accountIdResult = mysqli_query($connection, $accountIdQuery);
     if ($accountIdRow = mysqli_fetch_assoc($accountIdResult)) {
         $accountId = $accountIdRow['id'];
-
         $comIdQuery = "SELECT com_id FROM communities WHERE name = ?";
-        if ($stmt = $connection->prepare($comIdQuery)) {
-            $stmt->bind_param("s", $community);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($row = $result->fetch_assoc()) {
+        if ($comIdQ = mysqli_prepare($connection, $comIdQuery)) {
+            $comIdQ = mysqli_bind_param("s", $community);
+            $comIdQ = mysqli_stmt_execute($comIdQ);
+            $result = mysqli_stmt_get_result($comIdQ);
+            if ($row = mysqli_fetch_assoc($result)) {
                 $comId = $row['com_id'];
-
                 $insertQuery = "INSERT INTO thread (title, com_id, account_id, thread_like, thread_dislike, content) VALUES (?, ?, ?, 0, 0, ?)";
-                if ($insertStmt = $connection->prepare($insertQuery)) {
-                    $insertStmt->bind_param("siis", $title, $comId, $accountId, $postCon);
-                    $insertStmt->execute();
-                    if ($insertStmt->affected_rows > 0) {
-                        $newThreadId = $insertStmt->insert_id;
+                if ($insertStmt = mysqli_prepare($connection,$insertQuery)) {
+                    $insertStmt = mysqli_bind_param("siis", $title, $comId, $accountId, $postCon);
+                    $insertStmt = mysqli_stmt_execute($insertStmt);
+                    if (mysqli_affected_rows($connection) > 0) {
+                        $newThreadId = mysqli_insert_id($connection);
                         header("Location: PostPage.php?thread_id=$newThreadId");
                         exit();
                     } else {
-                        echo "Error: " . $connection->error;
+                        echo "Error: " . mysqli_error($connection);
                     }
                 }
             } else {
                 echo "Community not found.";
             }
         } else {
-            echo "Error preparing community ID query: " . $connection->error;
+            echo "Error preparing community ID query: " . mysqli_error($connection);
         }
     } else {
         echo "Account not found.";

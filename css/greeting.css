@@ -89,3 +89,23 @@ h3{
     text-decoration: none;
     color: black;
 }
+.Browse {
+    text-align: left;
+    color: white;
+    width: 100%;
+    margin-left: 50px;
+    padding-top: 50px;
+    font-size: 20px;
+    
+}
+.Browse .button{
+    color: black;
+    text-decoration: none;
+    border: 1px solid black;
+    width: 20%;
+    height: 50px;
+    border-radius: 5px;
+}
+.Browse .button:hover{
+    background-color: grey;
+}

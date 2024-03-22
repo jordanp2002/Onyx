@@ -42,6 +42,9 @@
         }
     </style>
 </head>
+<?php
+    session_start();
+?>
 <div class="headernav">
     <header>
         <h1>Twitter</h1>

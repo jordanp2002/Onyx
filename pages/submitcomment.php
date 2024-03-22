@@ -13,9 +13,9 @@ if (isset($_POST['comment'], $_POST['thread_id']) && !empty($_SESSION['username'
     if ($accountIdRow = mysqli_fetch_assoc($accountIdResult)) {
         $accountId = $accountIdRow['id'];
             $insertQuery = "INSERT INTO post (content, thread_id, account_id, post_like, post_dislike) VALUES (?, ?, ?, 0, 0)";
-            if ($stmt = mysqli_prepare($connection, $insertQuery)) {
-                mysqli_stmt_bind_param($stmt, "sii", $content, $threadId, $accountId);
-                if (mysqli_stmt_execute($stmt)) {
+            if ($insert = mysqli_prepare($connection, $insertQuery)) {
+                mysqli_stmt_bind_param($insert, "sii", $content, $threadId, $accountId);
+                if (mysqli_stmt_execute($insert)) {
                     echo $content;
                 } else {
                     echo "Error: " . mysqli_error($connection);

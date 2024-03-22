@@ -12,10 +12,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     session_start();
     $query = "INSERT INTO Account (username, pword) VALUES (?, ?)";
-    $stmt = mysqli_prepare($connection, $query);
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, "ss", $username, $password);
-        $result = mysqli_stmt_execute($stmt);
+    $signup = mysqli_prepare($connection, $query);
+    if ($signup) {
+        mysqli_stmt_bind_param($signup, "ss", $username, $password);
+        $result = mysqli_stmt_execute($signup);
         if ($result) {
             $_SESSION['username'] = $username;
             $_SESSION['loggedin'] = true;
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo "Error: Could not execute query: " . mysqli_error($connection);
         }
-        mysqli_stmt_close($stmt);
+        mysqli_stmt_close($signup);
     } else {
         echo "Invalid Information";
     }

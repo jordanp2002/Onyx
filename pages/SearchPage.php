@@ -79,17 +79,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET['searchTerm'])) {
     $searchTerm = $_GET['searchTerm'];
     $searchTerm = "%" . $searchTerm . "%";
 
-    $query = "SELECT title, content,username  FROM thread JOIN Account on thread.account_id = Account.id WHERE title LIKE ?";
-    $stmt = mysqli_prepare($connection, $query);
-    mysqli_stmt_bind_param($stmt, "s", $searchTerm);
-    mysqli_stmt_execute($stmt);
+    $query = "SELECT title, content,username, thread.id AS threadid FROM thread JOIN Account on thread.account_id = Account.id WHERE title LIKE ?";
+    $tweet = mysqli_prepare($connection, $query);
+    mysqli_stmt_bind_param($tweet, "s", $searchTerm);
+    mysqli_stmt_execute($tweet);
     $result = mysqli_stmt_get_result($stmt);
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
             echo '<div class="tweet">';
             echo '<img src="profile1.jpg" alt="Profile Picture">';
             echo '<div>';
-            echo  '<div class="username">' . $row['title'] . ' By ' . $row['username'] .'</div>';
+            echo '<div class="username"><a href="PostPage.php?thread_id=' . $row['threadid'] . '" style="text-decoration: none; color: black;">' . $row['title'] . ' By ' . $row['username'] . '</a></div>';
             echo '<p>'. $row['content'].'</p>';
             echo '</div>';
             echo '</div>';
@@ -97,8 +97,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET['searchTerm'])) {
     }else{
         echo "no entries found";
     }
-
-    mysqli_free_result($result);
     mysqli_close($connection);
 }
 ?>

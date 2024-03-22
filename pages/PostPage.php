@@ -80,34 +80,36 @@ session_start();
         </nav>
     </div>
     <div class="post">
-<?php
-$user = $_SESSION['username'];
-$connection = mysqli_connect("localhost", "76966621", "Password123", "db_76966621");
-if (!$connection) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-if (isset($_GET['thread_id'])) {
-    $threadId = $_GET['thread_id'];
-    $selectQuery = "SELECT title, content FROM thread WHERE id = ?";
-    if ($stmt = $connection->prepare($selectQuery)) {
-        $stmt->bind_param("i", $threadId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($row = $result->fetch_assoc()) {
-            echo '<div class="post-header">' . $row['title'] . '</div>';
-            echo '<div class="post-content">';
-            echo '<p>' . $row['content'] . '</p>';
-            
-        } else {
-            echo "Thread not found.";
+    <?php
+        $user = $_SESSION['username'];
+        $connection = mysqli_connect("localhost", "76966621", "Password123", "db_76966621");
+        if (!$connection) {
+            die("Connection failed: " . mysqli_connect_error());
         }
-    } else {
-        echo "Error: " . $connection->error;
-    }
-} else {
-    echo "No thread ID provided.";
-}
-?>
+        if (isset($_GET['thread_id'])) {
+            $threadId = $_GET['thread_id'];
+            $threadQuery = "SELECT title, content, name, thread.com_id AS comId FROM thread JOIN communities ON thread.com_id = communities.com_id WHERE id = ?";
+            $tweet = mysqli_prepare($connection, $threadQuery);
+            if ($tweet) {
+                mysqli_stmt_bind_param($tweet, "i", $threadId);
+                mysqli_stmt_execute($tweet);
+                $result = mysqli_stmt_get_result($tweet);
+                if ($row = mysqli_fetch_assoc($result)) {
+                    echo '<div class="post-header">' . $row['title'] . '</div>';
+                    echo '<div class="post-content">';
+                    echo '<p>' . $row['content']. '</p>';
+                    echo '<p><a href="JoinableCommunityPage.php?com_id=' . $row['comId'] . '" style="text-decoration: none; color: black;">' . $row['name'] . '</a></p>';
+                } else {
+                    echo "Thread not found.";
+                }
+                mysqli_stmt_close($tweet);
+            } else {
+                echo "Error: " . mysqli_error($connection);
+            }
+        } else {
+            echo "No thread ID provided.";
+        }
+    ?>
     </div>
     <div class="post-buttons">
         <button class="button like">Like</button>
@@ -122,7 +124,7 @@ if (isset($_GET['thread_id'])) {
                     <label for="comment">Comment:</label>
                     <input type="hidden" id ="thread_id" name="thread_id" value="<?php echo $threadId; ?>">
                     <textarea id="comment" name="comment" rows="4" cols="50"></textarea>
-                    <button type="button" onclick="submitComment()">Submit Comment</button>
+                    <button type="button" id="commentSubmitButton">Submit Comment</button>
                 </form>
             </div>`
         </div>
@@ -132,33 +134,49 @@ if (isset($_GET['thread_id'])) {
 </div>
 <div id = "comment-section">
 <?php
-if (isset($_GET['thread_id'])) {
-    $threadId = $_GET['thread_id'];
-    $selectQuery = "SELECT username,content FROM post JOIN Account on post.account_id = Account.id WHERE thread_id = ?";
-    if ($stmt = $connection->prepare($selectQuery)) {
-        $stmt->bind_param("i", $threadId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows === 0) {
-            echo "Thread not found.";
-        } else {
-            while ($row = $result->fetch_assoc()) {
-                echo '<p>' . $row['username'] . ' - ' . $row['content']. '</p>';
-                echo  '<button class="button like">Like</button>';
-                echo   '<button class="button dislike">Dislike</button>';
+$connection = mysqli_connect('localhost', '76966621', 'Password123', 'db_76966621');
+if (!$connection) {
+    die("Connection failed: " . mysqli_error($connection));
+}
+    if (isset($_GET['thread_id'])) {
+        $threadId = $_GET['thread_id'];
+        $commentQuery = "SELECT Account.username, post.content 
+                        FROM post 
+                        JOIN Account ON post.account_id = Account.id 
+                        WHERE post.thread_id = ?";
+        $comment = mysqli_prepare($connection, $commentQuery);
+        if ($comment) {
+            mysqli_stmt_bind_param($comment, "i", $threadId);
+            mysqli_stmt_execute($comment);
+            $result = mysqli_stmt_get_result($comment);
+            if (mysqli_num_rows($result) === 0) {
+                echo "No comments found or No comments have been added";
+            } else {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<p>" . $row['username'] . " - " . $row['content'] . "</p>";
+                    echo '<button class="button like">Like</button>';
+                    echo '<button class="button dislike">Dislike</button>';
+                }
             }
+            mysqli_stmt_close($comment);
+        } else {
+            echo "Error preparing statement: " . mysqli_error($connection);
         }
     } else {
-        echo "Error: " . $connection->error;
+        echo "No thread ID provided.";
     }
-} else {
-    echo "No thread ID provided.";
-}
-
 ?>
 </div>
 </body>
 <script>
+var isLoggedIn = <?php echo isset($_SESSION['username']) ? 'true' : 'false'; ?>;
+document.getElementById('commentSubmitButton').addEventListener('click', function() {
+    if (!isLoggedIn) {
+        window.location.href = 'login.php'; 
+    } else {
+        submitComment();
+    }
+});
 function openCommentForm() {
   document.getElementById("commentFormPopup").style.display = "block";
 }
@@ -175,7 +193,6 @@ function submitComment() {
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
   xhr.onload = function() {
-      alert(this.responseText);
       displayComment(this.responseText);
       closeCommentForm();
   };
@@ -190,15 +207,15 @@ function displayComment(comment) {
   }
   var newComment = document.createElement("p");
   var likeButton = document.createElement("button");
-likeButton.innerHTML = "Like";
-likeButton.className = "button like";
-var dislikeButton = document.createElement("button");
-dislikeButton.innerHTML = "Dislike";
-dislikeButton.className = "button dislike"; 
+  likeButton.innerHTML = "Like";
+  likeButton.className = "button like";
+  var dislikeButton = document.createElement("button");
+  dislikeButton.innerHTML = "Dislike";
+  dislikeButton.className = "button dislike"; 
   newComment.innerHTML = comment; 
   commentsSection.appendChild(newComment);
   commentsSection.appendChild(likeButton);
-    commentsSection.appendChild(dislikeButton);
+  commentsSection.appendChild(dislikeButton);
 }
 </script>
 </html>

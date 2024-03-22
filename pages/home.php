@@ -15,7 +15,7 @@ session_start();
     </header>
     <nav>
         <ul>
-            <li><a href="../pages/searchpage.php">Search</a></li>
+            <li><a href="../pages/SearchPage.php">Search</a></li>
             <li>
                 <div class = "parent-item">
                     <a href="/community">Communities</a>
@@ -45,7 +45,7 @@ session_start();
         <div class ="CreatePost">
         <?php
             if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
-                echo "<p>Logged in as: " . htmlspecialchars($_SESSION['username']) . "</p>";
+                echo "<p>Logged in as: " . $_SESSION['username'] . "</p>";
             }
             ?>
             <h2>Create Post</h2>
@@ -75,7 +75,6 @@ session_start();
                 JOIN thread t ON cm.com_id = t.com_id
                 WHERE a.username = '$username'";
                 $result = mysqli_query($connection, $query);
-
                 if(mysqli_num_rows($result) > 0) {
                     while($row = mysqli_fetch_assoc($result)) {
                         echo "<div class='post'>";
