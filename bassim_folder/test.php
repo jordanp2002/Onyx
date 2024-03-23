@@ -133,8 +133,38 @@
     }
     mysqli_close($connection);
     ?>
+    <input type = "hidden" id = "profileId" value = "<?php echo $profileId; ?>">
+    <input type = "hidden" id = "accountId" value = "<?php echo $accountId; ?>">
     <button id="friendAction" class="<?php echo $buttonClass; ?>" onclick="toggleFriendship()"><?php echo $buttonText; ?></button>
-    
+   
+    <script>
+        function toggleFriendship() {
+            var accountId = document.getElementById('accountId').value;
+            var profileId = document.getElementById('profileId').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'insertion.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if(xhr.status === 200) {
+                    var response = this.responseText;
+                    if(response === 'success') {
+                        var button = document.getElementById('friendAction');
+                        if(button.classList.contains('add-friend')) {
+                            button.classList.remove('add-friend');
+                            button.classList.add('unfriend');
+                            button.innerText = 'Remove Friend';
+                        } else {
+                            button.classList.remove('unfriend');
+                            button.classList.add('add-friend');
+                            button.innerText = 'Add Friend';
+                        }
+                    }
+                }
+            }  
+            xhr.send('accountId=' + encodeURIComponent(accountId) + '&profileId=' + encodeURIComponent(profileId));      
+        }
+    </script>
+
     <button class="cancel">Block</button>
 </div>
 
