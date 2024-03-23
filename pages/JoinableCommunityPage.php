@@ -72,37 +72,36 @@
     session_start();
 ?>
 <body>
-    <div class="headernav">
-        <header>
-            <h1>Twitter</h1>
-        </header>
-        <nav>
-            <ul>
-                <li><a href="../pages/searchpage.html">Search</a></li>
-                <li>
-                    <div class = "parent-item">
-                        <a href="/community">Communities</a>
-                        <ul class="dropdown">
-                            <li class="item"><a href="#">Manage Communities </a></li>
-                            <li class="item"><a href="#">Create Community</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <div class = "parent-item">
-                        <a href="../pages/account_page.php">Account</a>
-                        <ul class="dropdown">
-                            <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
-                            <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
-                            <li class="item"><a href="#">Communities</a></li>
-                            <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li><a href="../pages/logout">Logout</a></li>
-            </ul>
-        </nav>
-    </div>
+<div class="headernav">
+    <header>
+        <h1>Twitter</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><?php echo $_SESSION['username']; ?><li>
+            <li><a href="../pages/SearchPage.php">Search</a></li>
+            <li>
+                <div class = "parent-item">
+                    <a href="../pages/CommunitiesPage.php">Communities</a>
+                    <ul class="dropdown">
+                        <li class="item"><a href="#">Create Community</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <div class = "parent-item">
+                    <a href="../pages/account_page.php">Account</a>
+                    <ul class="dropdown">
+                        <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
+                        <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
+                        <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li><a href="../pages/logout.php">Logout</a></li>
+        </ul>
+    </nav>
+</div>
     <?php
     $connection = mysqli_connect('localhost', '76966621', 'Password123', 'db_76966621');
     if (!$connection) {
@@ -110,7 +109,7 @@
     }
     if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET['com_id'])) {
         $comId = $_GET['com_id'];
-        $query = "SELECT title, content, username FROM communities 
+        $query = "SELECT title, content, username,pfp FROM communities 
         JOIN thread ON communities.com_id = thread.com_id 
         JOIN Account ON thread.account_id = Account.id 
         WHERE communities.com_id = ?";
@@ -121,7 +120,7 @@
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
                 echo '<div class="tweet">';
-                echo '<img src="/Users/rhythmtrivedi/Downloads/IMG_6500.JPG" alt="Profile Picture">';
+                echo '<img src="data:image/jpeg;base64,' . base64_encode($row['pfp']) . '" alt="Profile Picture">';
                 echo '<div>';
                     echo '<div class="username">'. $row['username'].'</div>';
                     echo '<p>'. $row['title'] .'</p>';

@@ -10,7 +10,7 @@
     <div class="login_signup">
         <h2>Sign-up</h2>
         <p>* indicates a required field.</p>
-        <form class ="login_signup-form" action = "signuphandle.php" method = "POST" >
+        <form class ="login_signup-form" action = "signuphandle.php" method = "POST" enctype="multipart/form-data">
             <label for="image"> Upload Image*</label>
             <input type="file" id="image" name="image"><br><br>
 

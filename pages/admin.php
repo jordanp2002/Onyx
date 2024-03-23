@@ -6,12 +6,16 @@
     <title>Home</title>
     <link rel="stylesheet" href="../css/home.css">
 </head>
+<?php
+    session_start();
+?>
 <div class="headernav">
     <header>
         <h1>Twitter</h1>
     </header>
     <nav>
         <ul>
+            <li><?php echo $_SESSION['username']; ?><li>
             <li><a href="../pages/searchpage.php">Search</a></li>
             <li>
                 <div class = "parent-item">

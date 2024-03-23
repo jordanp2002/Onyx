@@ -31,7 +31,7 @@
             background-color: #3498db;
             color: white;
         }
-        .comment-section {
+        #comment-section {
             margin-top: 20px;
             border-top: 1px solid #ccc;
             padding-top: 10px;
@@ -42,43 +42,48 @@
         .comment-buttons {
             margin-top: 10px;
         }
+        #comment-section img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
     </style>
 </head>
 <?php
 session_start();
 ?>
 <body>
-    <div class="headernav">
-        <header>
-            <h1>Twitter</h1>
-        </header>
-        <nav>
-            <ul>
-                <li><a href="../pages/searchpage.php">Search</a></li>
-                <li>
-                    <div class = "parent-item">
-                        <a href="/community">Communities</a>
-                        <ul class="dropdown">
-                            <li class="item"><a href="#">Manage Communities </a></li>
-                            <li class="item"><a href="#">Create Community</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <div class = "parent-item">
-                        <a href="../pages/account_page.php">Account</a>
-                        <ul class="dropdown">
-                            <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
-                            <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
-                            <li class="item"><a href="#">Communities</a></li>
-                            <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li><a href="../pages/logout.php">Logout</a></li>
-            </ul>
-        </nav>
-    </div>
+<div class="headernav">
+    <header>
+        <h1>Twitter</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><?php echo $_SESSION['username']; ?><li>
+            <li><a href="../pages/SearchPage.php">Search</a></li>
+            <li>
+                <div class = "parent-item">
+                    <a href="../pages/CommunitiesPage.php">Communities</a>
+                    <ul class="dropdown">
+                        <li class="item"><a href="#">Create Community</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <div class = "parent-item">
+                    <a href="../pages/account_page.php">Account</a>
+                    <ul class="dropdown">
+                        <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
+                        <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
+                        <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li><a href="../pages/logout.php">Logout</a></li>
+        </ul>
+    </nav>
+</div>
     <div class="post">
     <?php
         $user = $_SESSION['username'];
@@ -114,8 +119,11 @@ session_start();
     <div class="post-buttons">
         <button class="button like">Like</button>
         <button class="button dislike">Dislike</button>
+        <input type="hidden" id ="thread_id" name="thread_id" value="<?php echo $threadId; ?>">
         <button class="button repost">Repost</button>
         <button class="button comment" onclick="openCommentForm()">Comment</button>
+    <?php
+    ?>
 
         <div id="commentFormPopup" class="popup">
             <div class="popup-content">
@@ -128,8 +136,6 @@ session_start();
                 </form>
             </div>`
         </div>
-
-        <button class="button save">Save</button>
     </div>
 </div>
 <div id = "comment-section">
@@ -140,7 +146,7 @@ if (!$connection) {
 }
     if (isset($_GET['thread_id'])) {
         $threadId = $_GET['thread_id'];
-        $commentQuery = "SELECT Account.username, post.content 
+        $commentQuery = "SELECT Account.username, post.content , Account.pfp
                         FROM post 
                         JOIN Account ON post.account_id = Account.id 
                         WHERE post.thread_id = ?";
@@ -153,9 +159,11 @@ if (!$connection) {
                 echo "No comments found or No comments have been added";
             } else {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<p>" . $row['username'] . " - " . $row['content'] . "</p>";
+                    echo '<img src="data:image/jpeg;base64,' . base64_encode($row['pfp']) . '" alt="Profile Picture">';
+                    echo '<p><a href="RandomUserPage.php?profile=' . $row['username'] . '" style="text-decoration: none; color: black;"> '.$row['username']. '-' . $row['content'] . "</a></p>";
                     echo '<button class="button like">Like</button>';
                     echo '<button class="button dislike">Dislike</button>';
+                    echo '</br>';
                 }
             }
             mysqli_stmt_close($comment);

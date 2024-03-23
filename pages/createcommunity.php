@@ -40,15 +40,15 @@
     </nav>
 </div>
 <body>
-    <h3>Post Creation</h3>
+    <h3>Community Creation</h3>
     <div class="PostCreation">
-        <form class ="titlePost" action = "../pages/postcreationhandle.php" method = "POST">
-            <label for="postTitle" type="hidden"></label>
-            <textarea id="postTitle" name="postTitle" rows="2" cols="50" maxlength="50" minlength="2" placeholder="Title here"></textarea>
-            <label for="postContent" type="hidden"></label>
-            <textarea id="postContent" name="postContent" rows="4" cols="50" maxlength="500" minlength="10" placeholder="Text here max 500 characters"></textarea>
-            <label for="postCom" type = "hidden"></label>
-            <input type ="text" id ="postCom" name = "postCom" placeholder = "Community">
+        <form class ="comPost" action = "../pages/comcreationhandle.php" method = "POST">
+            <label for="image"> Upload Image*</label>
+            <input type="file" id="image" name="image"><br><br>
+            <label for="comTitle" type="hidden"></label>
+            <textarea id="comTitle" name="comTitle" rows="2" cols="50" maxlength="50" minlength="2" placeholder="Title here"></textarea>
+            <label for="comDesc" type="hidden"></label>
+            <textarea id="comDesc" name="comDesc" rows="4" cols="50" maxlength="500" minlength="10" placeholder="Text here max 500 characters"></textarea>
             <br>
             <button class ="submit-button"type="submit">Submit</button>
             <button class ="delete-button"type="button">Delete</button>
