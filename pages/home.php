@@ -15,12 +15,12 @@ session_start();
     </header>
     <nav>
         <ul>
-            <li><a href="../pages/searchpage.php">Search</a></li>
+            <li><?php echo $_SESSION['username']; ?><li>
+            <li><a href="../pages/SearchPage.php">Search</a></li>
             <li>
                 <div class = "parent-item">
-                    <a href="/community">Communities</a>
+                    <a href="../pages/CommunitiesPage.php">Communities</a>
                     <ul class="dropdown">
-                        <li class="item"><a href="#">Manage Communities </a></li>
                         <li class="item"><a href="#">Create Community</a></li>
                     </ul>
                 </div>
@@ -30,8 +30,7 @@ session_start();
                     <a href="../pages/account_page.php">Account</a>
                     <ul class="dropdown">
                         <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
-                        <li class="item"><a href="../pagesmanage_friends.php">Friends</a></li>
-                        <li class="item"><a href="#">Communities</a></li>
+                        <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
                         <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
                     </ul>
                 </div>
@@ -45,7 +44,7 @@ session_start();
         <div class ="CreatePost">
         <?php
             if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
-                echo "<p>Logged in as: " . htmlspecialchars($_SESSION['username']) . "</p>";
+                echo "<p>Logged in as: " . $_SESSION['username'] . "</p>";
             }
             ?>
             <h2>Create Post</h2>
@@ -75,7 +74,6 @@ session_start();
                 JOIN thread t ON cm.com_id = t.com_id
                 WHERE a.username = '$username'";
                 $result = mysqli_query($connection, $query);
-
                 if(mysqli_num_rows($result) > 0) {
                     while($row = mysqli_fetch_assoc($result)) {
                         echo "<div class='post'>";

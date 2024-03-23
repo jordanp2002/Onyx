@@ -42,18 +42,21 @@
         }
     </style>
 </head>
+<?php
+    session_start();
+?>
 <div class="headernav">
     <header>
         <h1>Twitter</h1>
     </header>
     <nav>
         <ul>
-            <li><a href="../pages/searchpage.html">Search</a></li>
+            <li><?php echo $_SESSION['username']; ?><li>
+            <li><a href="../pages/SearchPage.php">Search</a></li>
             <li>
                 <div class = "parent-item">
-                    <a href="/community">Communities</a>
+                    <a href="../pages/CommunitiesPage.php">Communities</a>
                     <ul class="dropdown">
-                        <li class="item"><a href="#">Manage Communities </a></li>
                         <li class="item"><a href="#">Create Community</a></li>
                     </ul>
                 </div>
@@ -64,59 +67,84 @@
                     <ul class="dropdown">
                         <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
                         <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
-                        <li class="item"><a href="#">Communities</a></li>
                         <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
                     </ul>
                 </div>
             </li>
-            <li><a href="../pages/logout">Logout</a></li>
+            <li><a href="../pages/logout.php">Logout</a></li>
         </ul>
     </nav>
 </div>
 <body>
-    <div class="tweets">
-        <div class="tweet">
-            <img src="profile1.jpg" alt="Profile Picture">
-            <div>
-                <div class="username">User82732</div>
-                <p>Today, the Administration announces the winners of the Gears of Government President’s Award. This program recognizes the contributions of individuals and teams across the federal workforce who make a profound difference in the lives of the American people.</p>
-            </div>
+    <?php
+    $user = $_SESSION['username'];
+    $connection = mysqli_connect("localhost", "76966621", "Password123", "db_76966621");
+        if (!$connection) {
+            die("Connection failed: " . mysqli_connect_error());
+        }
+        if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
+            $connection = mysqli_connect('localhost', '76966621', 'Password123', 'db_76966621');
+            $username = $_SESSION['username'];
+            $query = "SELECT c.name, c.descrip,c.com_id
+            FROM Account a
+            JOIN community_membership cm ON a.id = cm.account_id
+            JOIN communities c ON cm.com_id = c.com_id
+            WHERE a.username = '$username'";
+            $result = mysqli_query($connection, $query);
+            if(mysqli_num_rows($result) > 0) {
+                while($row = mysqli_fetch_assoc($result)) {
+                    echo "<div class='post'>";
+                    echo "<h3>" . $row['name'] . "</h3>";
+                    echo "<figure>";
+                    echo "<p>" . $row['descrip'] . "</p>";
+                    echo "</figure>";
+                    echo '<input type="hidden" class="comId" name="comId" value="' . $row['com_id'] .'">';
+                    echo "<button onclick='toggleMembership(" . $row['com_id'] . ")'>Leave</button>";
+                    
+                }
+            }else{
+                echo "No communities found";
+            }
+            mysqli_close($result);
+        }
+    ?>
+             
         </div>
-        <div class="tweet">
-            <img src="profile2.jpg" alt="Profile Picture">
-            <div>
-                <div class="username">User27364</div>
-                <p>Today, the Administration announces the winners of the Gears of Government President’s Award. This program recognizes the contributions of individuals and teams across the federal workforce who make a profound difference in the lives of the American people.</p>
-            </div>
-        </div>
-    </div>
-    <div class="your-communities">
-        <h3>Your Communities</h3>
-        <div class="community">
-            <img src="/Users/rhythmtrivedi/Documents/Jagermeister-Logo.png" alt="Community Picture">
-            <span>Community Name 1</span>
-        </div>
-        <div class="community">
-            <img src="/Users/rhythmtrivedi/Documents/Jagermeister-Logo.png" alt="Community Picture">
-            <span>Community Name 2</span>
-        </div>
-        <div class="community">
-            <img src="/Users/rhythmtrivedi/Documents/Jagermeister-Logo.png" alt="Community Picture">
-            <span>Community Name 3</span>
-        </div>
-        <div class="community">
-            <img src="/Users/rhythmtrivedi/Documents/Jagermeister-Logo.png" alt="Community Picture">
-            <span>Community Name 4</span>
-        </div>
-        <div class="community">
-            <img src="/Users/rhythmtrivedi/Documents/Jagermeister-Logo.png" alt="Community Picture">
-            <span>Community Name 5</span>
-        </div>
-        <div class="community">
-            <img src="/Users/rhythmtrivedi/Documents/Jagermeister-Logo.png" alt="Community Picture">
-            <span>Community Name 6</span>
-        </div>
-    </div>
+        <hr>
+<script>
+function toggleMembership(comId) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "leavecom.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var responseText = this.responseText.trim().toLowerCase();
+            if(responseText === 'success'){
+                console.log('successful delete')
+                removePostDiv(comId);
+            } else {
+                console.error('Failed to leave community:');
+            }
+        }{
+            console.error('Unsuccessful response')
+        }
+    };
+    xhr.send("com_id=" + encodeURIComponent(comId));
+}
+function removePostDiv(comId) {
+    var inputs = document.querySelectorAll('.comId');
+    comId = String(comId);
+    for (var i = 0; i < inputs.length; i++) {
+        if (inputs[i].value === comId) {
+            var postDiv = inputs[i].closest('.post');
+            if (postDiv) {
+                postDiv.remove();
+                break; 
+            }
+        }
+    }
+}
+    </script>
 </div>
 </body>
 </html>

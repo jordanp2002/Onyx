@@ -43,8 +43,10 @@
         }
     </style>
 </head>
+<?php 
+    session_start();
+?>
 <body>
-
     <div class="headernav">
         <header>
             <h1>Twitter</h1>
@@ -85,9 +87,61 @@
         <span>Following: 345</span>
         <span>Communities: 10</span>
     </div>
+
+    <?php
+        $user = $_SESSION['username'];
+        
+        $buttonClass = 'add-friend';
+        $buttonText = 'Add Friend';
+        $connection = mysqli_connect("localhost", "76966621", "Password123", "db_76966621");
+        if (!$connection) {
+            die("Connection failed: " . mysqli_connect_error());
+        }
+        if(isset($_SESSION['username']) && isset($_GET['profile'])) {
+            $profile = $_GET['profile'];
+            echo $profile;
+            $query = "SELECT id FROM Account WHERE username = ?";
+            $query2 = "SELECT id FROM Account WHERE username = ?";
+
+            $usernameQuery = mysqli_prepare($connection, $query);
+            mysqli_stmt_bind_param($usernameQuery, "s", $user);
+            mysqli_stmt_execute($usernameQuery);
+            $result1 = mysqli_stmt_get_result($usernameQuery);
+                 
+            $username2Query = mysqli_prepare($connection, $query2);
+            mysqli_stmt_bind_param($username2Query,"s", $profile);
+            mysqli_stmt_execute($username2Query);
+            $result2 = mysqli_stmt_get_result($username2Query);
+            $userIdRow = mysqli_fetch_assoc($result1);
+            $profileIdRow = mysqli_fetch_assoc($result2);
+            if ($userIdRow && $profileIdRow) {
+                $accountId = $userIdRow['id'];
+                $profileId = $profileIdRow['id'];
+                echo $profileId;
+                echo $accountId;
+                $friendQuery = 'SELECT * FROM Follows WHERE follower_id = ? AND followed_id = ?';
+                
+                $preparedQuery = mysqli_prepare($connection, $friendQuery);
+                mysqli_stmt_bind_param($preparedQuery,'ii', $accountId, $profileId);
+                mysqli_stmt_execute($preparedQuery);
+                $friendResult = mysqli_stmt_get_result($preparedQuery); 
+                
+                if(mysqli_num_rows($friendResult) > 0) {
+                    $buttonClass = 'unfriend';
+                    $buttonText = 'Remove Friend';
+                } 
+                mysqli_stmt_close($preparedQuery);
+            }
+        mysqli_stmt_close($usernameQuery);
+        mysqli_stmt_close($username2Query);
+    }
+    mysqli_close($connection);
+    ?>
+
+    <button id="friendAction" class="<?php echo $buttonClass; ?>" onclick="toggleFriendship()"><?php echo $buttonText; ?></button>
     
-    <button class="button add-friend">Add Friend</button>
-    <button class="button block">Block</button>
+    <button class="cancel">Block</button>
 </div>
+
 </body>
 </html>

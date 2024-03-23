@@ -18,6 +18,12 @@
     <h1>Twitter Clone Name</h1>
     <h3>Welcome!</h3>
     <div class = "Buttons">
+        <div class = "Browse">
+            <p>Browse</p>
+            <a href = "../pages/SearchPage.php">
+                <button class="button" id = "browse-button">Browse</button>
+            </a>
+        </div>
         <div class = "SignUp">
             <p>Sign up!</p>
             <a href = "../pages/signup.php" >
