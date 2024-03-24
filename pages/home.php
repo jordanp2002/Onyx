@@ -13,6 +13,22 @@ session_start();
     <header>
         <h1>Twitter</h1>
     </header>
+    <?php
+            $connection = mysqli_connect('localhost', '76966621', 'Password123', 'db_76966621');
+
+            if (!$connection) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+            if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
+                $adminQuery = "SELECT * FROM Account WHERE username = ?";
+                $adminQ = mysqli_prepare($connection, $adminQuery);
+                mysqli_stmt_bind_param($adminQ, "s", $_SESSION['username']);
+                mysqli_stmt_execute($adminQ);
+                $accountResult = mysqli_stmt_get_result($adminQ);
+                $row = mysqli_fetch_assoc($accountResult);
+                $admin = $row['admin'];
+            }
+            ?>
     <nav>
         <ul>
             <li><?php echo $_SESSION['username']; ?><li>
@@ -21,7 +37,7 @@ session_start();
                 <div class = "parent-item">
                     <a href="../pages/CommunitiesPage.php">Communities</a>
                     <ul class="dropdown">
-                        <li class="item"><a href="#">Create Community</a></li>
+                        <li class="item"><a href="../pages/createcommunity.php">Create Community</a></li>
                     </ul>
                 </div>
             </li>
@@ -32,6 +48,11 @@ session_start();
                         <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
                         <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
                         <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
+                        <?php
+                        if($admin == 1){
+                            echo "<li class='item'><a href='../pages/admin.php'>Admin</a></li>";
+                        }
+                        ?>
                     </ul>
                 </div>
             </li>
@@ -42,11 +63,6 @@ session_start();
 <body>
     <div class = "layout-container">
         <div class ="CreatePost">
-        <?php
-            if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
-                echo "<p>Logged in as: " . $_SESSION['username'] . "</p>";
-            }
-            ?>
             <h2>Create Post</h2>
             <a href = "../pages/createpost.php">
                 <button class="button" id = "create-post-button">Create Post</button>
@@ -60,6 +76,7 @@ session_start();
                 </select>
         </div>
         <div class="Feed">
+            <h1>Feed</h1>
             <?php
             if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
                 $connection = mysqli_connect('localhost', '76966621', 'Password123', 'db_76966621');
@@ -76,18 +93,10 @@ session_start();
                 $result = mysqli_query($connection, $query);
                 if(mysqli_num_rows($result) > 0) {
                     while($row = mysqli_fetch_assoc($result)) {
-                        echo "<div class='post'>";
-                        echo "<h3>" . $row['title'] . "</h3>";
+                        echo "<h3><a href='PostPage.php?thread_id=" . $row['thread_id'] . "'>" . $row['title'] . "</a></h3>";
                         echo "<figure>";
                         echo "<p>" . $row['content'] . "</p>";
-                        echo "<figcaption>" . $row['account_id'] . " </figcaption>";
                         echo "</figure>";
-                        echo "<button class='button' id = 'like-button'>Like</button>";
-                        echo "<button class='button' id ='dislike-button'>Dislike</button>";
-                        echo "<button class='button'>Comment</button>";
-                        echo "<button class='button' id='repost-button'>Repost</button>";
-                        echo "<button class='button' id='save-button'>Save</button>";
-                        echo "</div>";
                         echo "<hr>";
                     }
                 }else{

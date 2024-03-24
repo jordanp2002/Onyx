@@ -53,16 +53,16 @@
             </form>
         </div>
         <div class="user">
-            <h3>Manage Users</h1>
-            <button>View Users</button>
+            <h3>Manage Users</h1> 
+            <button><a href ="viewusers.php"> view users </a></button>
         </div>
         <div class="community">
             <h3>Manage Communities</h1>
-            <button>View Communities</button>
+            <button><a href ="viewcommunities.php"> view communities</a></button>
         </div>
         <div class="posts">
             <h3>Manage Posts</h1>
-            <button>View Posts</button>
+            <button><a href ="viewpost.php"> view posts</a></button>
         </div>
     </div>
 </body>

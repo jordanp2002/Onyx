@@ -42,5 +42,45 @@ session_start();
 </div>
 <body>
     <h1>Saved Posts</h1>
+    <div class="saved-posts">
+        <?php
+        session_start();
+        $connection = mysqli_connect('localhost', '76966621', 'Password123', 'db_76966621');
+        if (!$connection) {
+            die("Connection failed: " . mysqli_connect_error());
+        }
+        $accountName = $_SESSION['username'];
+        if(isset($accountName) && isset($_SESSION['username'])) {
+            $query = "SELECT id FROM Account WHERE username = ?";
+            $usernameQuery = mysqli_prepare($connection, $query);
+            mysqli_stmt_bind_param($usernameQuery, "s", $accountName);
+            mysqli_stmt_execute($usernameQuery);
+            $result = mysqli_stmt_get_result($usernameQuery);
+            if ($row = mysqli_fetch_assoc($result)) {
+                $accountId = $row['id'];
+                $savedQuery = "SELECT thread_id FROM saved_threads WHERE account_id = ?";
+                $saveQ = mysqli_prepare($connection, $savedQuery);
+                mysqli_stmt_bind_param($saveQ, "i", $accountId);
+                mysqli_stmt_execute($saveQ);
+                $saveResult = mysqli_stmt_get_result($saveQ);
+                while ($resultRow = mysqli_fetch_assoc($saveResult)) {
+                    $threadId = $resultRow['thread_id'];
+                    $threadQuery = "SELECT * FROM thread WHERE id = ?";
+                    $threadQ = mysqli_prepare($connection, $threadQuery);
+                    mysqli_stmt_bind_param($threadQ, "i", $threadId);
+                    mysqli_stmt_execute($threadQ);
+                    $threadResult = mysqli_stmt_get_result($threadQ);
+                    if ($threadRow = mysqli_fetch_assoc($threadResult)) {
+                        echo "<div class='post'>";
+                        echo '<p><a href="PostPage.php?thread_id=' . $threadRow['id'] . '" style="text-decoration: none; color: black;">' . $threadRow['title'] . '</a></p>';
+                        echo "<p>" . $threadRow['content'] . "</p>";
+                        echo "</form>";
+                        echo "</div>";
+                    }
+                }
+            }
+        }
+        ?>
+    </div>
 </body>
 </html>

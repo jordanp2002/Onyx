@@ -59,7 +59,6 @@ body {
 ul li:hover .dropdown {
     display: block; 
     text-decoration: none;
-
 }
 .item a{
     display: block;
@@ -67,33 +66,37 @@ ul li:hover .dropdown {
 .layout-container {
     display: grid;
     grid-template-columns: 1fr 4fr;
-    gap: 10px; 
+    gap: 5px;
 }
-
 .Feed {
     display: grid;
-    grid-template-rows: 1fr; 
     text-align: center;
     border: 1px solid hsl(259, 21%, 52%);
     justify-self: center;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    margin-top: 20px;
+    margin-top: 10px;
     border-radius: 5px;
     width: 70%;
 }
-
 .Feed figure {
     border: 1px solid black;
     border-radius: 5px;
     width: 90%;
     justify-self: center; 
+    margin-top: 0;
 }
 .Feed hr {
-    border: 1px solid black;
+    height: 1px;
+    background-color: black; 
     width: 90%;
-    justify-self: center; 
+    justify-self: center;
+    margin-top: 10px;
+    margin-bottom: 10px; 
 }
-
+.Feed h3{
+    margin-bottom: 0px;
+    font-size: 30px;
+}
 .Feed .button {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     background-color: white;
@@ -122,4 +125,8 @@ ul li:hover .dropdown {
 h2{
     text-align: center;
     font-size: 40px;
+}
+h3 a{
+    text-decoration: none;
+    color: black;
 }
