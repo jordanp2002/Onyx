@@ -1,0 +1,19 @@
+.button-container {
+    text-align: center;
+}
+
+.button-container button {
+    display: block;
+    margin: 15px auto;
+    padding: 8px 18px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    background-color: #0079d3;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+

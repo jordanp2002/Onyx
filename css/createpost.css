@@ -1,0 +1,90 @@
+.headernav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #7A6A9D;
+    color: white;
+    padding: 2px;
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+    flex-wrap: wrap;
+}
+header, nav {
+    margin: 0;
+}
+header h1 {
+    margin-left: 30px;
+}
+ul {
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+}
+ul li {
+    margin-right: 30px; 
+}
+ul li a {
+    color: white;
+    font-size: larger;
+    text-decoration: none;
+    margin: 10px;
+}
+ul li a:hover {
+    text-decoration: underline;
+}
+body {
+    margin: 0;
+    padding: 0;
+}
+.dropdown {
+    max-width: 150px;
+    display: none;
+    position: absolute;
+    background-color: #7A6A9D;
+    border-radius: 5px;
+    z-index: 1;
+}
+.dropdown li {
+    display: block; 
+}
+ul li:hover .dropdown {
+    display: block; 
+}
+.post{
+    text-align: center;
+}
+h3{
+    text-align: center;
+}
+.submit-button{
+    background-color: #00A91C;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 5px;
+} 
+.delete-button{
+    background-color: #B51D09;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+#postContent{
+    width: 80%;
+    height: 250px;
+}
+.titlePost{
+    margin-top: 20px;
+    text-align: center;
+}
+#postTitle{
+    width: 80%;
+    height: 50px;
+}
+.PostCreation{
+    text-align: center;
+    border : 1px solid;
+    border-color: #7A6A9D;
+    margin-left: 30%;
+    margin-right: 30%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
