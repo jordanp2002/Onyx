@@ -1,0 +1,58 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(25, 10, 39);
+    color: white;
+}
+
+.page {
+    margin-left: 20px;
+}
+
+.post {
+    background-color: rgb(19, 19, 19);
+    margin-top: 10px;
+    padding: 15px;
+    width: 70%;
+}
+
+.post-buttons {
+    /* border: 1px red solid; */
+    margin-top: 30px;
+    width: fit-content;
+}
+
+.post-buttons button {
+    margin: 5px;
+    padding: 5px;
+    width: 6em;
+    font-weight: 600;
+    
+}
+
+.popup {
+    /* border: 1px red solid; */
+    margin: 10px;
+}
+
+.popup form {
+    width: auto;
+}
+.popup button {
+    margin: 5px;
+    padding: 5px;
+    font-weight: 600;
+}
+
+.comment-section {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: rgb(19, 19, 19);
+    width: 70%;
+}
+
+.comment-section button {
+    margin: 5px;
+    padding: 5px;
+    width: 6em;
+    font-weight: 600;
+}
