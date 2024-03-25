@@ -33,5 +33,6 @@
         </form>
     </div>
     <script src="signupPageValid.js"></script>
+    
 </body>
 </html>

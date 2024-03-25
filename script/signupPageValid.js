@@ -1,3 +1,4 @@
+// Function to validate all required elements for signing up
 function validateForm() {
     var image = document.getElementById('image').value;
     var name = document.getElementById('name').value.trim();

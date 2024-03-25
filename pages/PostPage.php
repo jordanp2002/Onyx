@@ -103,5 +103,6 @@
     </div>
 </div>
 <script src="postPageValid.js"></script>
+
 </body>
 </html>

@@ -13,7 +13,7 @@ function addFriend() {
 
 // Function to block user
 function blockUser() {
-    // Check if user is already blocked
+    //Check if user is already blocked
     const isBlocked = false;
 
     if (isBlocked) {

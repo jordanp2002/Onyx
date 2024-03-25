@@ -14,7 +14,7 @@
 
             // If all validations pass, proceed with form submission
             alert('Post submitted successfully!');
-            //add code here to submit the form to the server
+            // add code here to submit the form to the server
         }
 
         function clearFields() {

@@ -13,7 +13,7 @@
 
     // Add event listener to the comment button
     document.querySelector('.button.comment').addEventListener('click', function() {
-        // Validate the comment before submitting
+        //Validate the comment before submitting
         if (!validateComment()) {
             return;
         }

@@ -52,7 +52,6 @@ function isValidEmail(email) {
     return emailRegex.test(email);
 }
 
-// Event listener for form submission
 document.getElementById('editAccountForm').addEventListener('submit', function(event) {
     if (!validateForm()) {
         event.preventDefault(); // Prevent form submission if validation fails

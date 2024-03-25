@@ -6,7 +6,7 @@ function validateSearch() {
         return false;
     }
 
-    // Proceed with the search
+    //Proceed with the search
     alert("Searching for: " + searchInput);
     return true;
 }

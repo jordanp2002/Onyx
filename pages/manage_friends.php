@@ -98,7 +98,6 @@
             </div>
             <!-- Add more as needed -->
         </div>
-    </div>
-    
+    </div>  
 </body>
 </html>

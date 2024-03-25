@@ -3,13 +3,13 @@ function validateForm() {
     var email = document.getElementById("email").value;
     var password = document.getElementById("password").value;
 
-    // Check if username is empty
+    //Check if username is empty
     if (username.trim() === "") {
         alert("Please enter a username");
         return false;
     }
 
-    // Check if email is empty and is a valid email format
+    //Check if email is empty and is a valid email format
     if (email.trim() === "") {
         alert("Please enter an email");
         return false;
@@ -18,17 +18,17 @@ function validateForm() {
         return false;
     }
 
-    // Check if password is empty
+    //Check if password is empty
     if (password.trim() === "") {
         alert("Please enter a password");
         return false;
     }
 
-    // If all validations pass, submit the form
+    //If all validations pass, submit the form
     document.getElementById("profileForm").submit();
 }
 
-// Function to validate email format
+//Function to validate email format
 function validateEmail(email) {
     var re = /\S+@\S+\.\S+/;
     return re.test(email);

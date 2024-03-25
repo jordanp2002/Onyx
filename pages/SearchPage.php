@@ -81,5 +81,6 @@
     </div>
 </div>
 <script src="SearchPageValid.js"></script>
+
 </body>
 </html>

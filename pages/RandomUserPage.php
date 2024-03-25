@@ -90,5 +90,6 @@
     <button class="button block">Block</button>
 </div>
 <script src="randomUserPageValid.js"></script>
+
 </body>
 </html>

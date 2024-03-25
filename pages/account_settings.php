@@ -50,5 +50,6 @@
         <button>Manage Blocked Accounts</button>
     </div>
     <script src="accountSettingsValid.js"></script>
+    
 </body>
 </html>

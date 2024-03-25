@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../css/home.css">
     <link rel="stylesheet" href="../css/account_page.css">
     <script src="accountPageValid.js"></script>
+    
 
 </head>
 <div class="headernav">

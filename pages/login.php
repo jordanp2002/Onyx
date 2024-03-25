@@ -22,6 +22,5 @@
         </form>
         <p class="sign-up-link">Don't have an account? <a href="#">Create One.</a></p>
     </div>
-    
 </body>
 </html>

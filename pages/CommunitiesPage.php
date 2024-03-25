@@ -128,6 +128,7 @@
             }
             alert('Community created successfully!');
         });
+        
     </script>
 </body>
 </html>
