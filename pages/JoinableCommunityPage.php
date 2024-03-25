@@ -103,7 +103,8 @@
     </nav>
 </div>
     <?php
-    $connection = mysqli_connect('localhost', '76966621', 'Password123', 'db_76966621');
+    include 'databaseconnection.php';
+    $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
     if (!$connection) {
         die("Connection failed: " . mysqli_connect_error());
     }
@@ -125,6 +126,7 @@
                     echo '<div class="username">'. $row['username'].'</div>';
                     echo '<p>'. $row['title'] .'</p>';
                    echo '<p>'. $row['content'] .'</p>';
+                   
                 echo'</div>';
             echo '</div>';
             }
@@ -136,13 +138,14 @@
     <?php
         $query = "SELECT name FROM communities WHERE com_id =?";
         $nameQuery = mysqli_prepare($connection, $query);
-        mysqli_stmt_bind_param($stmt, "s", $comId);
+        mysqli_stmt_bind_param($nameQuery, "i", $comId);
         mysqli_stmt_execute($nameQuery);
         $result = mysqli_stmt_get_result($nameQuery);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
                 echo '<div class="community-info">';
                 echo '<h2>' . $row['name'].'</h2>';
+                
             }
         }else{
             echo "no entries found";

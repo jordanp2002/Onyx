@@ -4,3 +4,4 @@ $_SESSION = array();
 session_destroy();
 header("Location: greetingpage.php");
 exit;
+?>

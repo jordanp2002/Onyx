@@ -14,7 +14,8 @@ session_start();
         <h1>Twitter</h1>
     </header>
     <?php
-            $connection = mysqli_connect('localhost', '76966621', 'Password123', 'db_76966621');
+            include 'databaseconnection.php';
+            $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
             if (!$connection) {
                 die("Connection failed: " . mysqli_connect_error());
@@ -62,7 +63,8 @@ session_start();
 </div>
 <body>
     <?php
-        $connection = mysqli_connect("localhost", "76966621", "Password123", "db_76966621");
+        include 'databaseconnection.php';
+        $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         if (!$connection) {
             die("Connection failed: " . mysqli_connect_error());
         }

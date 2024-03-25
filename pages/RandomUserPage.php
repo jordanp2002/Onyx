@@ -79,20 +79,46 @@
         </nav>
     </div>
 <div class="profile-section">
-    <img class="profile-img" src="/Users/rhythmtrivedi/Downloads/IMG_6500.JPG" alt="Profile Picture">
-    <div class="username">User8253643</div>
-    <div class="bio">Description for user would go here.</div>
-    <div class="counts">
-        <span>Followers: 133</span>
-        <span>Following: 345</span>
-        <span>Communities: 10</span>
-    </div>
+    <div class="username"><?php echo $_SESSION['username'] ?></div>
     <?php
+    include 'databaseconnection.php';
+    if(isset($_SESSION['username']) && isset($_GET['profile'])) {
+        $profile = $_GET['profile'];
+        echo $profile;
+        $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+        if (!$connection) {
+            die("Connection failed: " . mysqli_connect_error());
+        }
+        $query = "SELECT 
+            (SELECT COUNT(*) FROM Follows WHERE followed_id = acc.id) AS followers,
+            (SELECT COUNT(*) FROM Follows WHERE follower_id = acc.id) AS following,
+            (SELECT COUNT(*) FROM community_membership WHERE account_id = acc.id) AS communities,
+            acc.pfp AS pfp
+          FROM Account acc
+          WHERE acc.username = ?";
+        $preparedQuery = mysqli_prepare($connection, $query);
+        mysqli_stmt_bind_param($preparedQuery, "s", $profile);
+        mysqli_stmt_execute($preparedQuery);
+        $result = mysqli_stmt_get_result($preparedQuery);
+        $row = mysqli_fetch_assoc($result);
+        if($row) {
+            echo '<img src="data:image/jpeg;base64,' . base64_encode($row['pfp']) . '" alt="Profile Picture">';
+            echo "<div class='counts'>";
+            echo "<span>Followers: " . $row['followers'] . "</span>";
+            echo "<span>Following: " . $row['following'] . "</span>";
+            echo "<span>Communities: " . $row['communities'] . "</span>";
+            echo "</div>";
+        }
+
+    }
+    ?>
+    <?php
+        include 'databaseconnection.php';
         $user = $_SESSION['username'];
         
         $buttonClass = 'add-friend';
         $buttonText = 'Add Friend';
-        $connection = mysqli_connect("localhost", "76966621", "Password123", "db_76966621");
+        $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         if (!$connection) {
             die("Connection failed: " . mysqli_connect_error());
         }
@@ -155,7 +181,7 @@
                             button.classList.remove('add-friend');
                             button.classList.add('unfriend');
                             button.innerText = 'Remove Friend';
-                        } else {
+                        } else if(response === 'not success'){
                             button.classList.remove('unfriend');
                             button.classList.add('add-friend');
                             button.innerText = 'Add Friend';

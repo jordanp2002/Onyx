@@ -8,6 +8,23 @@
 </head>
  <?php
 session_start();
+if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
+    include 'databaseconnection.php';
+    $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
+    if (!$connection) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+    if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
+        $adminQuery = "SELECT * FROM Account WHERE username = ?";
+        $adminQ = mysqli_prepare($connection, $adminQuery);
+        mysqli_stmt_bind_param($adminQ, "s", $_SESSION['username']);
+        mysqli_stmt_execute($adminQ);
+        $accountResult = mysqli_stmt_get_result($adminQ);
+        $row = mysqli_fetch_assoc($accountResult);
+        $admin = $row['admin'];
+    }
+}
 ?> 
 <div class="headernav">
     <header>
@@ -48,7 +65,7 @@ session_start();
     <div class = "layout-container">
         <div class ="CreatePost">
             <img src="../images/profilepic.png" alt="Profile Picture" width = "50px" height ="50px">
-            <p>Username</p>
+            <p><?php echo $_SESSION['username']; ?></p>
 
             <a href = "../pages/createpost.php">
                 <button class="button" id = "create-post-button">Create Post</button>
@@ -57,8 +74,9 @@ session_start();
         <div class="Feed">
             <h1>Feed</h1>
             <?php
+            include 'databaseconnection.php';
             if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
-                $connection = mysqli_connect('localhost', '76966621', 'Password123', 'db_76966621');
+                $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
                 if (!$connection) {
                     die("Connection failed: " . mysqli_connect_error());

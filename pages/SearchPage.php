@@ -148,7 +148,8 @@
     <div class="results tweets">
     <h2 class = "tweets"> Tweets </h2> 
 <?php
-    $connection = mysqli_connect('localhost', '76966621', 'Password123', 'db_76966621');
+    include 'databaseconnection.php';
+    $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
     if (!$connection) {
         die("Connection failed: " . mysqli_connect_error());
     }

@@ -51,7 +51,7 @@
     </header>
     <nav>
         <ul>
-            <li><?php echo $_SESSION['username']; ?><li>
+            <li><?php echo $_SESSION['username']; ?></li>
             <li><a href="../pages/SearchPage.php">Search</a></li>
             <li>
                 <div class = "parent-item">
@@ -77,13 +77,13 @@
 </div>
 <body>
     <?php
+    include 'databaseconnection.php';
     $user = $_SESSION['username'];
-    $connection = mysqli_connect("localhost", "76966621", "Password123", "db_76966621");
+    $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         if (!$connection) {
             die("Connection failed: " . mysqli_connect_error());
         }
         if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
-            $connection = mysqli_connect('localhost', '76966621', 'Password123', 'db_76966621');
             $username = $_SESSION['username'];
             $query = "SELECT c.name, c.descrip,c.com_id
             FROM Account a
@@ -98,53 +98,53 @@
                     echo "<figure>";
                     echo "<p>" . $row['descrip'] . "</p>";
                     echo "</figure>";
-                    echo '<input type="hidden" class="comId" name="comId" value="' . $row['com_id'] .'">';
+                    echo "<input type='hidden' class='comId' value='" . $row['com_id'] . "'>";
                     echo "<button onclick='toggleMembership(" . $row['com_id'] . ")'>Leave</button>";
                     
                 }
             }else{
                 echo "No communities found";
             }
-            mysqli_close($result);
+            mysqli_close($connection);
         }
     ?>
-             
         </div>
         <hr>
-<script>
-function toggleMembership(comId) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "leavecom.php", true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            var responseText = this.responseText.trim().toLowerCase();
-            if(responseText === 'success'){
-                console.log('successful delete')
-                removePostDiv(comId);
-            } else {
-                console.error('Failed to leave community:');
-            }
-        }{
-            console.error('Unsuccessful response')
-        }
-    };
-    xhr.send("com_id=" + encodeURIComponent(comId));
-}
-function removePostDiv(comId) {
-    var inputs = document.querySelectorAll('.comId');
-    comId = String(comId);
-    for (var i = 0; i < inputs.length; i++) {
-        if (inputs[i].value === comId) {
-            var postDiv = inputs[i].closest('.post');
-            if (postDiv) {
-                postDiv.remove();
-                break; 
-            }
-        }
-    }
-}
-    </script>
+    
 </div>
+    <script>
+        function toggleMembership(comId) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "leavecom.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var responseText = this.responseText.trim().toLowerCase();
+                    if(responseText === 'success'){
+                        console.log('successful delete')
+                        removePostDiv(comId);
+                    } else {
+                        console.error('Failed to leave community:');
+                    }
+                }{
+                    console.error('Unsuccessful response')
+                }
+            };
+            xhr.send("com_id=" + encodeURIComponent(comId));
+        }
+        function removePostDiv(comId) {
+            var inputs = document.querySelectorAll('.comId');
+            comId = String(comId);
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].value === comId) {
+                    var postDiv = inputs[i].closest('.post');
+                    if (postDiv) {
+                        postDiv.remove();
+                        break; 
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>

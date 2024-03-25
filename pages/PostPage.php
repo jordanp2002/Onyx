@@ -86,8 +86,9 @@ session_start();
 </div>
     <div class="post">
     <?php
+        include 'databaseconnection.php';
         $user = $_SESSION['username'];
-        $connection = mysqli_connect("localhost", "76966621", "Password123", "db_76966621");
+        $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         if (!$connection) {
             die("Connection failed: " . mysqli_connect_error());
         }
@@ -175,8 +176,6 @@ session_start();
                 xhr.send("thread_id=" +  encodeURIComponent(threadId));
                 };
         </script>
-    <?php
-    ?>
 
         <div id="commentFormPopup" class="popup">
             <div class="popup-content">
@@ -193,7 +192,8 @@ session_start();
 </div>
 <div id = "comment-section">
 <?php
-$connection = mysqli_connect('localhost', '76966621', 'Password123', 'db_76966621');
+include 'databaseconnection.php';
+$connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 if (!$connection) {
     die("Connection failed: " . mysqli_error($connection));
 }
