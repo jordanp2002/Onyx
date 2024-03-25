@@ -9,13 +9,23 @@
         .search-bar {
             margin-top: 20px;
             margin-bottom: 20px;
+            margin-left: 2%;
         }
         .tweet {
-            border: 1px solid #ccc;
+            border: 1px solid black;
             padding: 10px;
             margin-bottom: 20px;
             display: flex;
-            align-items: center;
+            background-color: #8758FF;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            border-radius: 5px;
+            
+        }
+        .tweet p{
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            max-width: 250px;
         }
         .tweet img {
             width: 50px;
@@ -23,6 +33,23 @@
             border-radius: 50%;
             margin-right: 10px;
         }
+
+        .community img{
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .community{
+            border: 1px solid black;
+            padding: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            background-color: #8758FF;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            border-radius: 5px;
+        }
+        .
         .tweet .username {
             font-weight: bold;
             margin-bottom: 5px;
@@ -32,44 +59,48 @@
             flex-wrap: wrap;
             justify-content: space-between;
         }
-
+        .search-results h2{
+            background-color: #181818;
+            color : white;
+            text-shadow: rgba(255, 255, 255, 0.392) 1px 1px 1px;
+        }
         .results {
-            flex-basis: 48%; 
+            flex-basis: 44%; 
             margin-bottom: 20px; 
         }
 
-        .tweets, .communities {
+        .tweets , .communities {
             padding: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+            background-color: #8758FF;
+            border-radius: 5px;
+            margin-left: 2%;
+            margin-right: 2%;
         }
-
         .search-bar {
-            margin-bottom: 20px;
-        }
-        .results img {
-            max-width: 100%;
-            height: auto;
+        justify-content: center;  
+      
+
         }
         .search-bar input[type="text"] {
-            justify-content: center;
-            flex-grow: 1;
-            padding: 10px;
-            border: 1px solid #black;
-            border-radius: 5px;
-            width: 80%;
+        padding: 10px;
+        border-radius: 5px;
+        width: calc(100% - 145px);
+        margin-right: 10px; 
+        border: 3px solid #8758F1;
+        background-color: #181818;
         }
         .search-bar button {
-            padding: 10px 20px;
-            background-color: #6c6281;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        padding: 10px 20px;
+        background-color: #8758FF;
+        color: white;
+        border: none;
+        border-radius: 5px;  
+        }
+        .search-bar button:hover {
+        background-color: #8758F1;
         }
 
-        .search-bar button:hover {
-            background-color: #6c6281;
-        }
     </style>
 </head>
 <?php
@@ -117,36 +148,37 @@
     <div class="results tweets">
     <h2 class = "tweets"> Tweets </h2> 
 <?php
-$connection = mysqli_connect('localhost', '76966621', 'Password123', 'db_76966621');
-if (!$connection) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET['searchTerm'])) {
-    $searchTerm = $_GET['searchTerm'];
-    $searchTerm = "%" . $searchTerm . "%";
+    $connection = mysqli_connect('localhost', '76966621', 'Password123', 'db_76966621');
+    if (!$connection) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+    if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET['searchTerm'])) {
+        $searchTerm = $_GET['searchTerm'];
+        $searchTerm = "%" . $searchTerm . "%";
 
-    $query = "SELECT title, content,username, pfp, thread.id AS threadid FROM thread JOIN Account on thread.account_id = Account.id WHERE title LIKE ?";
-    $tweet = mysqli_prepare($connection, $query);
-    mysqli_stmt_bind_param($tweet, "s", $searchTerm);
-    mysqli_stmt_execute($tweet);
-    $result = mysqli_stmt_get_result($tweet);
-    if (mysqli_num_rows($result) > 0) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo '<div class="tweet">';
-            echo '<img src="data:image/jpeg;base64,' . base64_encode($row['pfp']) . '" alt="Profile Picture">';
-            echo '<div>';
-            echo '<div class="username"><a href="PostPage.php?thread_id=' . $row['threadid'] . '" style="text-decoration: none; color: black;">' . $row['title'] . ' By ' . $row['username'] . '</a></div>';
-            echo '<p>'. $row['content'].'</p>';
-            echo '</div>';
-            echo '</div>';
+        $query = "SELECT title, content,username, pfp, thread.id AS threadid FROM thread JOIN Account on thread.account_id = Account.id WHERE title LIKE ?";
+        $tweet = mysqli_prepare($connection, $query);
+        mysqli_stmt_bind_param($tweet, "s", $searchTerm);
+        mysqli_stmt_execute($tweet);
+        $result = mysqli_stmt_get_result($tweet);
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo '<div class="tweet">';
+                echo '<img src="data:image/jpeg;base64,' . base64_encode($row['pfp']) . '" alt="Profile Picture">';
+                echo '<div>';
+                echo '<div class="username"><a href="PostPage.php?thread_id=' . $row['threadid'] . '" style="text-decoration: none; color: black;">' . $row['title'] . ' By ' . $row['username'] . '</a></div>';
+                echo '<p>'. $row['content'].'</p>';
+                echo '</div>';
+                echo '</div>';
+            }
+        }else{
+            echo "no entries found";
         }
-    }else{
-        echo "no entries found";
     }
 ?>
     </div>
     <div class="results communities">
-    <h2 class = "tweets"> Communities </h2> 
+        <h2 class = "tweets"> Communities </h2> 
 <?php
     $comquery = "SELECT name,descrip,com_id FROM communities WHERE name LIKE ? OR descrip LIKE ?";
     $communitySearch = mysqli_prepare($connection, $comquery);
@@ -156,7 +188,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET['searchTerm'])) {
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
             echo '<div class="community">';
-            echo '<img src="community_icon.jpg" alt="Community Icon">';
             echo '<div>';
             echo '<div class="community-name"><a href="JoinableCommunityPage.php?com_id=' . $row['com_id'] . '" style="text-decoration: none; color: black;">' . $row['name'] . ' By ' . $row['username'] . '</a></div>';
             echo '<p>'. $row['descrip'].'</p>';
@@ -167,8 +198,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET['searchTerm'])) {
         echo "No communities found.";
     }
     mysqli_close($connection);
-}
-?>
+
+?>   
     </div>
 </div>
 </body>

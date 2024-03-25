@@ -2,18 +2,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #7A6A9D;
+    background-color: #8758FF;
     color: white;
     padding: 2px;
     font-family: 'Roboto', sans-serif;
     width: 100%;
     flex-wrap: wrap;
+    box-shadow: 0 4px 8px 0 rgba(135, 13, 216, 0.364);
 }
 header, nav {
     margin: 0;
 }
 header h1 {
     margin-left: 30px;
+    text-shadow: #181818 1px 1px 1px;
 }
 ul {
     list-style-type: none;
@@ -22,12 +24,15 @@ ul {
 }
 ul li {
     margin-right: 30px; 
+    text-shadow: #181818 1px 1px 1px;
 }
-ul li a {
+ul li a{
     color: white;
+    text-shadow: #181818 1px 1px 1px;
     font-size: larger;
     text-decoration: none;
     margin: 10px;
+    flex-wrap: wrap;
 }
 ul li a:hover {
     text-decoration: underline;
@@ -35,56 +40,103 @@ ul li a:hover {
 body {
     margin: 0;
     padding: 0;
+    background-color: #181818;
+}
+.dropdown {
+    max-width: 150px;
+    border-radius : 5px;
+    z-index: 1;
 }
 .dropdown {
     max-width: 150px;
     display: none;
     position: absolute;
-    background-color: #7A6A9D;
-    border-radius: 5px;
+    background-color: #8758FF;
     z-index: 1;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 .dropdown li {
+    padding: 10px;
     display: block; 
+    border-bottom: 1px solid white;
+    background-color: #8758FF;
 }
 ul li:hover .dropdown {
     display: block; 
+    text-decoration: none;
 }
 .post{
     text-align: center;
 }
 h3{
     text-align: center;
+    color:white;
+    text-shadow: #8758FF 1px 1px 1px;
 }
 .submit-button{
-    background-color: #00A91C;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-style: none;
+    margin-top: 10px;
+    background-color: #181818;
+    box-shadow: 0 10px 20px 0 rgba(0,0,0,0.2);
     border-radius: 5px;
+    color: white;
 } 
 .delete-button{
-    background-color: #B51D09;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-style: none;
+    margin-top: 10px;
+    background-color: #181818;
+    box-shadow: 0 10px 20px 0 rgba(0,0,0,0.2);
     margin-bottom: 10px;
-    border-radius: 5px;
+    border-radius: 5px; 
+    color: white;
 }
 #postContent{
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     width: 80%;
     height: 250px;
+    background-color: #181818;
+    color: white;
+    border-style: none;
+    outline-style: none;
+    padding: 10px;
+    border-radius: 5px;
+}
+#postCom{
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    width: 80%;
+    height: 20px;
+    border-color: #181818;
+    background-color: #181818;
+    color: white;
+    border-style: none;
+    outline-style: none;
+    padding: 10px;
+    border-radius: 5px;
+
 }
 .titlePost{
     margin-top: 20px;
     text-align: center;
 }
 #postTitle{
+    outline-style: none;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     width: 80%;
     height: 50px;
+    background-color: #181818;
+    color: white;
+    border-style: none;
+    padding: 10px;
+    border-radius: 5px;
+
 }
 .PostCreation{
+    background-color: #8758FF;
+    box-shadow: 0 4px 8px 0 rgba(135, 13, 216, 0.364);
     text-align: center;
     border : 1px solid;
     border-color: #7A6A9D;
     margin-left: 30%;
     margin-right: 30%;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     border-radius: 5px;
 }

@@ -2,18 +2,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #7A6A9D;
+    background-color: #8758FF;
     color: white;
     padding: 2px;
     font-family: 'Roboto', sans-serif;
     width: 100%;
     flex-wrap: wrap;
+    box-shadow: 0 4px 8px 0 rgba(135, 13, 216, 0.364);
 }
 header, nav {
     margin: 0;
 }
 header h1 {
     margin-left: 30px;
+    text-shadow: #181818 1px 1px 1px;
 }
 ul {
     list-style-type: none;
@@ -22,9 +24,11 @@ ul {
 }
 ul li {
     margin-right: 30px; 
+    text-shadow: #181818 1px 1px 1px;
 }
 ul li a{
     color: white;
+    text-shadow: #181818 1px 1px 1px;
     font-size: larger;
     text-decoration: none;
     margin: 10px;
@@ -36,6 +40,7 @@ ul li a:hover {
 body {
     margin: 0;
     padding: 0;
+    background-color: #181818;
 }
 .dropdown {
     max-width: 150px;
@@ -46,15 +51,23 @@ body {
     max-width: 150px;
     display: none;
     position: absolute;
-    background-color: #6c6281;
+    background-color: #181818;
     z-index: 1;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 .dropdown li {
     padding: 10px;
     display: block; 
-    border-bottom: 1px solid white;
-    background-color: #6c6281;
+    background-color: #181818;
+    border-style: none;
+    outline-style: none;
+    text-decoration: none;
+}
+.dropdown li a {
+    color: white;
+    text-decoration: none;
+    background-color: #181818;
+
 }
 ul li:hover .dropdown {
     display: block; 
@@ -67,8 +80,11 @@ ul li:hover .dropdown {
     display: grid;
     grid-template-columns: 1fr 4fr;
     gap: 5px;
+    align-items: start;
 }
 .Feed {
+    text-shadow: rgba(255, 255, 255, 0.392) 1px 1px 1px;
+    background-color: #8758FF;
     display: grid;
     text-align: center;
     border: 1px solid hsl(259, 21%, 52%);
@@ -76,6 +92,7 @@ ul li:hover .dropdown {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     margin-top: 10px;
     border-radius: 5px;
+    margin-bottom: 0;
     width: 70%;
 }
 .Feed figure {
@@ -84,10 +101,13 @@ ul li:hover .dropdown {
     width: 90%;
     justify-self: center; 
     margin-top: 0;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 .Feed hr {
+    border-style: none;
+    background-color: #181818;
+    border-color: #181818;
     height: 1px;
-    background-color: black; 
     width: 90%;
     justify-self: center;
     margin-top: 10px;
@@ -97,13 +117,8 @@ ul li:hover .dropdown {
     margin-bottom: 0px;
     font-size: 30px;
 }
-.Feed .button {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    background-color: white;
-    border-radius: 5px;
-    justify-self: center;
-}
 .CreatePost {
+    background-color: #8758FF;
     text-align: center;
     border: 1px solid hsl(259, 21%, 52%);
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -113,18 +128,20 @@ ul li:hover .dropdown {
     margin-bottom: 400px;
 }
 .CreatePost .button {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    background-color: white;
+    border-style: none;
     border-radius: 5px;
     justify-self: center;
+    margin-bottom: 5px;
+    color: white;
+    background-color: #181818;
 }
 .admin-container{
     text-align: center;
 }
 .CreatePost
-h2{
+img{
     text-align: center;
-    font-size: 40px;
+    margin-top: 10px;
 }
 h3 a{
     text-decoration: none;

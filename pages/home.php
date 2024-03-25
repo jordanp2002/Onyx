@@ -6,32 +6,15 @@
     <title>Home</title>
     <link rel="stylesheet" href="../css/home.css">
 </head>
-<?php
+ <?php
 session_start();
-?>
+?> 
 <div class="headernav">
     <header>
         <h1>Twitter</h1>
     </header>
-    <?php
-            $connection = mysqli_connect('localhost', '76966621', 'Password123', 'db_76966621');
-
-            if (!$connection) {
-                die("Connection failed: " . mysqli_connect_error());
-            }
-            if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
-                $adminQuery = "SELECT * FROM Account WHERE username = ?";
-                $adminQ = mysqli_prepare($connection, $adminQuery);
-                mysqli_stmt_bind_param($adminQ, "s", $_SESSION['username']);
-                mysqli_stmt_execute($adminQ);
-                $accountResult = mysqli_stmt_get_result($adminQ);
-                $row = mysqli_fetch_assoc($accountResult);
-                $admin = $row['admin'];
-            }
-            ?>
     <nav>
         <ul>
-            <li><?php echo $_SESSION['username']; ?><li>
             <li><a href="../pages/SearchPage.php">Search</a></li>
             <li>
                 <div class = "parent-item">
@@ -48,11 +31,11 @@ session_start();
                         <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
                         <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
                         <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
-                        <?php
+                         <?php
                         if($admin == 1){
                             echo "<li class='item'><a href='../pages/admin.php'>Admin</a></li>";
                         }
-                        ?>
+                        ?> 
                     </ul>
                 </div>
             </li>
@@ -61,19 +44,15 @@ session_start();
     </nav>
 </div>
 <body>
+    
     <div class = "layout-container">
         <div class ="CreatePost">
-            <h2>Create Post</h2>
+            <img src="../images/profilepic.png" alt="Profile Picture" width = "50px" height ="50px">
+            <p>Username</p>
+
             <a href = "../pages/createpost.php">
                 <button class="button" id = "create-post-button">Create Post</button>
             </a>
-            <h2>Filter</h2>
-                <label for="dateFilter">Filter by Date:</label>
-                <select id="dateFilter">
-                <option value="all">All Dates</option>
-                <option value="date-descending">Lastest</option>
-                <option value="date-ascending">Oldest</option>
-                </select>
         </div>
         <div class="Feed">
             <h1>Feed</h1>
@@ -103,7 +82,7 @@ session_start();
                     echo "No posts found";
                 }
             }
-            ?>
+            ?> 
         </div>
     </div>
 </body>
