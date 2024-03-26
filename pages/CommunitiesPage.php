@@ -6,40 +6,60 @@
     <title>Communities Page</title>
     <link rel="stylesheet" href="../css/home.css">
     <style>
-        .container {
-            display: flex;
-            justify-content: space-between;
-            margin: 20px;
+        body {
+            background-color: #181818;
+            color: white;
+            font-family: 'Roboto', sans-serif;
         }
-        .tweets {
-            flex: 1;
-            margin-right: 20px;
+        h1{
+            text-align: center;
+            color: white;
+            text-shadow : 0 2px 8px rgba(135, 13, 216, 0.5);
         }
-        .tweet {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-        .tweet img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-        .your-communities {
-            flex: 0 0 300px;
-        }
+        
         .community {
             margin-bottom: 10px;
             display: flex;
             align-items: center;
         }
-        .community img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 10px;
+        .communities-table {
+            width: 70%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-left: 15%;
+            margin-right: 15%;
+            color: #181818;
         }
+        .communities-table th,
+        .communities-table td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #181818;
+            background-color: #8758FF;
+            border-radius: 5px;
+        }
+
+        .communities-table th {
+            background-color: #8758FF;
+        }
+
+        .communities-table tr:hover {
+            opacity: 0.8;
+        }
+
+        button {
+            background-color: #181818;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
     </style>
 </head>
 <?php
@@ -76,6 +96,7 @@
     </nav>
 </div>
 <body>
+    <H1>Communities</H1>
     <?php
     include 'databaseconnection.php';
     $user = $_SESSION['username'];
@@ -92,28 +113,31 @@
             WHERE a.username = '$username'";
             $result = mysqli_query($connection, $query);
             if(mysqli_num_rows($result) > 0) {
+                echo "<table class='communities-table'>";
+                echo "<thead><tr><th>Name</th><th>Description</th><th>Action</th></tr></thead>";
+                echo "<tbody>";
                 while($row = mysqli_fetch_assoc($result)) {
-                    echo "<div class='post'>";
-                    echo "<h3>" . $row['name'] . "</h3>";
-                    echo "<figure>";
-                    echo "<p>" . $row['descrip'] . "</p>";
-                    echo "</figure>";
+                    echo "<tr>";
+                    echo "<td>" . $row['name'] . "</td>";
+                    echo "<td>" . $row['descrip'] . "</td>";
                     echo "<input type='hidden' class='comId' value='" . $row['com_id'] . "'>";
-                    echo "<button onclick='toggleMembership(" . $row['com_id'] . ")'>Leave</button>";
-                    
+                    echo "<td><button data-com-id='" . $row['com_id'] ."' onclick='toggleMembership(" . $row['com_id'] . ")'>Leave</button></td>";
+                    echo "</tr>";
                 }
-            }else{
+                echo "</tbody>";
+                echo "</table>";
+            } else {
                 echo "No communities found";
             }
             mysqli_close($connection);
         }
     ?>
         </div>
-        <hr>
     
 </div>
     <script>
         function toggleMembership(comId) {
+            console.log(comId);
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "leavecom.php", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -123,8 +147,10 @@
                     if(responseText === 'success'){
                         console.log('successful delete')
                         removePostDiv(comId);
-                    } else if(responseText === 'error did not delete'){
+                    } else if(responseText === 'fail'){
                         console.error('Failed to leave community:');
+                    }else if (responseText === 'here'){
+                        console.log('problem is here');
                     }
                 }else{
                     console.error('Unsuccessful response')
@@ -133,17 +159,17 @@
             xhr.send("com_id=" + encodeURIComponent(comId));
         }
         function removePostDiv(comId) {
-            var inputs = document.querySelectorAll('.comId');
+            var inputs = document.querySelectorAll('.comId'); 
             comId = String(comId);
             for (var i = 0; i < inputs.length; i++) {
                 if (inputs[i].value === comId) {
-                    var postDiv = inputs[i].closest('.post');
-                    if (postDiv) {
-                        postDiv.remove();
-                        break; 
+                    var tableRow = inputs[i].closest('tr');
+                    if (tableRow) {
+                        tableRow.remove();
+                        break;
+                    }
                     }
                 }
-            }
         }
     </script>
 </body>

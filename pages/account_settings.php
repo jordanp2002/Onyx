@@ -43,8 +43,20 @@
 <body>
     <h1>Settings</h1>
     <div class="button-container">
+        <button id="editImageBtn">Edit Profile Picture</button>
         <button id="editUsernameBtn">Edit Username</button>
         <button id="editPasswordBtn">Edit Password</button>
+    </div>
+    <div id="imagePopup" class="modal">
+        <div class="popup-content">
+            <span class="close" data-modal="imageModal">&times;</span>
+            <form action="updatesettings.php" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="updateProfilePicture">
+                <label for="newUsername">New Image: </label>
+                <input type="file" id="newProfilePicture" name="newProfilePicture" required>
+                <button type="submit">Update Profile Picture</button>
+            </form>
+        </div>
     </div>
 
     <div id="usernamePopup" class="modal">
@@ -77,6 +89,9 @@ document.getElementById('editUsernameBtn').onclick = function() {
 };
 document.getElementById('editPasswordBtn').onclick = function() {
     document.getElementById('passwordPopup').style.display = 'block';
+};
+document.getElementById('editImageBtn').onclick = function() {
+    document.getElementById('imagePopup').style.display = 'block';
 };
 document.querySelectorAll('.close').forEach(closeBtn => {
     closeBtn.onclick = function() {

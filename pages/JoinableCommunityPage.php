@@ -8,16 +8,20 @@
     <link rel="stylesheet" href="../css/home.css">
     <style>
         body {
-            background-color: white;
+            background-color: #181818;
+            font-family: 'Roboto', sans-serif;
         }
-        .tweets {
-            flex: 1;
-            margin-right: 20px;
+        .headernav{
+            margin-bottom: 20px;
         }
         .tweet {
-            border: 1px solid #ccc;
+            border-radius: 8px;
             padding: 10px;
             margin-bottom: 20px;
+            background-color: #8758FF;
+            margin-left : 20%;
+            margin-right : 20%;
+
         }
         .tweet img {
             width: 50px;
@@ -26,45 +30,49 @@
             margin-right: 10px;
         }
         .community-info {
-            flex: 0 0 300px;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 10px;
+            box-shadow: 4px 4px 8px 8px rgba(135, 13, 216, 0.6);
+            width: 100%;
+            padding-bottom: 10px;
+            padding-left: 40px;
+            padding-top: 10px;
+            background-color: #8758FF;
+            position : fixed;
+            bottom: 0;
+            display: grid;
+            grid-template-columns: auto 1fr;
         }
         .community-info h2 {
             margin-bottom: 10px;
-        }
-        .community-info img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin-bottom: 10px;
+            
         }
         .join-button {
+            justify-self: end;
+            margin-right: 10%;
+            padding-left: 40px;
+            padding-right: 40px;
             background-color: #4CAF50;
             color: white;
             border: none;
-            padding: 10px 20px;
             text-align: center;
             text-decoration: none;
-            display: inline-block;
             font-size: 16px;
-            margin-top: 10px;
             cursor: pointer;
             border-radius: 5px;
         }
         .leave-button{
+            justify-self: end;
+            margin-right : 10%;
+            padding-left: 40px;
+            padding-right: 40px;
             background-color: red;
             color: white;
             border: none;
-            padding: 10px 20px;
             text-align: center;
             text-decoration: none;
-            display: inline-block;
             font-size: 16px;
-            margin-top: 10px;
             cursor: pointer;
             border-radius: 5px;
+
         }
     </style>
 </head>
@@ -126,7 +134,6 @@
                     echo '<div class="username">'. $row['username'].'</div>';
                     echo '<p>'. $row['title'] .'</p>';
                    echo '<p>'. $row['content'] .'</p>';
-                   
                 echo'</div>';
             echo '</div>';
             }
@@ -184,6 +191,7 @@
     <button id="communityAction" class="<?php echo $buttonClass; ?>" onclick="toggleMembership()">
         <?php echo $buttonText; ?>
     </button>
+    </div>
 <script>
 function toggleMembership() {
     var xhr = new XMLHttpRequest();

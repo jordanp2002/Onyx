@@ -23,10 +23,13 @@ if (isset($_SESSION['username'], $_POST['com_id'])) {
         if(mysqli_affected_rows($connection) > 0){
             echo 'success';
         }else{
-            echo 'error did not delete';
+            echo 'fail';
         }
     }else {
         echo "User not found";
     }
+    mysqli_close($connection);
 }
+
+
 ?>

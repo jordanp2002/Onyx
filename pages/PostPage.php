@@ -6,48 +6,149 @@
     <title>Post Page</title>
     <link rel="stylesheet" href="../css/home.css">
     <style>
-        .post {
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #181818;
+        color: #333;
+    }
+
+    .headernav header h1, .headernav nav ul li {
+        display: inline-block;
+        margin-right: 20px;
+    }
+
+    .post {
+        background-color: #8758FF;
+        padding: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+    .post-header {
+        font-weight: bold;
+        margin-bottom: 10px;
+        font-size: 24px;
+        color: #181818;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .post-content {
+        color: #181818;
+        margin-bottom: 20px;
+    }
+
+    .button {
+        padding: 10px 15px;
+        margin-right: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .button:hover {
+        opacity: 0.8;
+    }
+    .post-buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow : scroll;
+    }
+    .like, .dislike, .repost, .comment, .save, .unsave {
+        background-color: #181818;
+        color: white;
+    }
+    .popup {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0,0,0,0.4);
+    }
+
+    .popup-content {
+        background-color: #8758FF;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        border-radius: 8px;
+        word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    #comment-section {
             margin-top: 20px;
-            margin-bottom: 20px;
-        }
-        .post-header {
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .post-subheader {
-            margin-bottom: 10px;
-        }
-        .post-content {
-            margin-bottom: 10px;
-        }
-        .button {
-            padding: 5px 10px;
-            margin-right: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .like, .dislike, .repost, .comment, .save {
-            background-color: #3498db;
-            color: white;
-        }
-        #comment-section {
-            margin-top: 20px;
-            border-top: 1px solid #ccc;
             padding-top: 10px;
         }
-        .comment {
-            margin-bottom: 10px;
-        }
-        .comment-buttons {
+    .comment-text {
+            padding : 10px;
+            align-items: center;
+            justify-content: center;
+            background-color: #8758FF;
+            margin-left: 25%;
+            margin-right: 25%;
+            border-radius: 8px;
+    }
+    .comment-buttons {
             margin-top: 10px;
-        }
-        #comment-section img {
-            width: 50px;
-            height: 50px;
+    }
+    #comment-section img {
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             margin-right: 10px;
-        }
+    }
+    .thread-fig{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+        border : 2px solid black;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    }
+    .post p {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .comment-text {
+    display: grid;
+    grid-template-columns: 40px 2fr;
+    margin-bottom: 5px;
+    }
+    .comment-content {
+        grid-column: span 2;
+        margin-left: 40px;
+        color : #181818;
+    }
+
+
     </style>
 </head>
 <?php
@@ -103,8 +204,10 @@ session_start();
                 if ($row = mysqli_fetch_assoc($result)) {
                     echo '<div class="post-header">' . $row['title'] . '</div>';
                     echo '<div class="post-content">';
+                    echo '<figure class = "thread-fig">';
                     echo '<p>' . $row['content']. '</p>';
-                    echo '<p><a href="JoinableCommunityPage.php?com_id=' . $row['comId'] . '" style="text-decoration: none; color: black;">' . $row['name'] . '</a></p>';
+                    echo '</figure>';
+                    echo '<p><a href="JoinableCommunityPage.php?com_id=' . $row['comId'] . '" style="text-decoration: none; color: black;"> Community: ' . $row['name'] . '</a></p>';
                 } else {
                     echo "Thread not found.";
                 }
@@ -150,10 +253,8 @@ session_start();
             mysqli_stmt_close($accountIdQuery);
         }
         ?>
-        <div class="save-button">
-            <input type="hidden" id ="thread_id2" name="thread_id2" value="<?php echo $threadId; ?>">
-            <button id ="saveBtn" class="<?php echo $buttonClassSave; ?>" onclick= "toggleSave()"><?php echo $buttonTextSave; ?></button>
-        </div>
+        <input type="hidden" id ="thread_id2" name="thread_id2" value="<?php echo $threadId; ?>">
+        <button id ="saveBtn" class="<?php echo $buttonClassSave; ?>" onclick= "toggleSave()"><?php echo $buttonTextSave; ?></button>
         <button class="button comment" onclick="openCommentForm()">Comment</button>
         <script>
             function toggleSave(){
@@ -190,7 +291,7 @@ session_start();
         </div>
     </div>
 </div>
-<div id = "comment-section">
+<div id="comment-section">
 <?php
 include 'databaseconnection.php';
 $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
@@ -212,11 +313,14 @@ if (!$connection) {
                 echo "No comments found or No comments have been added";
             } else {
                 while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<div class="comment-text">';
                     echo '<img src="data:image/jpeg;base64,' . base64_encode($row['pfp']) . '" alt="Profile Picture">';
-                    echo '<p><a href="RandomUserPage.php?profile=' . $row['username'] . '" style="text-decoration: none; color: black;"> '.$row['username']. '-' . $row['content'] . "</a></p>";
-                    echo '<button class="button like">Like</button>';
-                    echo '<button class="button dislike">Dislike</button>';
-                    echo '</br>';
+                    echo '<p><a href="RandomUserPage.php?profile=' . $row['username'] . '" style="text-decoration: none; color: black;"> '.$row['username']. "</a></p>";
+                    echo '<div class="comment-content">';
+                    echo '<p>' . $row['content'] . '</p>';
+                    echo '</div>';
+
+                    echo '</div>';
                 }
             }
             mysqli_stmt_close($comment);
@@ -261,22 +365,30 @@ function submitComment() {
 }
 
 function displayComment(comment) {
-  var commentsSection = document.getElementById("comment-section");
-  if (!commentsSection) {
-    console.error("Comment section not found");
-    return;
-  }
-  var newComment = document.createElement("p");
-  var likeButton = document.createElement("button");
-  likeButton.innerHTML = "Like";
-  likeButton.className = "button like";
-  var dislikeButton = document.createElement("button");
-  dislikeButton.innerHTML = "Dislike";
-  dislikeButton.className = "button dislike"; 
-  newComment.innerHTML = comment; 
-  commentsSection.appendChild(newComment);
-  commentsSection.appendChild(likeButton);
-  commentsSection.appendChild(dislikeButton);
+    var username = "<?php echo $_SESSION['username']; ?>"; 
+    var commentsSection = document.getElementById("comment-section");
+    if (!commentsSection) {
+        console.error("Comment section not found");
+        return;
+    }
+
+    var commentDiv = document.createElement("div");
+    commentDiv.className = "comment-text";
+
+    var usernameDiv = document.createElement("div");
+    usernameDiv.className = "username";
+    usernameDiv.textContent = username + ": "; 
+
+    var commentTextDiv = document.createElement("div");
+    commentTextDiv.className = "comment-content";
+    commentTextDiv.textContent = comment;
+
+    commentDiv.appendChild(usernameDiv);
+    commentDiv.appendChild(commentTextDiv);
+
+    commentsSection.appendChild(commentDiv);
 }
+
+
 </script>
 </html>
