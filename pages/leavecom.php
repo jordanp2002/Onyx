@@ -29,5 +29,4 @@ if (isset($_SESSION['username'], $_POST['com_id'])) {
         echo "User not found";
     }
 }
-
 ?>

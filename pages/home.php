@@ -8,7 +8,6 @@
 </head>
  <?php
 session_start();
-if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
     include 'databaseconnection.php';
     $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
@@ -24,7 +23,6 @@ if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
         $row = mysqli_fetch_assoc($accountResult);
         $admin = $row['admin'];
     }
-}
 ?> 
 <div class="headernav">
     <header>

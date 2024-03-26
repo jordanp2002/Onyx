@@ -123,10 +123,10 @@
                     if(responseText === 'success'){
                         console.log('successful delete')
                         removePostDiv(comId);
-                    } else {
+                    } else if(responseText === 'error did not delete'){
                         console.error('Failed to leave community:');
                     }
-                }{
+                }else{
                     console.error('Unsuccessful response')
                 }
             };
