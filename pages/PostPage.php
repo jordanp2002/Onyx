@@ -310,7 +310,7 @@ if (!$connection) {
             mysqli_stmt_execute($comment);
             $result = mysqli_stmt_get_result($comment);
             if (mysqli_num_rows($result) === 0) {
-                echo "No comments found or No comments have been added";
+                echo "<p>No Fetching Comments.</p>";
             } else {
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo '<div class="comment-text">';
@@ -356,57 +356,71 @@ function submitComment() {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "submitcomment.php", true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
   xhr.onload = function() {
-      displayComment(this.responseText);
       closeCommentForm();
   };
   xhr.send("comment=" + encodeURIComponent(comment) + "&thread_id=" + encodeURIComponent(threadId));
 }
-function displayComment(comment) {
-    var username = "<?php echo $_SESSION['username']; ?>"; 
-    var commentsSection = document.getElementById("comment-section");
-    if (!commentsSection) {
-        console.error("Comment section not found");
-        return;
+let lastCommentId = localStorage.getItem('lastCommentId') || 0;
+function fetchNewComments() {
+    var threadId = document.getElementById("thread_id").value;
+    console.log("lastCommentId before request:", lastCommentId);
+    console.log("Fetching new comments for thread " + threadId);
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", `fetchcomments.php?thread_id=${encodeURIComponent(threadId)}&last_comment_id=${lastCommentId}`, true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onload = function() {
+    if (this.status == 200) {
+        var comments = JSON.parse(this.responseText);
+        if(comments.length > 0) {
+            comments.forEach(comment => {
+                console.log("postId" + comment.post_id)
+                if(comment.post_id > lastCommentId) {
+                    displayFetch(comment);
+                }
+                lastCommentId = comment.post_id;
+                localStorage.setItem('lastCommentId', lastCommentId);
+            });
+        } else {
+            console.log("No new comments found");
+        }
     }
-
+}; 
+xhr.send(); 
+}
+function displayFetch(comment) {
     var commentDiv = document.createElement("div");
     commentDiv.className = "comment-text";
 
-    var usernameDiv = document.createElement("div");
-    usernameDiv.className = "username";
-    usernameDiv.textContent = username + ": "; 
+    var img = document.createElement("img");
+    img.src = "data:image/jpeg;base64," + comment.pfp;
+    img.alt = "Profile Picture";
+    img.style.width = '35px'; 
+    img.style.height = '35px'; 
+    commentDiv.appendChild(img);
 
-    var commentTextDiv = document.createElement("div");
-    commentTextDiv.className = "comment-content";
-    commentTextDiv.textContent = comment;
+    var userLink = document.createElement("a");
+    userLink.href = "RandomUserPage.php?profile=" + comment.username;
+    userLink.style.textDecoration = "none";
+    userLink.style.color = "black";
+    userLink.textContent = comment.username;
 
-    commentDiv.appendChild(usernameDiv);
-    commentDiv.appendChild(commentTextDiv);
+    var userPara = document.createElement("p");
+    userPara.appendChild(userLink);
+    commentDiv.appendChild(userPara);
 
+    var contentDiv = document.createElement("div");
+    contentDiv.className = "comment-content";
+
+    var commentPara = document.createElement("p");
+    commentPara.textContent = comment.content;
+    contentDiv.appendChild(commentPara);
+    commentDiv.appendChild(contentDiv);
+
+    var commentsSection = document.getElementById("comment-section");
     commentsSection.appendChild(commentDiv);
 }
-function fetchNewComments() {
-    var threadId = document.getElementById("thread_id").value;
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "fetchcomments.php", true);
-    xhr.onload = function() {
-        if (this.status == 200) {
-            if(this.responseText === "No comments found") {
-               console.log ("No comments found");
-            }else {
-                var comment = this.responseText;
-                updateCommentsSection(comment);
-            }
-        }
-    };
-    xhr.send("thread_id=" + encodeURIComponent(threadId));
-}
-function updateCommentsSection(comment) {
-    var commentsSection = document.getElementById("comment-section");
-        displayComment(comment.comment); 
-}
-setInterval(fetchNewComments, 5000);
+
+setInterval(fetchNewComments, 1000);
 </script>
 </html>

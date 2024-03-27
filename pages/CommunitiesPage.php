@@ -121,7 +121,7 @@
                     echo "<td>" . $row['name'] . "</td>";
                     echo "<td>" . $row['descrip'] . "</td>";
                     echo "<input type='hidden' class='comId' value='" . $row['com_id'] . "'>";
-                    echo "<td><button data-com-id='" . $row['com_id'] ."' onclick='toggleMembership(" . $row['com_id'] . ")'>Leave</button></td>";
+                    echo "<td><button onclick='toggleMembership(" . $row['com_id'] . ")'>Leave</button></td>";
                     echo "</tr>";
                 }
                 echo "</tbody>";
