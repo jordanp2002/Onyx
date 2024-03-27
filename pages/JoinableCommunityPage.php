@@ -92,7 +92,7 @@
                 <div class = "parent-item">
                     <a href="../pages/CommunitiesPage.php">Communities</a>
                     <ul class="dropdown">
-                        <li class="item"><a href="#">Create Community</a></li>
+                        <li class="item"><a href="../pages/createcommunity.php">Create Community</a></li>
                     </ul>
                 </div>
             </li>
@@ -138,7 +138,7 @@
             echo '</div>';
             }
         }else{
-            echo "no entries found";
+            echo "<p style=\"color: white; text-align: center; margin-top: 4em;\">This community has no posts!<br>Click below to make one.</p>";
         }
     }
     ?>
@@ -155,7 +155,8 @@
                 
             }
         }else{
-            echo "no entries found";
+            echo "<p style=\"color: white; text-align: center; margin-top: 4em;\">no entries found</p>";
+
         }
     ?>
     <?php
@@ -187,6 +188,7 @@
             mysqli_stmt_close($accountIdQuery);
         }
         ?>
+        <!-- add button to create post -->
     <input type="hidden" id="comId" name="comId" value="<?php echo $comId; ?>">
     <button id="communityAction" class="<?php echo $buttonClass; ?>" onclick="toggleMembership()">
         <?php echo $buttonText; ?>

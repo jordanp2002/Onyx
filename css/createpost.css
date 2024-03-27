@@ -140,3 +140,31 @@ h3{
     margin-right: 30%;
     border-radius: 5px;
 }
+
+.PostCreation textarea{
+    background-color: #181818;
+    color: white;
+    box-shadow: 0 4px 8px 0 rgba(135, 13, 216, 0.364);
+    text-align: left;
+    border : 1px solid;
+    border-color: #7A6A9D;    
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 1em;
+}
+
+h2{
+    text-align: center;
+    color:white;
+    text-shadow: #8758FF 1px 1px 1px;
+}
+
+.PostCreation button{
+    background-color: #181818;
+    color: white;
+    border-style: none;
+    box-shadow: 0 4px 8px 0 rgba(135, 13, 216, 0.364);
+    border-radius: 5px;
+    padding: 7px;
+    margin-top: 1em;
+}

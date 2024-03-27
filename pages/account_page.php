@@ -22,7 +22,7 @@
                 <div class = "parent-item">
                     <a href="../pages/CommunitiesPage.php">Communities</a>
                     <ul class="dropdown">
-                        <li class="item"><a href="#">Create Community</a></li>
+                        <li class="item"><a href="../pages/createcommunity.php">Create Community</a></li>
                     </ul>
                 </div>
             </li>

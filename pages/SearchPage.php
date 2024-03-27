@@ -76,6 +76,7 @@
             border-radius: 5px;
             margin-left: 2%;
             margin-right: 2%;
+            text-decoration: none;
         }
         .search-bar {
         justify-content: center;  
@@ -119,7 +120,6 @@
                     <div class = "parent-item">
                         <a href="../pages/CommunitiesPage.php">Communities</a>
                         <ul class="dropdown">
-                            <li class="item"><a href="#">Manage Communities </a></li>
                             <li class="item"><a href="../pages/createcommunity.php">Create Community</a></li>
                         </ul>
                     </div>
@@ -157,19 +157,19 @@
         $searchTerm = $_GET['searchTerm'];
         $searchTerm = "%" . $searchTerm . "%";
 
-        $query = "SELECT title, content,username, pfp, thread.id AS threadid FROM thread JOIN Account on thread.account_id = Account.id WHERE title LIKE ?";
+        $query = "SELECT title, content, username, pfp, thread.id AS threadid FROM thread JOIN Account on thread.account_id = Account.id WHERE title LIKE ? OR content LIKE ? OR username LIKE ?";
         $tweet = mysqli_prepare($connection, $query);
-        mysqli_stmt_bind_param($tweet, "s", $searchTerm);
+        mysqli_stmt_bind_param($tweet, "sss", $searchTerm, $searchTerm, $searchTerm);
         mysqli_stmt_execute($tweet);
         $result = mysqli_stmt_get_result($tweet);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
                 echo '<div class="tweet">';
                 echo '<img src="data:image/jpeg;base64,' . base64_encode($row['pfp']) . '" alt="Profile Picture">';
-                echo '<div>';
-                echo '<div class="username"><a href="PostPage.php?thread_id=' . $row['threadid'] . '" style="text-decoration: none; color: black;">' . $row['title'] . ' By ' . $row['username'] . '</a></div>';
+                echo '<div><a href="PostPage.php?thread_id=' . $row['threadid'] . '"style="text-decoration: none; color: black;">';
+                echo '<div class="username">' . $row['title'] . ' By ' . $row['username'] . '</div>';
                 echo '<p>'. $row['content'].'</p>';
-                echo '</div>';
+                echo '</a></div>';
                 echo '</div>';
             }
         }else{
@@ -188,12 +188,12 @@
     $result = mysqli_stmt_get_result($communitySearch);
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
-            echo '<div class="community">';
+            echo '<div class="community"><a href="JoinableCommunityPage.php?com_id='.$row['com_id'].'" style="text-decoration: none; color: black;">';
             echo '<div>';
-            echo '<div class="community-name"><a href="JoinableCommunityPage.php?com_id=' . $row['com_id'] . '" style="text-decoration: none; color: black;">' . $row['name'] . ' By ' . $row['username'] . '</a></div>';
+            echo '<div class="community-name">' . $row['name'] . '</div>';
             echo '<p>'. $row['descrip'].'</p>';
             echo '</div>';
-            echo '</div>';
+            echo '</a></div>';
         }
     }else{
         echo "No communities found.";

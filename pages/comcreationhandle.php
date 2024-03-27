@@ -10,12 +10,10 @@ if (!$connection) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['username'])) {
     $title = $_POST['comTitle'];
     $postCon = $_POST['comDesc'];
-    $tmp = $_FILES['image']['tmp_name'];
-    $image = file_get_contents($tmp); 
 
-    $insertCommunityQuery = "INSERT INTO communities (name, descrip, image) VALUES (?, ?, ?)";
+    $insertCommunityQuery = "INSERT INTO communities (name, descrip) VALUES (?, ?)";
     if ($comQ = mysqli_prepare($connection, $insertCommunityQuery)) {
-        mysqli_stmt_bind_param($comQ, "sss", $title, $postCon, $image);
+        mysqli_stmt_bind_param($comQ, "ss", $title, $postCon);
         mysqli_stmt_execute($comQ);
         $newComId = mysqli_insert_id($connection); 
         $accountIdQuery = "SELECT id FROM Account WHERE username = ?";

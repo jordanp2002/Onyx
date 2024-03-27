@@ -13,14 +13,24 @@
     </header>
     <nav>
         <ul>
+            <?php
+                include 'databaseconnection.php';
+                $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
+                if (!$connection) {
+                    die("Connection failed: " . mysqli_connect_error());
+                }
+                if(!isset($_SESSION['username']) && empty($_SESSION['username'])) {
+                    header("Location: ../pages/login.php");
+                }
+            ?>
             <li><?php echo $_SESSION['username']; ?><li>
             <li><a href="../pages/searchpage.php">Search</a></li>
             <li>
                 <div class = "parent-item">
-                    <a href="/community">Communities</a>
+                    <a href="../pages/CommunitiesPage.php">Communities</a>
                     <ul class="dropdown">
-                        <li class="item"><a href="#">Manage Communities </a></li>
-                        <li class="item"><a href="#">Create Community</a></li>
+                        <li class="item"><a href="../pages/createcommunity.php">Create Community</a></li>
                     </ul>
                 </div>
             </li>
@@ -40,18 +50,16 @@
     </nav>
 </div>
 <body>
-    <h3>Community Creation</h3>
+    <h2>Community Creation</h2>
     <div class="PostCreation">
         <form class ="comPost" action = "../pages/comcreationhandle.php" method = "POST">
-            <label for="image"> Upload Image*</label>
-            <input type="file" id="image" name="image"><br><br>
             <label for="comTitle" type="hidden"></label>
-            <textarea id="comTitle" name="comTitle" rows="2" cols="50" maxlength="50" minlength="2" placeholder="Title here"></textarea>
+            <textarea id="comTitle" name="comTitle" rows="2" cols="50" maxlength="50" minlength="2" placeholder="Enter community name here"></textarea>
             <label for="comDesc" type="hidden"></label>
-            <textarea id="comDesc" name="comDesc" rows="4" cols="50" maxlength="500" minlength="10" placeholder="Text here max 500 characters"></textarea>
+            <textarea id="comDesc" name="comDesc" rows="8" cols="50" maxlength="500" minlength="10" placeholder="Enter community description here (max 500 characters)"></textarea>
             <br>
-            <button class ="submit-button"type="submit">Submit</button>
-            <button class ="delete-button"type="button">Delete</button>
+            <button class ="submit-button"type="submit">Create Community</button>
+            <button class ="delete-button"type="button">Back</button>
         </form>
     </div>
 </body>

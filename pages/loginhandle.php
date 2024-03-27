@@ -7,12 +7,13 @@ if (!$connection) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['email'];
+    $username = $_POST['username'];
     $password = $_POST['password'];
+
+    $password = md5($password);
 
     $query = "SELECT * FROM Account WHERE username = '$username' AND pword = '$password'";
     $result = mysqli_query($connection, $query);
-
     if (mysqli_num_rows($result) > 0) {
         session_start();
         $_SESSION['username'] = $username;

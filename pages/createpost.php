@@ -13,13 +13,23 @@
     </header>
     <nav>
         <ul>
+            <?php
+                include 'databaseconnection.php';
+                $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
+                if (!$connection) {
+                    die("Connection failed: " . mysqli_connect_error());
+                }
+                if(!isset($_SESSION['username']) && empty($_SESSION['username'])) {
+                    header("Location: ../pages/login.php");
+                }
+            ?>
             <li><?php echo $_SESSION['username']; ?><li>
             <li><a href="../pages/searchpage.php">Search</a></li>
             <li>
                 <div class = "parent-item">
-                    <a href="/community">Communities</a>
+                    <a href="../pages/CommunitiesPage.php">Communities</a>
                     <ul class="dropdown">
-                        <li class="item"><a href="#">Manage Communities </a></li>
                         <li class="item"><a href="#">Create Community</a></li>
                     </ul>
                 </div>

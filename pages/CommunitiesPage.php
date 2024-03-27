@@ -74,10 +74,10 @@
             <li><?php echo $_SESSION['username']; ?></li>
             <li><a href="../pages/SearchPage.php">Search</a></li>
             <li>
-                <div class = "parent-item">
+            <div class = "parent-item">
                     <a href="../pages/CommunitiesPage.php">Communities</a>
                     <ul class="dropdown">
-                        <li class="item"><a href="#">Create Community</a></li>
+                        <li class="item"><a href="../pages/createcommunity.php">Create Community</a></li>
                     </ul>
                 </div>
             </li>

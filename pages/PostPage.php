@@ -167,7 +167,7 @@ session_start();
                 <div class = "parent-item">
                     <a href="../pages/CommunitiesPage.php">Communities</a>
                     <ul class="dropdown">
-                        <li class="item"><a href="#">Create Community</a></li>
+                        <li class="item"><a href="../pages/createcommunity.php">Create Community</a></li>
                     </ul>
                 </div>
             </li>
@@ -363,7 +363,6 @@ function submitComment() {
   };
   xhr.send("comment=" + encodeURIComponent(comment) + "&thread_id=" + encodeURIComponent(threadId));
 }
-
 function displayComment(comment) {
     var username = "<?php echo $_SESSION['username']; ?>"; 
     var commentsSection = document.getElementById("comment-section");
@@ -388,7 +387,26 @@ function displayComment(comment) {
 
     commentsSection.appendChild(commentDiv);
 }
-
-
+function fetchNewComments() {
+    var threadId = document.getElementById("thread_id").value;
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "fetchcomments.php", true);
+    xhr.onload = function() {
+        if (this.status == 200) {
+            if(this.responseText === "No comments found") {
+               console.log ("No comments found");
+            }else {
+                var comment = this.responseText;
+                updateCommentsSection(comment);
+            }
+        }
+    };
+    xhr.send("thread_id=" + encodeURIComponent(threadId));
+}
+function updateCommentsSection(comment) {
+    var commentsSection = document.getElementById("comment-section");
+        displayComment(comment.comment); 
+}
+setInterval(fetchNewComments, 5000);
 </script>
 </html>
