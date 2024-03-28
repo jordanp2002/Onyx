@@ -90,7 +90,7 @@
                 <div class = "results">
                     <table>
                     <tr>
-                        <th>Tweet</th>
+                        <th>Thread</th>
                         <th>Action</th>
                     </tr>
             <?php

@@ -221,5 +221,18 @@
 ?>   
     </div>
 </div>
+<script>
+    document.getElementById('searchTerm').addEventListener('submit', function(e) {
+       var searchTerm = document.getElementById('searchTerm').value;
+       var searchTermInput = document.getElementById('searchTerm');
+
+       var specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+         if (specialChars.test(searchTerm)) {
+              alert("Please enter a valid search term.");
+              e.preventDefault();
+              return false;
+         }
+    });
+</script>
 </body>
 </html>

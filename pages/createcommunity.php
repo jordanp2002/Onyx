@@ -67,13 +67,32 @@
     <div class="PostCreation">
         <form class ="comPost" action = "../pages/comcreationhandle.php" method = "POST">
             <label for="comTitle" type="hidden"></label>
-            <textarea id="comTitle" name="comTitle" rows="2" cols="50" maxlength="50" minlength="2" placeholder="Enter community name here"></textarea>
+            <textarea id="comTitle" name="comTitle" rows="2" cols="50" placeholder="Enter community name here"></textarea>
             <label for="comDesc" type="hidden"></label>
-            <textarea id="comDesc" name="comDesc" rows="8" cols="50" maxlength="500" minlength="10" placeholder="Enter community description here (max 500 characters)"></textarea>
+            <textarea id="comDesc" name="comDesc" rows="8" cols="50" placeholder="Enter community description here (max 500 characters)"></textarea>
             <br>
             <button class ="submit-button"type="submit">Create Community</button>
             <button class ="delete-button"type="button">Back</button>
         </form>
     </div>
+    <script>
+    document.querySelector('.comPost').addEventListener('submit', function(event) {
+    var titleInput = document.getElementById('comTitle');
+    var descInput = document.getElementById('comDesc');
+
+    var title = titleInput.value.trim();
+    if (title.length < 2 || title.length > 50) {
+        alert('Community title must be between 2 and 50 characters.');
+        event.preventDefault();
+        return;
+    }
+    var description = descInput.value.trim();
+    if (description.length < 10 || description.length > 500) {
+        alert('Community description must be between 10 and 500 characters.');
+        event.preventDefault();
+        return;
+    }
+    });
+</script>
 </body>
 </html>
