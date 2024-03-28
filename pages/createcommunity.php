@@ -54,5 +54,28 @@
             <button class ="delete-button"type="button">Delete</button>
         </form>
     </div>
+    <script>
+    document.querySelector('.comPost').addEventListener('submit', function(event) {
+    var titleInput = document.getElementById('comTitle');
+    var descInput = document.getElementById('comDesc');
+
+    // Community Title Validation
+    var title = titleInput.value.trim();
+    if (title.length < 2 || title.length > 50) {
+        alert('Community title must be between 2 and 50 characters.');
+        event.preventDefault();
+        return;
+    }
+
+    // Community Description Validation
+    var description = descInput.value.trim();
+    if (description.length < 10 || description.length > 500) {
+        alert('Community description must be between 10 and 500 characters.');
+        event.preventDefault();
+        return;
+    }
+};
+</script>
+
 </body>
 </html>
