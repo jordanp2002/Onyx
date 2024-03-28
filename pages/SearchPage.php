@@ -90,6 +90,7 @@
         margin-right: 10px; 
         border: 3px solid #8758F1;
         background-color: #181818;
+        color: white;
         }
         .search-bar button {
         padding: 10px 20px;
