@@ -203,5 +203,20 @@
 ?>   
     </div>
 </div>
+<script>
+        function validateSearchTerm() {
+            var searchTermInput = document.getElementById('searchTerm');
+            var searchTerm = searchTermInput.value.trim();
+            
+            var specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+            
+            if (specialCharacters.test(searchTerm)) {
+                alert('Search term should not contain special characters.');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
 </body>
 </html>
