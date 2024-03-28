@@ -86,6 +86,7 @@
         event.preventDefault();
         return;
     }
+
     var description = descInput.value.trim();
     if (description.length < 10 || description.length > 500) {
         alert('Community description must be between 10 and 500 characters.');

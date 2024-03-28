@@ -218,8 +218,7 @@
     }
     mysqli_stmt_close($communitySearch);
     mysqli_close($connection);
-
-?>   
+?> 
     </div>
 </div>
 <script>
