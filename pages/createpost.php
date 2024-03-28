@@ -54,5 +54,29 @@
             <button class ="delete-button"type="button">Delete</button>
         </form>
     </div>
+    <script>
+function validateForm(event) {
+    var titleInput = document.getElementById('postTitle');
+    var postInput = document.getElementById('postContent');
+
+    // Post Title Validation
+    var title = titleInput.value.trim();
+    if (title.length < 2 || title.length > 50) {
+        alert('Post title must be between 2 and 50 characters.');
+        event.preventDefault();
+        return;
+    }
+
+    // Post Content Validation
+    var content = postInput.value.trim();
+    if (content.length < 10 || content.length > 500) {
+        alert('Post content must be between 10 and 500 characters.');
+        event.preventDefault();
+        return;
+    }
+}
+document.querySelector('.titlePost').addEventListener('submit', validateForm);
+</script>
+
 </body>
 </html>

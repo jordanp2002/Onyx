@@ -105,17 +105,16 @@ window.onclick = function(event) {
 };
 
 // Client-side validations
-document.getElementById('usernamePopup form').onsubmit = function(event) {
+document.getElementById('usernamePopup form').addEventListener('submit', function(event) {
     var newUsername = document.getElementById('newUsername').value.trim();
     if (newUsername.length < 4) {
         alert('Username must be at least 4 characters long.');
         event.preventDefault();
     }
-};
+});
 
-document.getElementById('passwordPopup form').onsubmit = function(event) {
+document.getElementById('passwordPopup form').addEventListener('submit', function(event) {
     var newPassword = document.getElementById('newPassword').value.trim();
-    var oldPassword = document.getElementById('oldPassword').value.trim();
     var username = document.querySelector('.headernav header li').innerText.trim();
     
     if (newPassword.length < 8) {
@@ -135,7 +134,7 @@ document.getElementById('passwordPopup form').onsubmit = function(event) {
         event.preventDefault();
         return;
     }
-};
+});
 
 </script>
 

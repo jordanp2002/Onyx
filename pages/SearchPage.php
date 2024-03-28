@@ -199,12 +199,12 @@
         echo "No communities found.";
     }
     mysqli_close($connection);
-
-?>   
+?> 
     </div>
 </div>
 <script>
-        function validateSearchTerm() {
+       document.getElementById('searchForm').addEventListener('submit', function(event) {
+            // Validate search term
             var searchTermInput = document.getElementById('searchTerm');
             var searchTerm = searchTermInput.value.trim();
             
@@ -212,11 +212,9 @@
             
             if (specialCharacters.test(searchTerm)) {
                 alert('Search term should not contain special characters.');
-                return false;
+                event.preventDefault();
             }
-
-            return true;
-        }
+        });
     </script>
 </body>
 </html>
