@@ -63,15 +63,27 @@
     </nav>
 </div>
 <body>
-    <h3>Post Creation</h3>
+    <?php
+    if($admin != 1){
+        header("Location: ../pages/home.php");
+    }else{
+        $threadID = $_GET['thread_id'];
+        $selectPostQuery = "SELECT * FROM thread WHERE id = ?";
+        $selectPostQ = mysqli_prepare($connection, $selectPostQuery);
+        mysqli_stmt_bind_param($selectPostQ, "s", $threadID);
+        mysqli_stmt_execute($selectPostQ);
+        $postResult = mysqli_stmt_get_result($selectPostQ);
+        $row = mysqli_fetch_assoc($postResult);
+    }
+    ?>
+    <h3>Updating Post</h3>
     <div class="PostCreation">
-        <form class ="titlePost" action = "../pages/postcreationhandle.php" method = "POST">
+        <form class ="titlePost" action = "../pages/updateposthandle.php" method = "POST">
+            <input type="hidden" id="threadId" name="threadId" value="<?php echo $_GET['thread_id']; ?>">
             <label for="postTitle" type="hidden"></label>
-            <textarea id="postTitle" name="postTitle" rows="2" cols="50" maxlength="50" minlength="2" placeholder="Title here"></textarea>
+            <textarea id="postTitle" name="postTitle" rows="2" cols="50" maxlength="50" minlength="2" placeholder="Replace Title Here, Old title: <?php echo $row['title']; ?>"></textarea>
             <label for="postContent" type="hidden"></label>
-            <textarea id="postContent" name="postContent" rows="4" cols="50" maxlength="500" minlength="10" placeholder="Text here max 500 characters"></textarea>
-            <label for="postCom" type = "hidden"></label>
-            <input type ="text" id ="postCom" name = "postCom" placeholder = "Community">
+            <textarea id="postContent" name="postContent" rows="4" cols="50" maxlength="500" minlength="10" placeholder="Replace Content Here, Old content: <?php echo $row['content']; ?>"></textarea>
             <br>
             <button class ="submit-button"type="submit">Submit</button>
             <button class ="delete-button"type="button">Delete</button>

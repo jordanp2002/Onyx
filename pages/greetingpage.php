@@ -15,7 +15,7 @@
     </nav>
 </header>
 <body>
-    <h1>Twitter Clone Name</h1>
+    <h1>Onyx</h1>
     <h3>Welcome!</h3>
     <div class = "Buttons">
         <div class = "Browse">

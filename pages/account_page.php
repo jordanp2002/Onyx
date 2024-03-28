@@ -6,13 +6,14 @@
     <title>Account Page</title>
     <link rel="stylesheet" href="../css/home.css">
     <link rel="stylesheet" href="../css/account_page.css">
+    <link rel="stylesheet" href="../css/randomuser.css">
 </head>
 <?php
     session_start();
 ?>
 <div class="headernav">
     <header>
-        <h1>Twitter</h1>
+        <h1>Onyx</h1>
     </header>
     <nav>
         <ul>
@@ -41,7 +42,7 @@
     </nav>
 </div>
 <body>
-    <div class="profile">
+    <div class="profile-section">
         <div class="profile_pic">
             <?php 
                 include 'databaseconnection.php';
@@ -75,7 +76,6 @@
             ?>  
         </div>
         <div class="profile_info">
-            <h2>Account Information</h2>
             <p>Username: <?php echo $_SESSION['username']; ?></p>
         </div>
     </div>

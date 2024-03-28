@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Settings Page</title>
     <link rel="stylesheet" href="../css/home.css">
-    <link rel="stylesheet" href="../css/account_settings.css">
+    <link rel="stylesheet" href="../css/saved_post.css">
+
 </head>
 <?php
 session_start();
 ?>
 <div class="headernav">
     <header>
-        <h1>Twitter</h1>
+        <h1>Onyx</h1>
     </header>
     <nav>
         <ul>
@@ -84,12 +85,14 @@ session_start();
                     $threadResult = mysqli_stmt_get_result($threadQ);
                     if ($threadRow = mysqli_fetch_assoc($threadResult)) {
                         echo "<div class='post'>";
-                        echo '<p><a href="PostPage.php?thread_id=' . $threadRow['id'] . '" style="text-decoration: none; color: black;">' . $threadRow['title'] . '</a></p>';
+                        echo '<p><a href="PostPage.php?thread_id=' . $threadRow['id'] . '" style="text-decoration: none; color: black;">' . $threadRow['title'].'</a></p>';
                         echo "<p>" . $threadRow['content'] . "</p>";
                         echo "</form>";
                         echo "</div>";
                     }
                 }
+                mysqli_stmt_close($saveQ);
+                mysqli_stmt_close($threadQ);
             }
         }
         ?>

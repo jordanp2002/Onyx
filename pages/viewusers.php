@@ -12,7 +12,7 @@ session_start();
 ?>
 <div class="headernav">
     <header>
-        <h1>Twitter</h1>
+        <h1>Onyx</h1>
     </header>
     <?php
             include 'databaseconnection.php';
@@ -90,6 +90,7 @@ session_start();
                     echo "</td>";
                     echo "</tr>";
                 }
+                mysqli_stmt_close($preparedQuery);
                 echo "</table>";
             } else {
                 echo "You are not an admin";

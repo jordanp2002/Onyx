@@ -1,7 +1,6 @@
 body {
     color: white;
 }
-
 table {
     border-collapse: collapse;
     border-spacing: 0;
@@ -11,7 +10,6 @@ table {
     margin-left: auto;
     margin-top: 50px;
 }
-
 th {
     text-align: center;
     width: 10em;

@@ -12,7 +12,7 @@
 ?>
 <div class="headernav">
     <header>
-        <h1>Twitter</h1>
+        <h1>Onyx</h1>
     </header>
     <nav>
         <ul>  
@@ -30,6 +30,8 @@
                 $accountResult = mysqli_stmt_get_result($adminQ);
                 $row = mysqli_fetch_assoc($accountResult);
                 $admin = $row['admin'];
+            }else{
+                header("Location: ../pages/login.php");
             }
             ?>
 
@@ -92,11 +94,6 @@
                         <th>Action</th>
                     </tr>
             <?php
-            include 'databaseconnection.php';
-            $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
-            if (!$connection) {
-                die("Connection failed: " . mysqli_connect_error());
-            }
             if($admin != 1){
                 header("Location: ../pages/home.php");
             }
@@ -112,7 +109,7 @@
                 if (mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
-                        echo "<td>" . $row['title'] . "</td>";
+                        echo "<td><a href ='updatepost.php?thread_id=". $row['threadid'] . "'>" . $row['title'] . "</a></td>";
                         echo "<td><button onclick='deleteTweet(" . $row['threadid'] . ")'>Delete</button></td>";
                         echo "</tr>";
                     }
@@ -161,7 +158,7 @@
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>";
-                    echo "<td>" . $row['name'] . "</td>";
+                    echo "<td><a href ='JoinableCommunityPage.php?com_id=". $row['com_id'] . "'>" . $row['name'] . "</a></td>";
                     echo "<td><button onclick='deleteCommunity(" . $row['com_id'] . ")'>Delete</button></td>";
                     echo "</tr>";
                 }
@@ -192,7 +189,6 @@
                 }
             }
             </script>";
-            mysqli_close($connection);
         
         ?>   
             </table>
@@ -215,7 +211,7 @@
                 if (mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr>";
-                        echo "<td>" . $row['username'] . "</td>";
+                        echo "<td><a href ='RandomUserPage.php?profile=". $row['username'] . "'>" . $row['username'] . "</a></td>";
                         echo "<td><button onclick='deleteUser(" . $row['id'] . ")'>Delete</button></td>";
                         echo "</tr>";
                     }
@@ -247,6 +243,7 @@
                 }
                 </script>";
             }
+            mysqli_close($connection);
             ?>       
             </table>
             </div>

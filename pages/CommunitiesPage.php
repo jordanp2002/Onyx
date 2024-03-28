@@ -5,72 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Communities Page</title>
     <link rel="stylesheet" href="../css/home.css">
-    <style>
-        body {
-            background-color: #181818;
-            color: white;
-            font-family: 'Roboto', sans-serif;
-        }
-        h1{
-            text-align: center;
-            color: white;
-            text-shadow : 0 2px 8px rgba(135, 13, 216, 0.5);
-        }
-        
-        .community {
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-        }
-        .communities-table {
-            width: 70%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            margin-left: 15%;
-            margin-right: 15%;
-            color: #181818;
-        }
-        .communities-table th,
-        .communities-table td {
-            text-align: left;
-            padding: 8px;
-            border-bottom: 1px solid #181818;
-            background-color: #8758FF;
-            border-radius: 5px;
-        }
-
-        .communities-table th {
-            background-color: #8758FF;
-        }
-
-        .communities-table tr:hover {
-            opacity: 0.8;
-        }
-
-        button {
-            background-color: #181818;
-            color: white;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            opacity: 0.8;
-        }
-
-    </style>
+    <link rel="stylesheet" href="../css/communities.css">
 </head>
 <?php
     session_start();
 ?>
 <div class="headernav">
     <header>
-        <h1>Twitter</h1>
+        <h1>Onyx</h1>
     </header>
     <nav>
         <ul>
+            <?php
+            include 'databaseconnection.php';
+            $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
+            if (!$connection) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+            if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
+                $adminQuery = "SELECT * FROM Account WHERE username = ?";
+                $adminQ = mysqli_prepare($connection, $adminQuery);
+                mysqli_stmt_bind_param($adminQ, "s", $_SESSION['username']);
+                mysqli_stmt_execute($adminQ);
+                $accountResult = mysqli_stmt_get_result($adminQ);
+                $row = mysqli_fetch_assoc($accountResult);
+                $admin = $row['admin'];
+            }
+            ?>
             <li><?php echo $_SESSION['username']; ?></li>
             <li><a href="../pages/SearchPage.php">Search</a></li>
             <li>
@@ -88,6 +50,11 @@
                         <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
                         <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
                         <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
+                        <?php
+                        if($admin == 1){
+                            echo "<li class='item'><a href='../pages/admin.php'>Admin</a></li>";
+                        }
+                        ?>
                     </ul>
                 </div>
             </li>

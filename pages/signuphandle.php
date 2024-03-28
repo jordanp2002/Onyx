@@ -39,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 echo "Invalid Information";
             }
+            mysqli_stmt_close($signup);
             mysqli_close($connection);
         }
     }

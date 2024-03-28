@@ -28,6 +28,8 @@ if (isset($_SESSION['username'], $_POST['com_id'])) {
     }else {
         echo "User not found";
     }
+    mysqli_stmt_close($accountQ);
+    mysqli_stmt_close($communityQ);
     mysqli_close($connection);
 }
 

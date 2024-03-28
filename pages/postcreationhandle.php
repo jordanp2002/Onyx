@@ -31,18 +31,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         header("Location: PostPage.php?thread_id=$newThreadId");
                         exit();
                     } else {
-                        echo "Error: " . mysqli_error($connection);
+                        echo "Error couldn't create post";
                     }
                 }
             } else {
                 echo "Community not found.";
             }
         } else {
-            echo "Error preparing community ID query: " . mysqli_error($connection);
+            echo "Error preparing community query: " . mysqli_error($connection);
         }
     } else {
         echo "Account not found.";
     }
+    mysqli_stmt_close($insertStmt);
+    mysqli_stmt_close($comIdQ);
+    mysqli_stmt_close($accountIdQuery);
 }
 
 ?> 

@@ -12,7 +12,7 @@ session_start();
 ?>
 <div class="headernav">
     <header>
-        <h1>Twitter</h1>
+        <h1>Onyx</h1>
     </header>
     <nav>
         <ul>
@@ -23,8 +23,14 @@ session_start();
                 if (!$connection) {
                     die("Connection failed: " . mysqli_connect_error());
                 }
-                if(!isset($_SESSION['username']) && empty($_SESSION['username'])) {
-                    header("Location: ../pages/login.php");
+                if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
+                    $adminQuery = "SELECT * FROM Account WHERE username = ?";
+                    $adminQ = mysqli_prepare($connection, $adminQuery);
+                    mysqli_stmt_bind_param($adminQ, "s", $_SESSION['username']);
+                    mysqli_stmt_execute($adminQ);
+                    $accountResult = mysqli_stmt_get_result($adminQ);
+                    $row = mysqli_fetch_assoc($accountResult);
+                    $admin = $row['admin'];
                 }
             ?>
             <li><?php echo $_SESSION['username']; ?><li>
@@ -44,6 +50,11 @@ session_start();
                         <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
                         <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
                         <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
+                        <?php
+                        if($admin == 1){
+                            echo "<li class='item'><a href='../pages/admin.php'>Admin</a></li>";
+                        }
+                        ?>
                     </ul>
                 </div>
             </li>
@@ -71,10 +82,13 @@ session_start();
                         echo "<img src='data:image/jpeg;base64," . $encode . "' alt='Profile Picture' class='profile_pic' width='35px' height='35px'>";
                         echo "<h2>" . $row['username'] . "</h2>";
                         echo "<input type='hidden' class='FollowerId' value='" . $row['FollowerId'] . "'>";
-                        echo "<td><button onclick='toggleFollower(" . $row['FollowerId'] . ")'>Unfollow</button></td>";
+                        echo "<td><button onclick='toggleFollower(" . $row['FollowerId'] . ")'>Remove</button></td>";
                         echo "</div>";
                     }
+                }else{
+                    echo "No followers or following";
                 }
+                mysqli_stmt_close($followQuery);
             ?>
         </div>
         <div class="following-list">
@@ -98,7 +112,10 @@ session_start();
                         echo "<td><button onclick='toggleFriendShip(" . $row['FollowingId'] . ")'>Unfollow</button></td>";
                         echo "</div>";
                     }
+                }else{
+                    echo "No followers or following";
                 }
+                mysqli_stmt_close($followingQuery);
             ?>
         </div>
     </div> 

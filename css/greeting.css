@@ -21,23 +21,22 @@ ul li a:hover{
 }
 
 body{
-    background-color: #7A6A9D;
+    background-color: #8758FF;
 }
 h1{
     text-align: left;
     color: white;
-    
-    background-color: #7A6A9D;
+    background-color: #8758FF;
     width: 100%;
     margin-left: 50px;
-    padding-top: 200px;
+    padding-top: 50px;
     font-size: 50px;
 }
 h3{
     text-align: left;
     color: white;
     font-size: 20px;
-    background-color: #7A6A9D;
+    background-color: #8758FF;
     width: 100%;
     margin-left: 50px;
 }
@@ -69,6 +68,7 @@ h3{
     width: 100%;
     margin-left: 50px;
     font-size: 20px;
+    margin-bottom: 20%;
 }
 .Login .button{
     color: black;
@@ -94,7 +94,6 @@ h3{
     color: white;
     width: 100%;
     margin-left: 50px;
-    padding-top: 50px;
     font-size: 20px;
     
 }
