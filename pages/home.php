@@ -26,7 +26,7 @@ session_start();
 ?> 
 <div class="headernav">
     <header>
-        <h1>Twitter</h1>
+        <h1>Onyx</h1>
     </header>
     <nav>
         <ul>
@@ -97,6 +97,7 @@ session_start();
                 }else{
                     echo "No posts found";
                 }
+                mysqli_stmt_close($query);
             }
             ?> 
         </div>

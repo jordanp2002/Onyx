@@ -157,17 +157,34 @@ session_start();
 <body>
 <div class="headernav">
     <header>
-        <h1>Twitter</h1>
+        <h1>Onyx</h1>
     </header>
     <nav>
         <ul>
+        <?php
+            include 'databaseconnection.php';
+            $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
+            if (!$connection) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+            if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
+                $adminQuery = "SELECT * FROM Account WHERE username = ?";
+                $adminQ = mysqli_prepare($connection, $adminQuery);
+                mysqli_stmt_bind_param($adminQ, "s", $_SESSION['username']);
+                mysqli_stmt_execute($adminQ);
+                $accountResult = mysqli_stmt_get_result($adminQ);
+                $row = mysqli_fetch_assoc($accountResult);
+                $admin = $row['admin'];
+            }
+            ?>
             <li><?php echo $_SESSION['username']; ?><li>
             <li><a href="../pages/SearchPage.php">Search</a></li>
             <li>
                 <div class = "parent-item">
                     <a href="../pages/CommunitiesPage.php">Communities</a>
                     <ul class="dropdown">
-                        <li class="item"><a href="#">Create Community</a></li>
+                        <li class="item"><a href="../pages/createcommunity.php">Create Community</a></li>
                     </ul>
                 </div>
             </li>
@@ -178,6 +195,11 @@ session_start();
                         <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
                         <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
                         <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
+                        <?php
+                        if($admin == 1){
+                            echo "<li class='item'><a href='../pages/admin.php'>Admin</a></li>";
+                        }
+                        ?>
                     </ul>
                 </div>
             </li>
@@ -187,12 +209,6 @@ session_start();
 </div>
     <div class="post">
     <?php
-        include 'databaseconnection.php';
-        $user = $_SESSION['username'];
-        $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
-        if (!$connection) {
-            die("Connection failed: " . mysqli_connect_error());
-        }
         if (isset($_GET['thread_id'])) {
             $threadId = $_GET['thread_id'];
             $threadQuery = "SELECT title, content, name, thread.com_id AS comId FROM thread JOIN communities ON thread.com_id = communities.com_id WHERE id = ?";
@@ -221,8 +237,6 @@ session_start();
     ?>
     </div>
     <div class="post-buttons">
-        <button class="button like">Like</button>
-        <button class="button dislike">Dislike</button>
         <input type="hidden" id ="thread_id" name="thread_id" value="<?php echo $threadId; ?>">
         <?php
         $isSaved = False;
@@ -252,6 +266,7 @@ session_start();
             }
             mysqli_stmt_close($accountIdQuery);
         }
+        mysqli_close($connection);
         ?>
         <input type="hidden" id ="thread_id2" name="thread_id2" value="<?php echo $threadId; ?>">
         <button id ="saveBtn" class="<?php echo $buttonClassSave; ?>" onclick= "toggleSave()"><?php echo $buttonTextSave; ?></button>
@@ -292,44 +307,44 @@ session_start();
     </div>
 </div>
 <div id="comment-section">
-<?php
-include 'databaseconnection.php';
-$connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
-if (!$connection) {
-    die("Connection failed: " . mysqli_error($connection));
-}
-    if (isset($_GET['thread_id'])) {
-        $threadId = $_GET['thread_id'];
-        $commentQuery = "SELECT Account.username, post.content , Account.pfp
-                        FROM post 
-                        JOIN Account ON post.account_id = Account.id 
-                        WHERE post.thread_id = ?";
-        $comment = mysqli_prepare($connection, $commentQuery);
-        if ($comment) {
-            mysqli_stmt_bind_param($comment, "i", $threadId);
-            mysqli_stmt_execute($comment);
-            $result = mysqli_stmt_get_result($comment);
-            if (mysqli_num_rows($result) === 0) {
-                echo "No comments found or No comments have been added";
-            } else {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo '<div class="comment-text">';
-                    echo '<img src="data:image/jpeg;base64,' . base64_encode($row['pfp']) . '" alt="Profile Picture">';
-                    echo '<p><a href="RandomUserPage.php?profile=' . $row['username'] . '" style="text-decoration: none; color: black;"> '.$row['username']. "</a></p>";
-                    echo '<div class="comment-content">';
-                    echo '<p>' . $row['content'] . '</p>';
-                    echo '</div>';
-
-                    echo '</div>';
-                }
-            }
-            mysqli_stmt_close($comment);
-        } else {
-            echo "Error preparing statement: " . mysqli_error($connection);
-        }
-    } else {
-        echo "No thread ID provided.";
+    <?php
+    include 'databaseconnection.php';
+    $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+    if (!$connection) {
+        die("Connection failed: " . mysqli_error($connection));
     }
+        if (isset($_GET['thread_id'])) {
+            $threadId = $_GET['thread_id'];
+            $commentQuery = "SELECT Account.username, post.content , Account.pfp
+                            FROM post 
+                            JOIN Account ON post.account_id = Account.id 
+                            WHERE post.thread_id = ?";
+            $comment = mysqli_prepare($connection, $commentQuery);
+            if ($comment) {
+                mysqli_stmt_bind_param($comment, "i", $threadId);
+                mysqli_stmt_execute($comment);
+                $result = mysqli_stmt_get_result($comment);
+                if (mysqli_num_rows($result) === 0) {
+                    echo "<p>No Fetching Comments.</p>";
+                } else {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo '<div class="comment-text">';
+                        echo '<img src="data:image/jpeg;base64,' . base64_encode($row['pfp']) . '" alt="Profile Picture">';
+                        echo '<p><a href="RandomUserPage.php?profile=' . $row['username'] . '" style="text-decoration: none; color: black;"> '.$row['username']. "</a></p>";
+                        echo '<div class="comment-content">';
+                        echo '<p>' . $row['content'] . '</p>';
+                        echo '</div>';
+
+                        echo '</div>';
+                    }
+                }
+                mysqli_stmt_close($comment);
+            } else {
+                echo "Error preparing statement: " . mysqli_error($connection);
+            }
+        } else {
+            echo "No thread ID provided.";
+        }
 ?>
 </div>
 </body>
@@ -356,39 +371,71 @@ function submitComment() {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "submitcomment.php", true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
   xhr.onload = function() {
-      displayComment(this.responseText);
       closeCommentForm();
   };
   xhr.send("comment=" + encodeURIComponent(comment) + "&thread_id=" + encodeURIComponent(threadId));
 }
-
-function displayComment(comment) {
-    var username = "<?php echo $_SESSION['username']; ?>"; 
-    var commentsSection = document.getElementById("comment-section");
-    if (!commentsSection) {
-        console.error("Comment section not found");
-        return;
+let lastCommentId = localStorage.getItem('lastCommentId') || 0;
+function fetchNewComments() {
+    var threadId = document.getElementById("thread_id").value;
+    console.log("lastCommentId before request:", lastCommentId);
+    console.log("Fetching new comments for thread " + threadId);
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", `fetchcomments.php?thread_id=${encodeURIComponent(threadId)}&last_comment_id=${lastCommentId}`, true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onload = function() {
+    if (this.status == 200) {
+        var comments = JSON.parse(this.responseText);
+        if(comments.length > 0) {
+            comments.forEach(comment => {
+                console.log("postId" + comment.post_id)
+                if(comment.post_id > lastCommentId) {
+                    displayFetch(comment);
+                }
+                lastCommentId = comment.post_id;
+                localStorage.setItem('lastCommentId', lastCommentId);
+            });
+        } else {
+            console.log("No new comments found");
+        }
     }
-
+}; 
+xhr.send(); 
+}
+function displayFetch(comment) {
     var commentDiv = document.createElement("div");
     commentDiv.className = "comment-text";
 
-    var usernameDiv = document.createElement("div");
-    usernameDiv.className = "username";
-    usernameDiv.textContent = username + ": "; 
+    var img = document.createElement("img");
+    img.src = "data:image/jpeg;base64," + comment.pfp;
+    img.alt = "Profile Picture";
+    img.style.width = '35px'; 
+    img.style.height = '35px'; 
+    commentDiv.appendChild(img);
 
-    var commentTextDiv = document.createElement("div");
-    commentTextDiv.className = "comment-content";
-    commentTextDiv.textContent = comment;
+    var userLink = document.createElement("a");
+    userLink.href = "RandomUserPage.php?profile=" + comment.username;
+    userLink.style.textDecoration = "none";
+    userLink.style.color = "black";
+    userLink.textContent = comment.username;
 
-    commentDiv.appendChild(usernameDiv);
-    commentDiv.appendChild(commentTextDiv);
+    var userPara = document.createElement("p");
+    userPara.appendChild(userLink);
+    commentDiv.appendChild(userPara);
 
+    var contentDiv = document.createElement("div");
+    contentDiv.className = "comment-content";
+
+    var commentPara = document.createElement("p");
+    commentPara.textContent = comment.content;
+    contentDiv.appendChild(commentPara);
+    commentDiv.appendChild(contentDiv);
+
+    var commentsSection = document.getElementById("comment-section");
     commentsSection.appendChild(commentDiv);
 }
 
-
+setInterval(fetchNewComments, 1000);
 </script>
 </html>

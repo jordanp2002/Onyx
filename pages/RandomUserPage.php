@@ -5,43 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Random User's Page</title>
     <link rel="stylesheet" href="../css/home.css">
-    <style>
-        .profile-section {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .profile-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
-        .username {
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .bio {
-            margin-bottom: 10px;
-        }
-        .counts {
-            margin-bottom: 10px;
-        }
-        .button {
-            padding: 10px 20px;
-            margin-right: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .add-friend {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .block {
-            background-color: #f44336;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/randomuser.css">
 </head>
 <?php 
     session_start();
@@ -49,17 +13,35 @@
 <body>
     <div class="headernav">
         <header>
-            <h1>Twitter</h1>
+            <h1>Onyx</h1>
         </header>
         <nav>
-            <ul>
+            <ul><?php
+                include 'databaseconnection.php';
+                $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
+                if (!$connection) {
+                    die("Connection failed: " . mysqli_connect_error());
+                }
+                if(!isset($_SESSION['username']) && empty($_SESSION['username'])) {
+                    header("Location: ../pages/login.php");
+                }
+                if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
+                    $adminQuery = "SELECT * FROM Account WHERE username = ?";
+                    $adminQ = mysqli_prepare($connection, $adminQuery);
+                    mysqli_stmt_bind_param($adminQ, "s", $_SESSION['username']);
+                    mysqli_stmt_execute($adminQ);
+                    $accountResult = mysqli_stmt_get_result($adminQ);
+                    $row = mysqli_fetch_assoc($accountResult);
+                    $admin = $row['admin'];
+                }
+                ?>
                 <li><a href="../pages/searchpage.php">Search</a></li>
                 <li>
                     <div class = "parent-item">
-                        <a href="/community">Communities</a>
+                        <a href="../pages/CommunitiesPage.php">Communities</a>
                         <ul class="dropdown">
-                            <li class="item"><a href="#">Manage Communities </a></li>
-                            <li class="item"><a href="#">Create Community</a></li>
+                            <li class="item"><a href="../pages/createcommunity.php">Create Community</a></li>
                         </ul>
                     </div>
                 </li>
@@ -69,8 +51,12 @@
                         <ul class="dropdown">
                             <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
                             <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
-                            <li class="item"><a href="#">Communities</a></li>
                             <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
+                            <?php
+                                if($admin == 1){
+                                    echo "<li class='item'><a href='../pages/admin.php'>Admin</a></li>";
+                                }
+                        ?>
                         </ul>
                     </div>
                 </li>
@@ -84,7 +70,6 @@
     include 'databaseconnection.php';
     if(isset($_SESSION['username']) && isset($_GET['profile'])) {
         $profile = $_GET['profile'];
-        echo $profile;
         $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
         if (!$connection) {
             die("Connection failed: " . mysqli_connect_error());
@@ -108,7 +93,7 @@
             echo "<span>Following: " . $row['following'] . "</span>";
             echo "<span>Communities: " . $row['communities'] . "</span>";
             echo "</div>";
-        }
+        } 
 
     }
     ?>
@@ -124,7 +109,6 @@
         }
         if(isset($_SESSION['username']) && isset($_GET['profile'])) {
             $profile = $_GET['profile'];
-            echo $profile;
             $query = "SELECT id FROM Account WHERE username = ?";
             $query2 = "SELECT id FROM Account WHERE username = ?";
 
@@ -142,8 +126,6 @@
             if ($userIdRow && $profileIdRow) {
                 $accountId = $userIdRow['id'];
                 $profileId = $profileIdRow['id'];
-                echo $profileId;
-                echo $accountId;
                 $friendQuery = 'SELECT * FROM Follows WHERE follower_id = ? AND followed_id = ?';
                 
                 $preparedQuery = mysqli_prepare($connection, $friendQuery);

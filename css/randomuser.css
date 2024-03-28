@@ -17,16 +17,32 @@
 .profile-section span{
     display: block;
     margin-bottom: 5px;
-    
 }
-.counts {
-    margin-bottom: 20px;
-    color: white;
-}
-.profile_info p{
+.username {
     font-size: 40px;
     font-weight: bold;
     color: white;
     margin-top: 30px;
     margin-bottom:  40px;
+}
+.counts {
+    margin-bottom: 20px;
+    color: white;
+}
+.button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.add-friend {
+    border-style: none;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.4);
+
 }

@@ -76,6 +76,7 @@
             border-radius: 5px;
             margin-left: 2%;
             margin-right: 2%;
+            text-decoration: none;
         }
         .search-bar {
         justify-content: center;  
@@ -89,6 +90,7 @@
         margin-right: 10px; 
         border: 3px solid #8758F1;
         background-color: #181818;
+        color: white;
         }
         .search-bar button {
         padding: 10px 20px;
@@ -109,17 +111,32 @@
 <body>
     <div class="headernav">
         <header>
-            <h1>Twitter</h1>
+            <h1>Onyx</h1>
         </header>
         <nav>
-            <ul>
+            <ul><?php
+                include 'databaseconnection.php';
+                $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
+                if (!$connection) {
+                    die("Connection failed: " . mysqli_connect_error());
+                }
+                if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
+                    $adminQuery = "SELECT * FROM Account WHERE username = ?";
+                    $adminQ = mysqli_prepare($connection, $adminQuery);
+                    mysqli_stmt_bind_param($adminQ, "s", $_SESSION['username']);
+                    mysqli_stmt_execute($adminQ);
+                    $accountResult = mysqli_stmt_get_result($adminQ);
+                    $row = mysqli_fetch_assoc($accountResult);
+                    $admin = $row['admin'];
+                }
+                ?>
                 <li><?php echo $_SESSION['username']; ?><li>
                 <li><a href="../pages/searchpage.php">Search</a></li>
                 <li>
                     <div class = "parent-item">
                         <a href="../pages/CommunitiesPage.php">Communities</a>
                         <ul class="dropdown">
-                            <li class="item"><a href="#">Manage Communities </a></li>
                             <li class="item"><a href="../pages/createcommunity.php">Create Community</a></li>
                         </ul>
                     </div>
@@ -131,6 +148,11 @@
                             <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
                             <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
                             <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
+                            <?php
+                                if($admin == 1){
+                                    echo "<li class='item'><a href='../pages/admin.php'>Admin</a></li>";
+                                }
+                            ?>
                         </ul>
                     </div>
                 </li>
@@ -148,33 +170,29 @@
     <div class="results tweets">
     <h2 class = "tweets"> Tweets </h2> 
 <?php
-    include 'databaseconnection.php';
-    $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
-    if (!$connection) {
-        die("Connection failed: " . mysqli_connect_error());
-    }
     if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET['searchTerm'])) {
         $searchTerm = $_GET['searchTerm'];
         $searchTerm = "%" . $searchTerm . "%";
 
-        $query = "SELECT title, content,username, pfp, thread.id AS threadid FROM thread JOIN Account on thread.account_id = Account.id WHERE title LIKE ?";
+        $query = "SELECT title, content, username, pfp, thread.id AS threadid FROM thread JOIN Account on thread.account_id = Account.id WHERE title LIKE ? OR content LIKE ? OR username LIKE ?";
         $tweet = mysqli_prepare($connection, $query);
-        mysqli_stmt_bind_param($tweet, "s", $searchTerm);
+        mysqli_stmt_bind_param($tweet, "sss", $searchTerm, $searchTerm, $searchTerm);
         mysqli_stmt_execute($tweet);
         $result = mysqli_stmt_get_result($tweet);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
                 echo '<div class="tweet">';
                 echo '<img src="data:image/jpeg;base64,' . base64_encode($row['pfp']) . '" alt="Profile Picture">';
-                echo '<div>';
-                echo '<div class="username"><a href="PostPage.php?thread_id=' . $row['threadid'] . '" style="text-decoration: none; color: black;">' . $row['title'] . ' By ' . $row['username'] . '</a></div>';
+                echo '<div><a href="PostPage.php?thread_id=' . $row['threadid'] . '"style="text-decoration: none; color: black;">';
+                echo '<div class="username">' . $row['title'] . ' By ' . $row['username'] . '</div>';
                 echo '<p>'. $row['content'].'</p>';
-                echo '</div>';
+                echo '</a></div>';
                 echo '</div>';
             }
         }else{
             echo "no entries found";
         }
+        mysqli_stmt_close($tweet);
     }
 ?>
     </div>
@@ -188,33 +206,33 @@
     $result = mysqli_stmt_get_result($communitySearch);
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
-            echo '<div class="community">';
+            echo '<div class="community"><a href="JoinableCommunityPage.php?com_id='.$row['com_id'].'" style="text-decoration: none; color: black;">';
             echo '<div>';
-            echo '<div class="community-name"><a href="JoinableCommunityPage.php?com_id=' . $row['com_id'] . '" style="text-decoration: none; color: black;">' . $row['name'] . ' By ' . $row['username'] . '</a></div>';
+            echo '<div class="community-name">' . $row['name'] . '</div>';
             echo '<p>'. $row['descrip'].'</p>';
             echo '</div>';
-            echo '</div>';
+            echo '</a></div>';
         }
     }else{
         echo "No communities found.";
     }
+    mysqli_stmt_close($communitySearch);
     mysqli_close($connection);
 ?> 
     </div>
 </div>
 <script>
-       document.getElementById('searchForm').addEventListener('submit', function(event) {
-            // Validate search term
-            var searchTermInput = document.getElementById('searchTerm');
-            var searchTerm = searchTermInput.value.trim();
-            
-            var specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
-            
-            if (specialCharacters.test(searchTerm)) {
-                alert('Search term should not contain special characters.');
-                event.preventDefault();
-            }
-        });
-    </script>
+    document.getElementById('searchTerm').addEventListener('submit', function(e) {
+       var searchTerm = document.getElementById('searchTerm').value;
+       var searchTermInput = document.getElementById('searchTerm');
+
+       var specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+         if (specialChars.test(searchTerm)) {
+              alert("Please enter a valid search term.");
+              e.preventDefault();
+              return false;
+         }
+    });
+</script>
 </body>
 </html>

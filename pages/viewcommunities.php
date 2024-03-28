@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/viewpost.css">
 </head>
 <?php
 session_start();
 ?>
 <div class="headernav">
     <header>
-        <h1>Twitter</h1>
+        <h1>Onyx</h1>
     </header>
     <?php
         include 'databaseconnection.php';
@@ -89,6 +90,7 @@ session_start();
                     echo "</td>";
                     echo "</tr>";
                 }
+                mysqli_stmt_close($preparedQuery);
                 echo "</table>";
             } else {
                 echo "You are not an admin";

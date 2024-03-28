@@ -24,6 +24,7 @@ if (isset($_POST['comment'], $_POST['thread_id']) && !empty($_SESSION['username'
             } else {
                 echo "Error preparing statement: " . mysqli_error($connection);
             }
+            mysqli_stmt_close($insert);
         } else {
             echo "Missing comment, thread ID, or user session.";
         }

@@ -23,16 +23,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['username'])) {
         mysqli_stmt_bind_param($stmt, "ss", $newUsername, $userId);
         if (mysqli_stmt_execute($stmt)) {
             $_SESSION['username'] = $newUsername; 
-            echo "Username updated successfully.";
+            echo '<a href="../pages/account_settings.php">Successfully Updated Username Return to Settings</a>';
         } else {
             echo "Error updating username.";
         }
     } elseif ($_POST['action'] == 'updatePassword' && !empty($_POST['newPassword'])) {
         $newPassword = $_POST['newPassword'];
+        $newPassword = md5($newPassword);
         $stmt = mysqli_prepare($connection, "UPDATE Account SET pword = ? WHERE username = ?");
         mysqli_stmt_bind_param($stmt, "ss", $newPassword, $userId);
         if (mysqli_stmt_execute($stmt)) {
-            echo "Password updated successfully.";
+            echo '<a href="../pages/account_settings.php">Successfully Updated Password Return to Settings</a>';
         } else {
             echo "Error updating password.";
         }
@@ -42,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['username'])) {
         $stmt = mysqli_prepare($connection, "UPDATE Account SET pfp = ? WHERE username = ?");
         mysqli_stmt_bind_param($stmt, "ss", $image, $userId);
         if (mysqli_stmt_execute($stmt)) {
-            echo "Profile picture updated successfully.";
+            echo '<a href="../pages/account_settings.php">Successfully Updated Picture Return to Settings</a>';
         } else {
             echo "Error updating profile picture.";
         }

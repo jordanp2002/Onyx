@@ -12,17 +12,38 @@
 ?>
 <div class="headernav">
     <header>
-        <h1>Twitter</h1>
+        <h1>Onyx</h1>
     </header>
     <nav>
         <ul>
+            <?php
+                include 'databaseconnection.php';
+                $connection = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
+                if (!$connection) {
+                    die("Connection failed: " . mysqli_connect_error());
+                }
+                if(!isset($_SESSION['username']) && empty($_SESSION['username'])) {
+                    header("Location: ../pages/login.php");
+                }
+            
+                if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
+                    $adminQuery = "SELECT * FROM Account WHERE username = ?";
+                    $adminQ = mysqli_prepare($connection, $adminQuery);
+                    mysqli_stmt_bind_param($adminQ, "s", $_SESSION['username']);
+                    mysqli_stmt_execute($adminQ);
+                    $accountResult = mysqli_stmt_get_result($adminQ);
+                    $row = mysqli_fetch_assoc($accountResult);
+                    $admin = $row['admin'];
+                }
+            ?>
             <li><?php echo $_SESSION['username']; ?><li>
             <li><a href="../pages/SearchPage.php">Search</a></li>
             <li>
                 <div class = "parent-item">
                     <a href="../pages/CommunitiesPage.php">Communities</a>
                     <ul class="dropdown">
-                        <li class="item"><a href="#">Create Community</a></li>
+                        <li class="item"><a href="../pages/createcommunity.php">Create Community</a></li>
                     </ul>
                 </div>
             </li>
@@ -33,6 +54,11 @@
                         <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
                         <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
                         <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
+                        <?php
+                        if($admin == 1){
+                            echo "<li class='item'><a href='../pages/admin.php'>Admin</a></li>";
+                        }
+                        ?>
                     </ul>
                 </div>
             </li>
@@ -58,7 +84,6 @@
             </form>
         </div>
     </div>
-
     <div id="usernamePopup" class="modal">
         <div class="popup-content">
             <span class="close" data-modal="usernameModal">&times;</span>
@@ -70,7 +95,6 @@
             </form>
         </div>
     </div>
-
     <div id="passwordPopup" class="modal">
         <div class="popup-content">
             <span class="close" data-modal="passwordModal">&times;</span>
@@ -84,23 +108,58 @@
     </div>
 </body>
 <script>
-document.getElementById('editUsernameBtn').onclick = function() {
-    document.getElementById('usernamePopup').style.display = 'block';
+function openModal(modalId) {
+    var modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = "flex";
+    }
+}
+function closeModal() {
+    var modals = document.querySelectorAll('.modal');
+    modals.forEach(function(modal) {
+        modal.style.display = "none"; 
+    });
+}
+document.getElementById("editImageBtn").onclick = function() { 
+    openModal("imagePopup");
 };
-document.getElementById('editPasswordBtn').onclick = function() {
-    document.getElementById('passwordPopup').style.display = 'block';
+document.getElementById("editUsernameBtn").onclick = function() {
+     openModal("usernamePopup"); 
+    };
+document.getElementById("editPasswordBtn").onclick = function() { 
+    openModal("passwordPopup"); 
 };
-document.getElementById('editImageBtn').onclick = function() {
-    document.getElementById('imagePopup').style.display = 'block';
-};
-document.querySelectorAll('.close').forEach(closeBtn => {
-    closeBtn.onclick = function() {
-        document.getElementById(this.getAttribute('data-modal')).style.display = 'none';
+
+document.querySelectorAll('.close').forEach(function(element) {
+    element.onclick = function() {
+        closeModal();
     };
 });
 window.onclick = function(event) {
-    if (event.target.className === 'modal') {
-        event.target.style.display = 'none';
+    if (event.target.classList.contains('modal')) {
+        closeModal();
+    }
+}
+document.getElementById('usernamePopup form').onsubmit = function(event) {
+    var newUsername = document.getElementById('newUsername').value.trim();
+    if (newUsername.length < 4) {
+        alert('Username must be at least 4 characters long.');
+        event.preventDefault();
+    }
+};
+
+document.getElementById('passwordPopup form').onsubmit = function(event) {
+    var newPassword = document.getElementById('newPassword').value.trim();
+    if (newPassword.length < 8) {
+        alert('Password must be at least 8 characters long.');
+        event.preventDefault();
+        return;
+    }
+
+    if (!/[A-Z]/.test(newPassword)) {
+        alert('Password must contain at least one uppercase letter.');
+        event.preventDefault();
+        return;
     }
 };
 
@@ -137,5 +196,4 @@ document.getElementById('passwordPopup form').addEventListener('submit', functio
 });
 
 </script>
-
 </html>

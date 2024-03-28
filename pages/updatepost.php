@@ -39,7 +39,7 @@
                 <div class = "parent-item">
                     <a href="../pages/CommunitiesPage.php">Communities</a>
                     <ul class="dropdown">
-                        <li class="item"><a href="../pages/createcommunity.php">Create Community</a></li>
+                        <li class="item"><a href="#">Create Community</a></li>
                     </ul>
                 </div>
             </li>
@@ -63,37 +63,31 @@
     </nav>
 </div>
 <body>
-    <h2>Community Creation</h2>
+    <?php
+    if($admin != 1){
+        header("Location: ../pages/home.php");
+    }else{
+        $threadID = $_GET['thread_id'];
+        $selectPostQuery = "SELECT * FROM thread WHERE id = ?";
+        $selectPostQ = mysqli_prepare($connection, $selectPostQuery);
+        mysqli_stmt_bind_param($selectPostQ, "s", $threadID);
+        mysqli_stmt_execute($selectPostQ);
+        $postResult = mysqli_stmt_get_result($selectPostQ);
+        $row = mysqli_fetch_assoc($postResult);
+    }
+    ?>
+    <h3>Updating Post</h3>
     <div class="PostCreation">
-        <form class ="comPost" action = "../pages/comcreationhandle.php" method = "POST">
-            <label for="comTitle" type="hidden"></label>
-            <textarea id="comTitle" name="comTitle" rows="2" cols="50" placeholder="Enter community name here"></textarea>
-            <label for="comDesc" type="hidden"></label>
-            <textarea id="comDesc" name="comDesc" rows="8" cols="50" placeholder="Enter community description here (max 500 characters)"></textarea>
+        <form class ="titlePost" action = "../pages/updateposthandle.php" method = "POST">
+            <input type="hidden" id="threadId" name="threadId" value="<?php echo $_GET['thread_id']; ?>">
+            <label for="postTitle" type="hidden"></label>
+            <textarea id="postTitle" name="postTitle" rows="2" cols="50" maxlength="50" minlength="2" placeholder="Replace Title Here, Old title: <?php echo $row['title']; ?>"></textarea>
+            <label for="postContent" type="hidden"></label>
+            <textarea id="postContent" name="postContent" rows="4" cols="50" maxlength="500" minlength="10" placeholder="Replace Content Here, Old content: <?php echo $row['content']; ?>"></textarea>
             <br>
-            <button class ="submit-button"type="submit">Create Community</button>
-            <button class ="delete-button"type="button">Back</button>
+            <button class ="submit-button"type="submit">Submit</button>
+            <button class ="delete-button"type="button">Delete</button>
         </form>
     </div>
-    <script>
-    document.querySelector('.comPost').addEventListener('submit', function(event) {
-    var titleInput = document.getElementById('comTitle');
-    var descInput = document.getElementById('comDesc');
-
-    var title = titleInput.value.trim();
-    if (title.length < 2 || title.length > 50) {
-        alert('Community title must be between 2 and 50 characters.');
-        event.preventDefault();
-        return;
-    }
-
-    var description = descInput.value.trim();
-    if (description.length < 10 || description.length > 500) {
-        alert('Community description must be between 10 and 500 characters.');
-        event.preventDefault();
-        return;
-    }
-    });
-</script>
 </body>
 </html>

@@ -1,0 +1,19 @@
+h1{ 
+    color: white;
+    text-align: center;
+}
+.post{
+    margin-top: 8%;
+    background-color: #8758FF;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-right: 20%;
+    margin-left: 20%;
+    border-radius: 5px;
+    padding: 20px;
+}
+.post a{
+    color: white;
+    font-weight: bold;
+    font-size : 20px;
+}

@@ -11,8 +11,8 @@
         <h2>Login</h2>
         <p>* indicates a required fields.</p>
         <form class ="login_signup-form" action= "loginhandle.php" method ="POST">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required><br><br>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br><br>
             
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required><br><br>
