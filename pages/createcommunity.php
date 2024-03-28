@@ -74,7 +74,7 @@
         event.preventDefault();
         return;
     }
-};
+});
 </script>
 
 </body>
