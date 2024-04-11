@@ -65,6 +65,10 @@
         background-color: #181818;
         color: white;
     }
+    .button like, .button dislike, .button unlike, .button undislike {
+        background-color: #181818;
+        color: white;
+    }
     .popup {
         display: none;
         position: fixed;
@@ -211,7 +215,18 @@ session_start();
     <?php
         if (isset($_GET['thread_id'])) {
             $threadId = $_GET['thread_id'];
-            $threadQuery = "SELECT title, content, name, thread.com_id AS comId FROM thread JOIN communities ON thread.com_id = communities.com_id WHERE id = ?";
+            $threadQuery = "SELECT 
+            thread.title, 
+            thread.content, 
+            communities.name, 
+            thread.com_id AS comId, 
+            COALESCE(SUM(likes.thread_like), 0) AS likes, 
+            COALESCE(SUM(likes.thread_dislike), 0) AS dislikes
+        FROM thread
+        LEFT JOIN communities ON thread.com_id = communities.com_id
+        LEFT JOIN likes ON thread.id = likes.thread_id
+        WHERE thread.id = ?
+        GROUP BY thread.id;";
             $tweet = mysqli_prepare($connection, $threadQuery);
             if ($tweet) {
                 mysqli_stmt_bind_param($tweet, "i", $threadId);
@@ -223,7 +238,8 @@ session_start();
                     echo '<figure class = "thread-fig">';
                     echo '<p>' . $row['content']. '</p>';
                     echo '</figure>';
-                    echo '<p><a href="JoinableCommunityPage.php?com_id=' . $row['comId'] . '" style="text-decoration: none; color: black;"> Community: ' . $row['name'] . '</a></p>';
+                    echo '<p><a href="JoinableCommunityPage.php?com_id=' . $row['comId'] . '" style="text-decoration: none; color: black;"> Community: ' . $row['communities.name'] . '</a></p>';
+                    echo '<p id = "likes"> post likes: ' . $row['likes'] . ' post dislikes: ' . $row['dislikes'] . '<p>';
                 } else {
                     echo "Thread not found.";
                 }
@@ -235,6 +251,7 @@ session_start();
             echo "No thread ID provided.";
         }
     ?>
+    
     </div>
     <div class="post-buttons">
         <input type="hidden" id ="thread_id" name="thread_id" value="<?php echo $threadId; ?>">
@@ -243,6 +260,10 @@ session_start();
         $buttonTextSave = "Save";
         $threadId = $_GET['thread_id'];
         $buttonClassSave = "button save";
+        $buttonLikeText = "Like";
+        $buttonDislikeText = "Dislike";
+        $buttonClassLike = "button like";
+        $buttonClassDislike = "button dislike";
         if (isset($_SESSION['username']) && $threadId !== null) {
             $username = $_SESSION['username'];
             $query = "SELECT id FROM Account WHERE username = ?";
@@ -252,15 +273,32 @@ session_start();
             $accountIdResult = mysqli_stmt_get_result($accountIdQuery);
             if ($accountIdRow = mysqli_fetch_assoc($accountIdResult)) {
                 $accountId = $accountIdRow['id'];
+                $likeQuery = "SELECT * FROM likes WHERE account_id = ? AND thread_id = ?";
                 $query2 = "SELECT * FROM saved_threads WHERE account_id = ? AND thread_id = ?";
                 $membershipQuery = mysqli_prepare($connection, $query2);
                 mysqli_stmt_bind_param($membershipQuery, "ii", $accountId, $threadId);
                 mysqli_stmt_execute($membershipQuery);
                 $membershipResult = mysqli_stmt_get_result($membershipQuery);
+                $likeQ = mysqli_prepare($connection, $likeQuery);
+                mysqli_stmt_bind_param($likeQ, "ii", $accountId, $threadId);
+                mysqli_stmt_execute($likeQ);
+                $likeResult = mysqli_stmt_get_result($likeQ);
                 if (mysqli_num_rows($membershipResult) > 0) {
                     $isSaved = true;
                     $buttonTextSave = "Unsave";
                     $buttonClassSave = "button unsave";
+                }
+                if(mysqli_num_rows($likeResult) > 0){
+                    $likeRow = mysqli_fetch_assoc($likeResult);
+                    if($likeRow['thread_like'] == 1){
+                        $buttonLikeText = "Unlike";
+                        $buttonClassLike = "button unlike";
+                    }else if($likeRow['thread_dislike'] == 1){
+                        $buttonDislikeText = "Undislike";
+                        $buttonClassDislike = "button dislike";
+                    }
+                }else{
+
                 }
                 mysqli_stmt_close($membershipQuery);
             }
@@ -269,9 +307,49 @@ session_start();
         mysqli_close($connection);
         ?>
         <input type="hidden" id ="thread_id2" name="thread_id2" value="<?php echo $threadId; ?>">
+        <button class="<?php echo $buttonClassLike; ?>" id= "likeBtn" onclick = "newLike()"><?php echo $buttonLikeText; ?></button>
+        <button class="<?php echo $buttonClassDislike; ?>"id = "dislikeBtn" onclick ="newDislike()"><?php echo $buttonDislikeText; ?></button>
         <button id ="saveBtn" class="<?php echo $buttonClassSave; ?>" onclick= "toggleSave()"><?php echo $buttonTextSave; ?></button>
         <button class="button comment" onclick="openCommentForm()">Comment</button>
         <script>
+            function newLike(){
+                var xhr = new XMLHttpRequest();
+                var threadId = document.getElementById("thread_id2").value;
+                xhr.open("POST", "likepost.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onload = function() {
+                    var btn = document.getElementById("likeBtn");
+                    var responseText = this.responseText.trim().toLowerCase();
+                    if (responseText === 'unlike') {
+                        btn.innerHTML = "unlike";
+                    }else if (responseText === 'like') {
+                        btn.innerHTML = "like";
+                    }
+                };
+                xhr.onerror = function() {
+                    console.error("Request failed.");
+                };
+                xhr.send("thread_id=" +  encodeURIComponent(threadId));
+            }
+            function newDislike(){
+                var xhr = new XMLHttpRequest();
+                var threadId = document.getElementById("thread_id2").value;
+                xhr.open("POST", "dislikepost.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onload = function() {
+                    var btn = document.getElementById("dislikeBtn");
+                    var responseText = this.responseText.trim().toLowerCase();
+                    if (responseText === 'undislike') {
+                        btn.innerHTML = "Undislike";
+                    }else if (responseText === 'dislike') {
+                        btn.innerHTML = "Dislike";
+                    }
+                };
+                xhr.onerror = function() {
+                    console.error("Request failed.");
+                };
+                xhr.send("thread_id=" +  encodeURIComponent(threadId));
+            }
             function toggleSave(){
                 var xhr = new XMLHttpRequest();
                 var threadId = document.getElementById("thread_id2").value;
@@ -292,7 +370,6 @@ session_start();
                 xhr.send("thread_id=" +  encodeURIComponent(threadId));
                 };
         </script>
-
         <div id="commentFormPopup" class="popup">
             <div class="popup-content">
                 <span class="close" onclick="closeCommentForm()">&times;</span>
