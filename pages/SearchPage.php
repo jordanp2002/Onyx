@@ -102,7 +102,9 @@
         .search-bar button:hover {
         background-color: #8758F1;
         }
-
+        .filter {
+            color: white;
+        }
     </style>
 </head>
 <?php
@@ -162,6 +164,12 @@
     </div>
 <div class="search-bar">
     <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="GET"> 
+    <label for="filter">Choose a filter:</label> 
+        <select name="filter" id="filter"> 
+            <option value="none">None</option>
+            <option value="popularity">Popularity</option> 
+            <option value="date">Date</option>
+        </select> 
         <input type="text" id = "searchTerm" name="searchTerm" placeholder="Search...">
         <button type="submit">Search</button>
     </form>
@@ -172,9 +180,19 @@
 <?php
     if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET['searchTerm'])) {
         $searchTerm = $_GET['searchTerm'];
+        $filter = $_GET['filter'] ?? 'none';
         $searchTerm = "%" . $searchTerm . "%";
-
-        $query = "SELECT title, content, username, pfp, thread.id AS threadid FROM thread JOIN Account on thread.account_id = Account.id WHERE title LIKE ? OR content LIKE ? OR username LIKE ?";
+        $query = "SELECT thread.title, thread.content, Account.username, Account.pfp, thread.id AS threadid, COUNT(likes.thread_like) AS likes
+            FROM thread
+            JOIN Account ON thread.account_id = Account.id
+            LEFT JOIN likes ON thread.id = likes.thread_id
+            WHERE thread.title LIKE ? OR thread.content LIKE ? OR Account.username LIKE ?
+            GROUP BY thread.id, Account.username, Account.pfp, thread.title, thread.content";
+        if ($filter == 'popularity') {
+            $query .= " ORDER BY likes DESC";
+        }else if ($filter == 'date') {
+            $query .= " ORDER BY thread.date_created DESC";
+        }
         $tweet = mysqli_prepare($connection, $query);
         mysqli_stmt_bind_param($tweet, "sss", $searchTerm, $searchTerm, $searchTerm);
         mysqli_stmt_execute($tweet);
@@ -199,6 +217,7 @@
     <div class="results communities">
         <h2 class = "tweets"> Communities </h2> 
 <?php
+
     $comquery = "SELECT name,descrip,com_id FROM communities WHERE name LIKE ? OR descrip LIKE ?";
     $communitySearch = mysqli_prepare($connection, $comquery);
     mysqli_stmt_bind_param($communitySearch, "ss", $searchTerm, $searchTerm);

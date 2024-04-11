@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = mysqli_stmt_get_result($comIdQ);
             if ($row = mysqli_fetch_assoc($result)) {
                 $comId = $row['com_id'];
-                $insertQuery = "INSERT INTO thread (title, com_id, account_id, thread_like, thread_dislike, content) VALUES (?, ?, ?, 0, 0, ?)";
+                $insertQuery = "INSERT INTO thread (title, com_id, account_id, content, date_created) VALUES (?, ?, ?, ? , NOW())";
                 if ($insertStmt = mysqli_prepare($connection,$insertQuery)) {
                     mysqli_stmt_bind_param($insertStmt, "siis", $title, $comId, $accountId, $postCon); 
                     mysqli_stmt_execute($insertStmt); 
