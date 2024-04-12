@@ -10,27 +10,31 @@
 </head>
 <?php
     session_start();
+    if(!isset($_SESSION['username']) && empty($_SESSION['username'])) {
+        header("Location: ../pages/login.php");
+    }
 ?>
 <div class="headernav">
     <header>
-        <h1>Onyx</h1>
-    </header>
+        <h1><a href="home.php"> Onyx </a></h1>    </header>
     <nav>
         <ul>
             <li><?php echo $_SESSION['username']; ?><li>
             <li><a href="../pages/SearchPage.php">Search</a></li>
             <li>
                 <div class = "parent-item">
-                    <a href="../pages/CommunitiesPage.php">Communities</a>
+                    <a>Communities</a>
                     <ul class="dropdown">
+                        <li class="item"><a href="../pages/CommunitiesPage.php">Your Communities</a></li>
                         <li class="item"><a href="../pages/createcommunity.php">Create Community</a></li>
                     </ul>
                 </div>
             </li>
             <li>
                 <div class = "parent-item">
-                    <a href="../pages/account_page.php">Account</a>
+                    <a>Account</a>
                     <ul class="dropdown">
+                        <li class="item"><a href="../pages/account_page.php">View Account</a></li>
                         <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
                         <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
                         <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>

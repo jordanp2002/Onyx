@@ -80,7 +80,7 @@
         }
         .search-bar {
         justify-content: center;  
-      
+        color: white;
 
         }
         .search-bar input[type="text"] {
@@ -102,9 +102,27 @@
         .search-bar button:hover {
         background-color: #8758F1;
         }
-        .filter {
-            color: white;
+        .search-bar form {
+        display: flex;
+        align-items: center;
         }
+        .search-bar label {
+            margin-right: 10px;
+        }
+        .search-bar select, .search-bar input[type="text"], .search-bar button {
+            margin-right: 10px;
+        }
+        .search-bar select {
+            padding: 10px 20px;
+            background-color: #8758FF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .filter {
+            color: white; 
+        }
+
     </style>
 </head>
 <?php
@@ -113,7 +131,7 @@
 <body>
     <div class="headernav">
         <header>
-            <h1>Onyx</h1>
+            <h1><a href="home.php"> Onyx </a></h1>
         </header>
         <nav>
             <ul><?php
@@ -137,19 +155,21 @@
                 <li><a href="../pages/searchpage.php">Search</a></li>
                 <li>
                     <div class = "parent-item">
-                        <a href="../pages/CommunitiesPage.php">Communities</a>
+                        <a>Communities</a>
                         <ul class="dropdown">
+                            <li class="item"><a href="../pages/CommunitiesPage.php">Your Communities</a></li>
                             <li class="item"><a href="../pages/createcommunity.php">Create Community</a></li>
                         </ul>
                     </div>
                 </li>
                 <li>
                     <div class = "parent-item">
-                        <a href="../pages/account_page.php">Account</a>
-                        <ul class="dropdown">
-                            <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
-                            <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
-                            <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
+                    <a>Account</a>
+                    <ul class="dropdown">
+                        <li class="item"><a href="../pages/account_page.php">View Account</a></li>
+                        <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
+                        <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
+                        <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
                             <?php
                                 if($admin == 1){
                                     echo "<li class='item'><a href='../pages/admin.php'>Admin</a></li>";
@@ -158,19 +178,19 @@
                         </ul>
                     </div>
                 </li>
-                <li><a href="../pages/logout">Logout</a></li>
+                <li><a href="../pages/logout.php">Logout</a></li>
             </ul>
         </nav>
     </div>
 <div class="search-bar">
-    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="GET"> 
-    <label for="filter">Choose a filter:</label> 
+    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="GET">
+        <input type="text" id = "searchTerm" name="searchTerm" placeholder="Search...">
+        <label for="filter">Filter:</label> 
         <select name="filter" id="filter"> 
             <option value="none">None</option>
             <option value="popularity">Popularity</option> 
             <option value="date">Date</option>
         </select> 
-        <input type="text" id = "searchTerm" name="searchTerm" placeholder="Search...">
         <button type="submit">Search</button>
     </form>
 </div>
@@ -233,7 +253,7 @@
             echo '</a></div>';
         }
     }else{
-        echo "No communities found.";
+        echo "<p style='text-align: center;'>No communities found.</p>";
     }
     mysqli_stmt_close($communitySearch);
     mysqli_close($connection);

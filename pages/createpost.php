@@ -10,7 +10,7 @@
 ?>
 <div class="headernav">
     <header>
-        <h1>Onyx</h1>
+        <h1><a href="home.php"> Onyx </a></h1>    
     </header>
     <nav>
         <ul>
@@ -38,16 +38,18 @@
             <li><a href="../pages/searchpage.php">Search</a></li>
             <li>
                 <div class = "parent-item">
-                    <a href="../pages/CommunitiesPage.php">Communities</a>
+                    <a>Communities</a>
                     <ul class="dropdown">
-                        <li class="item"><a href="#">Create Community</a></li>
+                        <li class="item"><a href="../pages/CommunitiesPage.php">Your Communities</a></li>
+                        <li class="item"><a href="../pages/createcommunity.php">Create Community</a></li>
                     </ul>
                 </div>
             </li>
             <li>
                 <div class = "parent-item">
-                    <a href="../pages/account_page.html">Account</a>
+                <a>Account</a>
                     <ul class="dropdown">
+                        <li class="item"><a href="../pages/account_page.php">View Account</a></li>
                         <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
                         <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
                         <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>

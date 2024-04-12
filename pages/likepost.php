@@ -32,12 +32,12 @@ if (isset($_SESSION['username']) && isset($_POST['thread_id'])) {
                 $actionQuery = mysqli_prepare($connection, "UPDATE likes SET thread_like = 1 WHERE account_id = ? AND thread_id = ?");
                 mysqli_stmt_bind_param($actionQuery, "ii", $accountId, $threadId);
                 mysqli_stmt_execute($actionQuery);
-                $response = 'dislike';
+                $response = 'unlike';
             }
         } else {
             $actionQuery = mysqli_prepare($connection, "INSERT INTO likes (account_id, thread_id, thread_like, thread_dislike) VALUES (?, ?, 1, 0)");
             mysqli_stmt_bind_param($actionQuery, "ii", $accountId, $threadId);
-            $response ='dislike';
+            $response ='unlike';
         }
         mysqli_stmt_execute($actionQuery);
         mysqli_stmt_close($actionQuery);

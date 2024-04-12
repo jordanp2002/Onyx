@@ -21,10 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else{
             if (isset($_FILES['image'])) {
             session_start();
-            $query = "INSERT INTO Account (username, pword,pfp, email) VALUES (?, ?, ?, ?)";
+            $query = "INSERT INTO Account (username, pword, pfp, email) VALUES (?, ?, ?, ?)";
             $signup = mysqli_prepare($connection, $query);
             if ($signup) {
-                mysqli_stmt_bind_param($signup, "ssss", $username, $password,$image, $email);
+                mysqli_stmt_bind_param($signup, "ssss", $username, $password, $image, $email);
                 $result = mysqli_stmt_execute($signup);
                 if ($result) {
                     $_SESSION['username'] = $username;

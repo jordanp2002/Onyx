@@ -26,23 +26,25 @@ session_start();
 ?> 
 <div class="headernav">
     <header>
-        <h1>Onyx</h1>
+        <h1><a href="home.php"> Onyx </a></h1>
     </header>
     <nav>
         <ul>
             <li><a href="../pages/SearchPage.php">Search</a></li>
             <li>
                 <div class = "parent-item">
-                    <a href="../pages/CommunitiesPage.php">Communities</a>
+                    <a>Communities</a>
                     <ul class="dropdown">
+                        <li class="item"><a href="../pages/CommunitiesPage.php">Your Communities</a></li>
                         <li class="item"><a href="../pages/createcommunity.php">Create Community</a></li>
                     </ul>
                 </div>
             </li>
             <li>
                 <div class = "parent-item">
-                    <a href="../pages/account_page.php">Account</a>
+                    <a>Account</a>
                     <ul class="dropdown">
+                        <li class="item"><a href="../pages/account_page.php">View Account</a></li>
                         <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
                         <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
                         <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
@@ -80,10 +82,10 @@ session_start();
                     die("Connection failed: " . mysqli_connect_error());
                 }
                 $username = $_SESSION['username'];
-                $query = "SELECT t.id AS thread_id, t.title,t.content, t.com_id, t.account_id, t.thread_like, t.thread_dislike
+                $query = "SELECT t.id AS thread_id, t.title,t.content, t.com_id, t.account_id
                 FROM Account a
                 JOIN community_membership cm ON a.id = cm.account_id
-                JOIN thread t ON cm.com_id = t.com_id
+                JOIN thread t ON cm.com_id = t.com_id 
                 WHERE a.username = '$username'";
                 $result = mysqli_query($connection, $query);
                 if(mysqli_num_rows($result) > 0) {

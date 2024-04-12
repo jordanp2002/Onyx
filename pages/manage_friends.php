@@ -12,7 +12,7 @@ session_start();
 ?>
 <div class="headernav">
     <header>
-        <h1>Onyx</h1>
+        <h1><a href="home.php"> Onyx </a></h1>    
     </header>
     <nav>
         <ul>
@@ -37,16 +37,18 @@ session_start();
             <li><a href="../pages/SearchPage.php">Search</a></li>
             <li>
                 <div class = "parent-item">
-                    <a href="../pages/CommunitiesPage.php">Communities</a>
+                    <a>Communities</a>
                     <ul class="dropdown">
+                        <li class="item"><a href="../pages/CommunitiesPage.php">Your Communities</a></li>
                         <li class="item"><a href="../pages/createcommunity.php">Create Community</a></li>
                     </ul>
                 </div>
             </li>
             <li>
                 <div class = "parent-item">
-                    <a href="../pages/account_page.php">Account</a>
+                <a>Account</a>
                     <ul class="dropdown">
+                        <li class="item"><a href="../pages/account_page.php">View Account</a></li>
                         <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
                         <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
                         <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
@@ -80,7 +82,7 @@ session_start();
                         $encode = base64_encode($row['pfp']);
                         echo "<div class='follower'>";
                         echo "<img src='data:image/jpeg;base64," . $encode . "' alt='Profile Picture' class='profile_pic' width='35px' height='35px'>";
-                        echo "<h2>" . $row['username'] . "</h2>";
+                        echo '<h2 class ="hover"><a href="RandomUserPage.php?profile=' . $row['username'] . '" style="text-decoration: none; color: black;"> '.$row['username']. "</a></h2>";
                         echo "<input type='hidden' class='FollowerId' value='" . $row['FollowerId'] . "'>";
                         echo "<td><button onclick='toggleFollower(" . $row['FollowerId'] . ")'>Remove</button></td>";
                         echo "</div>";
@@ -107,7 +109,7 @@ session_start();
                         $encode = base64_encode($row['pfp']);
                         echo "<div class='following'>";
                         echo "<img src='data:image/jpeg;base64," . $encode . "' alt='Profile Picture' class='profile_pic' width='35px' height='35px'>";
-                        echo "<h2>" . $row['username'] . "</h2>";
+                        echo '<h2 class ="hover"><a href="RandomUserPage.php?profile=' . $row['username'] . '" style="text-decoration: none; color: black;"> '.$row['username']. "</a></h2>";
                         echo "<input type='hidden' class='FollowingId' value='" . $row['FollowingId'] . "'>";
                         echo "<td><button onclick='toggleFriendShip(" . $row['FollowingId'] . ")'>Unfollow</button></td>";
                         echo "</div>";

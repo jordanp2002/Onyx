@@ -117,6 +117,7 @@ ul li:hover .dropdown {
     margin-bottom: 0px;
     font-size: 30px;
 }
+
 .CreatePost {
     background-color: #8758FF;
     text-align: center;
@@ -147,3 +148,4 @@ h3 a{
     text-decoration: none;
     color: black;
 }
+

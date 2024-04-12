@@ -39,11 +39,14 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
     .post-content {
         color: #181818;
         margin-bottom: 20px;
     }
-
+    .hover:hover{
+        text-decoration: underline;
+    }
     .button {
         padding: 10px 15px;
         margin-right: 10px;
@@ -151,6 +154,7 @@
         margin-left: 40px;
         color : #181818;
     }
+    
 
 
     </style>
@@ -161,7 +165,7 @@ session_start();
 <body>
 <div class="headernav">
     <header>
-        <h1>Onyx</h1>
+        <h1><a href="home.php"> Onyx </a></h1>
     </header>
     <nav>
         <ul>
@@ -186,16 +190,18 @@ session_start();
             <li><a href="../pages/SearchPage.php">Search</a></li>
             <li>
                 <div class = "parent-item">
-                    <a href="../pages/CommunitiesPage.php">Communities</a>
+                    <a>Communities</a>
                     <ul class="dropdown">
+                        <li class="item"><a href="../pages/CommunitiesPage.php">Your Communities</a></li>
                         <li class="item"><a href="../pages/createcommunity.php">Create Community</a></li>
                     </ul>
                 </div>
             </li>
             <li>
                 <div class = "parent-item">
-                    <a href="../pages/account_page.php">Account</a>
+                    <a>Account</a>
                     <ul class="dropdown">
+                        <li class="item"><a href="../pages/account_page.php">View Account</a></li>
                         <li class="item"><a href="../pages/account_settings.php">Manage Account</a></li>
                         <li class="item"><a href="../pages/manage_friends.php">Friends</a></li>
                         <li class="item"><a href="../pages/saved_posts.php">Saved Posts</a></li>
@@ -222,11 +228,11 @@ session_start();
             thread.com_id AS comId, 
             COALESCE(SUM(likes.thread_like), 0) AS likes, 
             COALESCE(SUM(likes.thread_dislike), 0) AS dislikes
-        FROM thread
-        LEFT JOIN communities ON thread.com_id = communities.com_id
-        LEFT JOIN likes ON thread.id = likes.thread_id
-        WHERE thread.id = ?
-        GROUP BY thread.id;";
+            FROM thread
+            LEFT JOIN communities ON thread.com_id = communities.com_id
+            LEFT JOIN likes ON thread.id = likes.thread_id
+            WHERE thread.id = ?
+            GROUP BY thread.id;";
             $tweet = mysqli_prepare($connection, $threadQuery);
             if ($tweet) {
                 mysqli_stmt_bind_param($tweet, "i", $threadId);
@@ -238,7 +244,7 @@ session_start();
                     echo '<figure class = "thread-fig">';
                     echo '<p>' . $row['content']. '</p>';
                     echo '</figure>';
-                    echo '<p><a href="JoinableCommunityPage.php?com_id=' . $row['comId'] . '" style="text-decoration: none; color: black;"> Community: ' . $row['communities.name'] . '</a></p>';
+                    echo '<p class ="hover"><a href="JoinableCommunityPage.php?com_id=' . $row['comId'] . '" style="text-decoration: none; color: black;"> Community: ' . $row['name'] . '</a></p>';
                     echo '<p id = "likes"> post likes: ' . $row['likes'] . ' post dislikes: ' . $row['dislikes'] . '<p>';
                 } else {
                     echo "Thread not found.";
@@ -407,7 +413,7 @@ session_start();
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo '<div class="comment-text">';
                         echo '<img src="data:image/jpeg;base64,' . base64_encode($row['pfp']) . '" alt="Profile Picture">';
-                        echo '<p><a href="RandomUserPage.php?profile=' . $row['username'] . '" style="text-decoration: none; color: black;"> '.$row['username']. "</a></p>";
+                        echo '<p class ="hover"><a href="RandomUserPage.php?profile=' . $row['username'] . '" style="text-decoration: none; color: black;"> '.$row['username']. "</a></p>";
                         echo '<div class="comment-content">';
                         echo '<p>' . $row['content'] . '</p>';
                         echo '</div>';
