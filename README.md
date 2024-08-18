@@ -4,4 +4,4 @@ Onyx is a social media platform designed to foster a strong sense of community. 
 
 Jordan Pohr, Rhythm Trivedi, Bassim Beshry
 
-Documentation: https://docs.google.com/document/d/1GfJonXAOpa-8djxsNFVt3dlE4NgP-CML2DyC6SmEUWU/edit?usp=sharing
+Documentation: https://docs.google.com/document/d/1nOT28CJi3dqElttXQJJwtycl5twqUlZFuLfrR4xLIH0/edit#heading=h.mrv5s1yzi5qx
